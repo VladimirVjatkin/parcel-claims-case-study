@@ -40,9 +40,16 @@ Požadavky: Node.js `^20.19.0 || >=22.12.0`. Bez sítě, bez databáze.
 - Chybějící `carrier` objednávku z pravidel A/B nevylučuje; dopravce se nehádá podle `shippingMethod`.
 - Výsledek je jeden ze tří: `CREATE` / `DO_NOT_CREATE` / `NEEDS_REVIEW`, s uvedením zjištěných důvodů; priorita je `DO_NOT_CREATE > NEEDS_REVIEW > CREATE`.
 - Golden test (`test/layer1.golden.test.ts`) je regresní: hlídá shodu s rozhodnutími v návrhu, není důkazem správnosti.
-- Tracking čte samostatný pravidlový parser pro každého ze čtyř dopravců, bez jazykového modelu a jen z prvku se stavem; neznámý nebo nejednoznačný stav vrací `UNKNOWN`.
+- Tracking čte samostatný pravidlový parser pro každého ze čtyř dopravců, bez jazykového modelu a jen z prvku se stavem; neznámý nebo nejednoznačný stav vrací `UNKNOWN`; u Doručta je stav jen barvou kroku v SVG, u Expeda je slovo „Doručeno“ i v reklamě a cookie liště.
 - Stav `DELIVERED` se uzná jen tehdy, když celá zpráva odpovídá známé formulaci doručení příjemci; jakákoli jiná formulace doručení (zápor, jiná osoba, doplněk mimo povolený vzor) vede na `UNKNOWN` a ruční kontrolu; chybná `DELIVERED` by skryla ztracenou zásilku, chybná `UNKNOWN` stojí jen ruční kontrolu.
 - U Kurýra Vltava a ParcelNordu se ostatní fráze (přeprava, návrat, výdejní místo) hledají pouze s hranicí slova na obou stranách podle Unicode písmen.
-- U ParcelNordu se vybírá událost s nejvyšším datem a časem; nečitelná data, více tabulek nebo více událostí se shodným nejnovějším časem znamenají nejednoznačnost (`UNKNOWN`).
+- U ParcelNordu se vybírá událost s nejvyšším datem a časem, ne podle pořadí řádků; nečitelná data, více tabulek nebo více událostí se shodným nejnovějším časem znamenají nejednoznačnost (`UNKNOWN`).
 - `labels.csv` se v kódu rozhodování ani v parserech nečte; regresní test používá pouze první čtyři sloupce bez uvozovek a ignoruje pátý sloupec s poznámkami, který může obsahovat čárky v uvozovkách.
 - Test 20 tracking stránek je pouze regresní: stránky byly prohlédnuty při tvorbě parserů, nejde tedy o nezávislé měření.
+- „Převzal: soused“ nepotvrzuje doručení příjemci: stav je `UNKNOWN` a následuje ruční kontrola (`TRACKING_UNKNOWN`).
+- Stránka `DELIVERED` znamená reklamaci nezakládat a označit nesoulad s Mailshipem.
+- Tracking nedostupný kvůli chybějícímu dopravci, číslu zásilky či stránce nebo dopravci bez parseru znamená ruční kontrolu (`TRACKING_UNAVAILABLE`); u nepodporovaného dopravce je v důvodu uvedeno jeho jméno.
+- Definice A: jakýkoli stav `IN_TRANSIT` na stránce dopravce (včetně „Podáno“) zpochybňuje „nevyzvednuto“ a vyžaduje ruční kontrolu (`CARRIER_PICKUP_CONFIRMED`).
+- Definice B: zásilka čekající na výdejním místě s platnou úložní dobou vyžaduje ruční kontrolu (`AT_PICKUP_POINT_STORAGE_ACTIVE`); úložní doba platí včetně posledního dne podle pražského data, po uplynutí nebo bez data se postupuje podle pravidel.
+- Sledování se provádí i u případů `NEEDS_REVIEW` z první vrstvy, ale ne při důvodu `DO_NOT_CREATE` ani při konfliktu záznamů; důvody první vrstvy zůstávají před důvody trackingu.
+- Výstup je pouze rozhodnutí v režimu nanečisto: `CREATE` znamená „založili bychom“, žádná reklamace se skutečně nezakládá.
