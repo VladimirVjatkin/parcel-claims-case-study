@@ -1,0 +1,21 @@
+file,carrier,tracking_number,expected_state,note
+KV2026100101.html,Kurýr Vltava,KV2026100101,IN_TRANSIT,
+KV2026100105.html,Kurýr Vltava,KV2026100105,DELIVERED,
+KV2026100115.html,Kurýr Vltava,KV2026100115,UNKNOWN,zásilku převzal soused; podle příjemce mu ji nikdy nepředal
+KV2026100118.html,Kurýr Vltava,KV2026100118,IN_TRANSIT,
+KV2026100123.html,Kurýr Vltava,KV2026100123,IN_TRANSIT,
+KV2026100190.html,Kurýr Vltava,KV2026100190,RETURNING,
+PN55100116.html,ParcelNord,PN55100116,IN_TRANSIT,"čeká na výdejním místě, příjemce ji nevyzvedl"
+PN55100114.html,ParcelNord,PN55100114,IN_TRANSIT,"poslední sken před třemi týdny, zásilka se ztratila"
+PN55100191.html,ParcelNord,PN55100191,DELIVERED,
+PN55100192.html,ParcelNord,PN55100192,RETURNING,
+PN55100193.html,ParcelNord,PN55100193,DELIVERED,
+EX7710113.html,Expedo,EX7710113,UNKNOWN,dopravce zásilku ve svém systému nemá
+EX7710117.html,Expedo,EX7710117,DELIVERED,
+EX7710194.html,Expedo,EX7710194,IN_TRANSIT,
+EX7710195.html,Expedo,EX7710195,RETURNING,
+EX7710196.html,Expedo,EX7710196,IN_TRANSIT,
+DT9100112.html,Doručto,DT9100112,IN_TRANSIT,
+DT9100124.html,Doručto,DT9100124,DELIVERED,
+DT9100197.html,Doručto,DT9100197,IN_TRANSIT,
+DT9100198.html,Doručto,DT9100198,RETURNING,

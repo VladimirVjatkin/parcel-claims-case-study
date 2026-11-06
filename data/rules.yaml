@@ -1,0 +1,20 @@
+# Pravidla reklamačního oddělení pro automatické zakládání reklamací
+definitions:
+  A:
+    name: nevyzvednuto dopravcem
+    status: waiting_for_carrier
+    minDaysInStatus: 2
+    complaintReason: not_collected_by_carrier
+    excludedShippingMethods:
+      - Interní přeprava
+  B:
+    name: ztráta v přepravě
+    status: carrier_picked_up
+    minDaysInStatus: 14
+    complaintReason: loss
+    excludedShippingMethods:
+      - Interní přeprava
+      - Parcelo DE
+      - Parcelo International
+      - Parcelo Return DE
+      - Marketplace Delivered

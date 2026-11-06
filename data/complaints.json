@@ -1,0 +1,83 @@
+[
+  {
+    "complaintId": "d5df662d-f0c2-5d2f-aa8d-98a5b36c8852",
+    "orderNumber": "MS-2026-120004",
+    "client": "Kosmetika Delta",
+    "status": "draft",
+    "reason": "not_collected_by_carrier",
+    "reporter": "claims@kosmetika-delta.example",
+    "createdAt": "2026-10-30T11:02:00+01:00"
+  },
+  {
+    "complaintId": "fce98901-efa8-51d1-a8e4-71fee8149dcf",
+    "orderNumber": "MS-2026-120109",
+    "client": "Kosmetika Delta",
+    "status": "open",
+    "reason": "loss",
+    "reporter": "claims@kosmetika-delta.example",
+    "createdAt": "2026-10-29T10:15:00+01:00"
+  },
+  {
+    "complaintId": "55e380cb-46c3-5f45-9395-9d5cc7612b70",
+    "orderNumber": "MS-2026-098211",
+    "client": "Sportovna Alfa",
+    "status": "closed",
+    "reason": "damaged",
+    "reporter": "jana.svobodova@sportovna-alfa.example",
+    "createdAt": "2026-09-14T09:30:00+02:00"
+  },
+  {
+    "complaintId": "5641d0b3-9096-50d9-aeac-13afa1013b6f",
+    "orderNumber": "MS-2026-101870",
+    "client": "Sportovna Alfa",
+    "status": "closed",
+    "reason": "loss",
+    "reporter": "jana.svobodova@sportovna-alfa.example",
+    "createdAt": "2026-10-02T13:05:00+02:00"
+  },
+  {
+    "complaintId": "0de3aa06-49e7-513f-b85c-e9eb0b1e98aa",
+    "orderNumber": "MS-2026-099034",
+    "client": "Bylinkárna Beta",
+    "status": "closed",
+    "reason": "loss",
+    "reporter": "petr.kral@bylinkarna-beta.example",
+    "createdAt": "2026-09-22T08:40:00+02:00"
+  },
+  {
+    "complaintId": "5696b5e5-4f10-5c28-a9c5-7fa4c37b662a",
+    "orderNumber": "MS-2026-094410",
+    "client": "Hračky Epsilon",
+    "status": "closed",
+    "reason": "damaged",
+    "reporter": "lucie.mala@hracky-epsilon.example",
+    "createdAt": "2026-08-28T10:00:00+02:00"
+  },
+  {
+    "complaintId": "6e42d5dc-5e63-5cae-91d2-5bad65a8aa06",
+    "orderNumber": "MS-2026-103305",
+    "client": "Hračky Epsilon",
+    "status": "open",
+    "reason": "loss",
+    "reporter": "tomas.velky@hracky-epsilon.example",
+    "createdAt": "2026-10-21T15:45:00+02:00"
+  },
+  {
+    "complaintId": "cacd5d3c-0e20-5234-8f6a-75ea5a93739b",
+    "orderNumber": "MS-2026-097777",
+    "client": "Velkoobchod Gama",
+    "status": "closed",
+    "reason": "loss",
+    "reporter": "karel.stary@velkoobchod-gama.example",
+    "createdAt": "2026-09-05T11:00:00+02:00"
+  },
+  {
+    "complaintId": "5206b0f2-463a-5045-94c8-0293cc426424",
+    "orderNumber": "MS-2026-100502",
+    "client": "Kosmetika Delta",
+    "status": "closed",
+    "reason": "damaged",
+    "reporter": "eva.nova@kosmetika-delta.example",
+    "createdAt": "2026-09-30T09:00:00+02:00"
+  }
+]

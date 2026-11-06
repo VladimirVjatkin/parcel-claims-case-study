@@ -1,0 +1,20 @@
+[
+  {
+    "returnId": "696a6dfc-3e93-5d4a-b057-b09117d0642e",
+    "orderNumber": "MS-2026-120108",
+    "status": "Připraveno",
+    "createdAt": "2026-10-31T10:00:00+01:00"
+  },
+  {
+    "returnId": "e444acdd-f871-505d-92c7-5b57d0091ec9",
+    "orderNumber": "MS-2026-120106",
+    "status": "Přijato",
+    "createdAt": "2026-10-20T14:00:00+02:00"
+  },
+  {
+    "returnId": "c6e71e75-103c-5bfd-8bb6-1a3f51dd8cf9",
+    "orderNumber": "MS-2026-095120",
+    "status": "Zpracováno",
+    "createdAt": "2026-09-10T09:00:00+02:00"
+  }
+]
