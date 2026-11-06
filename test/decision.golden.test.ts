@@ -6,6 +6,7 @@ import type { Outcome, ReasonCode } from "../src/domain/types.js";
 import { loadInput } from "../src/input/loadInput.js";
 import { createFileTrackingSource } from "../src/tracking/trackingSource.js";
 import { NOW } from "./helpers/makeOrder.js";
+import { formatDecisionReport } from "../src/report/formatDecisionReport.js";
 
 const input = loadInput(fileURLToPath(new URL("../data", import.meta.url)));
 const source = createFileTrackingSource(fileURLToPath(new URL("../data/tracking", import.meta.url)));
@@ -53,6 +54,19 @@ function label(number: string): string {
 }
 
 describe("final decision regression on supplied data", () => {
+  it("reports the 5 / 12 / 15 counts and exactly the three Mailship discrepancies", () => {
+    const report = formatDecisionReport(decisions, { now: NOW, exportRowCount: input.orders.length });
+    expect(report).toContain("| Založit (CREATE) | 5 |");
+    expect(report).toContain("| Ruční kontrola (NEEDS_REVIEW) | 12 |");
+    expect(report).toContain("| Nezakládat (DO_NOT_CREATE) | 15 |");
+    const section = report.split("## Nesoulad s Mailshipem")[1] ?? "";
+    const labels: string[] = [];
+    for (const line of section.split("\n")) {
+      if (line.startsWith("| MS-2026-")) labels.push(line.split("|")[1]?.trim() ?? "");
+    }
+    expect(labels).toEqual([label("120105"), label("120117"), label("120124")]);
+    expect(section).toContain("carrier_picked_up");
+  });
   it.each(expected)("$number → $outcome", ({ number, outcome, codes }) => {
     const decision = decisions.find((item) => item.orderLabel === label(number));
     expect(decision, label(number)).toBeDefined();

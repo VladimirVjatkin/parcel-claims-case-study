@@ -12,6 +12,11 @@ npm run all      # typecheck + testy + rozhodnutí + měření
 Jednotlivě: `npm test`, `npm run decide`, `npm run eval`.
 Požadavky: Node.js `^20.19.0 || >=22.12.0`. Bez sítě, bez databáze.
 
+`npm run decide` vypíše rozhodnutí pro všechny objednávky a nesoulady s Mailshipem na stdout a uloží je do `reports/rozhodnuti.md`.
+Bez parametru `--now` používá pevný okamžik 2. 11. 2026 07:30 (Praha); `npm run decide -- --now now` použije aktuální čas a výsledek pak závisí na dni spuštění.
+Vlastní okamžik lze zadat například `npm run decide -- --now 2026-11-03T07:30:00+01:00`.
+Přímé spuštění `npx tsx src/cli/decide.ts` píše pouze na stdout; soubor vzniká jen při `--out <cesta>`, vstupní adresář lze změnit pomocí `--data <cesta>` (výchozí `data`, relativně ke kořeni projektu).
+
 ## Co je v repozitáři
 
 | Soubor / složka | Obsah |
@@ -20,6 +25,7 @@ Požadavky: Node.js `^20.19.0 || >=22.12.0`. Bez sítě, bez databáze.
 | `src/` | Rozhodovací logika a čtení tracking stránek |
 | `test/` | Testy |
 | `data/` | Podklady od Mailstepu (beze změn) |
+| `reports/` | Opakovatelné výstupní reporty rozhodnutí a měření |
 | `EVALUATION.md` | Výsledek měření nad tracking stránkami |
 | `QUESTIONS.md` | Otázky pro reklamační oddělení a vývoj Mailshipu |
 | `NOTES.md` | Co jsem nestihl nebo vědomě vynechal |

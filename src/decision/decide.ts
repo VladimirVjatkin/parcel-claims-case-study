@@ -12,6 +12,7 @@ import type { TrackingResult } from "../tracking/types.js";
 export interface Decision {
   orderId: string;
   orderLabel: string;
+  mailshipStatus: string;
   definition: Definition | null;
   outcome: Outcome;
   reasons: Reason[];
@@ -35,6 +36,7 @@ export function decideOrder(group: OrderGroup, ctx: RulesContext, source: Tracki
   return {
     orderId: layer1.orderId,
     orderLabel: layer1.orderLabel,
+    mailshipStatus: group.order.status,
     definition: layer1.definition,
     outcome: outcomeFromReasons(reasons),
     reasons,
