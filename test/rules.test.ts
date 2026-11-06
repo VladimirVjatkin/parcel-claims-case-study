@@ -129,6 +129,47 @@ describe("evaluateRules", () => {
   it("falls back to orderId when there is no order or tracking number", () => {
     expect(evaluate({ orderNumber: null, trackingNumber: null }).orderLabel).toBe("order-1");
   });
+
+  it.each([
+    [" MS-test-1 ", "MS-test-1"],
+    ["MS-test-1", " MS-test-1 "],
+    [" MS-test-1 ", " MS-test-1 "],
+  ])("matches trimmed order number %j with complaint %j", (orderNumber, complaintNumber) => {
+    const result = evaluate({ orderNumber }, makeContext({
+      complaints: [makeComplaint({ orderNumber: complaintNumber })],
+    }));
+    expect(result.reasons).toEqual([{ code: "EXISTING_COMPLAINT", detail: "closed" }]);
+    expect(result.runTracking).toBe(false);
+  });
+
+  it.each([
+    [" MS-test-1 ", "MS-test-1"],
+    ["MS-test-1", " MS-test-1 "],
+    [" MS-test-1 ", " MS-test-1 "],
+  ])("matches trimmed order number %j with return %j", (orderNumber, returnNumber) => {
+    const result = evaluate({ orderNumber }, makeContext({
+      returns: [{ returnId: "r", orderNumber: returnNumber, status: "Připraveno", createdAt: "2026-11-01T10:00:00Z" }],
+    }));
+    expect(result.reasons).toEqual([{ code: "RETURN_IN_WMS", detail: "Připraveno" }]);
+    expect(result.runTracking).toBe(false);
+  });
+
+  it.each([null, "", "  "])("does not match a complaint or return with missing number %j", (orderNumber) => {
+    const result = evaluate({}, makeContext({
+      complaints: [makeComplaint({ orderNumber })],
+      returns: [{ returnId: "r", orderNumber, status: "Připraveno", createdAt: "2026-11-01T10:00:00Z" }],
+    }));
+    expect(result.reasons).toEqual([]);
+  });
+
+  it.each([
+    [" MS-test-1 ", " KV-test-1 ", "MS-test-1"],
+    ["", "KV-test-1", "KV-test-1"],
+    ["  ", " KV-test-1 ", "KV-test-1"],
+    ["", "  ", "order-1"],
+  ])("uses a nonempty trimmed orderLabel for %j and %j", (orderNumber, trackingNumber, expected) => {
+    expect(evaluate({ orderNumber, trackingNumber }).orderLabel).toBe(expected);
+  });
 });
 
 describe("outcomeFromReasons", () => {

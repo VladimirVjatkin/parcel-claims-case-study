@@ -34,6 +34,7 @@ Požadavky: Node.js `^20.19.0 || >=22.12.0`. Bez sítě, bez databáze.
 - Přesná kopie řádku v exportu se zpracuje jednou; rozdílné řádky se stejným `orderId` znamenají ruční kontrolu (`CONFLICTING_RECORDS`, s výčtem rozdílných polí) bez dalších pravidel a bez ověření trackingu.
 - Chybějící `orderNumber` znamená ruční kontrolu (`MISSING_ORDER_NUMBER`): reklamace a vratky jsou navázané na číslo objednávky.
 - Chybějící klíč v exportu se chová stejně jako `null`; prázdné `orderNumber` (i po odstranění okolních mezer) znamená chybějící číslo; bez neprázdného `orderId` nebo `status` se načítání zastaví s číslem záznamu.
+- Při porovnávání čísel objednávek se u objednávek, reklamací i vratek odstraní okolní mezery; označení ve výsledku používá neprázdné oříznuté číslo objednávky, jinak číslo zásilky, jinak `orderId`.
 - Chybějící nebo neplatné datum přechodu do stavu znamená ruční kontrolu (`MISSING_STATUS_DATE`).
 - Chybějící `shippingMethod` znamená ruční kontrolu (`MISSING_SHIPPING_METHOD`): nelze ověřit vyloučený způsob dopravy.
 - Chybějící `carrier` objednávku z pravidel A/B nevylučuje; dopravce se nehádá podle `shippingMethod`.

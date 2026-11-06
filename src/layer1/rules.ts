@@ -32,9 +32,11 @@ export function definitionForStatus(status: string, rules: Rules): Definition | 
 
 export function evaluateRules(group: OrderGroup, ctx: RulesContext, now: Date): Layer1Result {
   const order = group.order;
+  const orderNumber = order.orderNumber?.trim() ?? "";
+  const trackingNumber = order.trackingNumber?.trim() ?? "";
   const result: Layer1Result = {
     orderId: group.orderId,
-    orderLabel: order.orderNumber ?? order.trackingNumber ?? order.orderId,
+    orderLabel: orderNumber || trackingNumber || order.orderId,
     definition: null, daysInStatus: null, reporter: null,
     complaintReason: null, reasons: [], runTracking: false,
   };
@@ -68,17 +70,17 @@ export function evaluateRules(group: OrderGroup, ctx: RulesContext, now: Date): 
   } else if (rule.excludedShippingMethods.includes(shippingMethod)) {
     result.reasons.push({ code: "EXCLUDED_SHIPPING_METHOD", detail: shippingMethod });
   }
-  if (order.orderNumber === null || order.orderNumber.trim() === "") {
+  if (orderNumber === "") {
     // Missing identifiers must never join unrelated complaints or returns.
     result.reasons.push({ code: "MISSING_ORDER_NUMBER" });
   } else {
     for (const complaint of ctx.complaints) {
-      if (complaint.orderNumber === order.orderNumber) {
+      if (complaint.orderNumber?.trim() === orderNumber) {
         result.reasons.push({ code: "EXISTING_COMPLAINT", detail: complaint.status });
       }
     }
     for (const wmsReturn of ctx.returns) {
-      if (wmsReturn.orderNumber === order.orderNumber) {
+      if (wmsReturn.orderNumber?.trim() === orderNumber) {
         result.reasons.push({ code: "RETURN_IN_WMS", detail: wmsReturn.status });
       }
     }
