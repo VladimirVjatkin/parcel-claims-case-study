@@ -1,0 +1,8 @@
+[
+  { "id": "qwen/qwen3.5-9b", "label": "Qwen3.5 9B", "sizeClass": "malý", "architecture": "dense 9B", "provider": "deepinfra/bf16", "providerName": "DeepInfra", "quantization": "bf16", "reasoning": { "effort": "low" }, "maxTokens": 4000 },
+  { "id": "mistralai/ministral-8b-2512", "label": "Ministral 3 8B", "sizeClass": "malý", "architecture": "dense 8B", "provider": "mistral/zdr", "providerName": "Mistral", "quantization": "unknown", "reasoning": null, "maxTokens": 400 },
+  { "id": "google/gemma-4-31b-it", "label": "Gemma 4 31B", "sizeClass": "střední", "architecture": "dense 31B", "provider": "novita/bf16", "providerName": "Novita", "quantization": "bf16", "reasoning": { "effort": "low" }, "maxTokens": 4000 },
+  { "id": "mistralai/mistral-small-3.2-24b-instruct", "label": "Mistral Small 3.2 24B", "sizeClass": "střední", "architecture": "dense 24B", "provider": "parasail/bf16", "providerName": "Parasail", "quantization": "bf16", "reasoning": null, "maxTokens": 400 },
+  { "id": "openai/gpt-oss-120b", "label": "gpt-oss 120B", "sizeClass": "velký", "architecture": "MoE 117B", "provider": "deepinfra/bf16", "providerName": "DeepInfra", "quantization": "bf16", "reasoning": { "effort": "low" }, "maxTokens": 4000 },
+  { "id": "meta-llama/llama-3.3-70b-instruct", "label": "Llama 3.3 70B", "sizeClass": "velký", "architecture": "dense 70B", "provider": "coreweave/fp16", "providerName": "CoreWeave", "quantization": "fp16", "reasoning": null, "maxTokens": 400 }
+]

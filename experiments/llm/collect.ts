@@ -1,0 +1,147 @@
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { parseArgs } from "node:util";
+import { attemptPath, buildRequestBody, currentConfig, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
+import type { Attempt, Model, SavedSlot } from "./llm.js";
+import { buildMessages, PROMPT_VERSION } from "./prompt.js";
+
+export type Fetcher = (url: string, init?: RequestInit) => Promise<Response>;
+export interface CollectionCounts { ok: number; failed: number; skipped: number; exhausted: number }
+
+export function endpointDescription(model: Model, payload: unknown): string {
+  const values = object(object(payload).data).endpoints;
+  const matches = Array.isArray(values) ? values.map(object).filter((row) => row.tag === model.provider && row.quantization === model.quantization) : [];
+  if (matches.length !== 1) throw new Error(`${model.id}: počet odpovídajících endpointů = ${matches.length}; volbu musí potvrdit vlastník.`);
+  const endpoint = matches[0];
+  if (endpoint === undefined) throw new Error("Chybí endpoint.");
+  const required = ["temperature", "max_tokens", "response_format", "structured_outputs"];
+  if (model.reasoning !== null) required.push("reasoning");
+  const supported = endpoint.supported_parameters;
+  const missing = required.filter((parameter) => !Array.isArray(supported) || !supported.includes(parameter));
+  if (missing.length > 0) throw new Error(`${model.id}: chybí podpora parametrů ${missing.join(", ")}.`);
+  const pricing = object(endpoint.pricing);
+  const inputPrice = Number((Number(pricing.prompt) * 1_000_000).toFixed(6));
+  const outputPrice = Number((Number(pricing.completion) * 1_000_000).toFixed(6));
+  return `${model.id}: ${model.provider}, ${model.quantization}; USD/1M vstup ${inputPrice}, výstup ${outputPrice}; status ${endpoint.status}`;
+}
+
+export function validateSaved(saved: SavedSlot[]): void {
+  const invalid: string[] = [];
+  for (const item of saved) invalid.push(...item.invalid);
+  if (invalid.length > 0) throw new Error(`Nekompatibilní záznamy; sběr zastaven:\n${invalid.sort().join("\n")}`);
+}
+
+function redact(value: unknown, key: string): unknown {
+  if (typeof value === "string") return value.replaceAll(key, "[REDACTED]").replace(/Authorization/gi, "[REDACTED]");
+  if (Array.isArray(value)) return value.map((item) => redact(item, key));
+  if (value !== null && typeof value === "object") {
+    const result: Record<string, unknown> = {};
+    for (const [name, item] of Object.entries(object(value))) {
+      if (name.toLowerCase() !== "authorization") result[name] = redact(item, key);
+    }
+    return result;
+  }
+  return value;
+}
+
+export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fetcher, root = "."): Promise<CollectionCounts> {
+  validateSaved(saved);
+  if (key === "") throw new Error("Chybí OPENROUTER_API_KEY.");
+  const counts: CollectionCounts = { ok: 0, failed: 0, skipped: 0, exhausted: 0 };
+  for (const item of saved) {
+    if (item.attempts.some((attempt) => attempt.status === "ok")) { counts.skipped += 1; continue; }
+    if (item.attempts.length >= 3) { counts.exhausted += 1; continue; }
+    const slot = item.slot;
+    const number = item.attempts.length + 1;
+    const started = performance.now();
+    let httpStatus: number | null = null;
+    let response: unknown = null;
+    let status: Attempt["status"] = "failed";
+    let error: string | null = null;
+    try {
+      const reply = await fetcher("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        body: JSON.stringify(buildRequestBody(slot.model, buildMessages(slot.label.carrier, slot.label.trackingNumber, slot.input))),
+        signal: AbortSignal.timeout(120_000),
+      });
+      httpStatus = reply.status;
+      response = await reply.json();
+      if (reply.ok && object(response).error === undefined) status = "ok";
+      else error = `Chyba API (HTTP ${httpStatus}).`;
+    } catch {
+      // Do not log arbitrary network errors: they can contain request details.
+      error = "Chyba sítě, časový limit nebo nečitelná odpověď API.";
+    }
+    const attempt: Attempt = {
+      status, promptVersion: PROMPT_VERSION, inputSha256: slot.inputSha256, config: currentConfig(slot.model),
+      set: slot.set, file: slot.label.file, variant: slot.variant, run: slot.run, attempt: number,
+      collectedAt: new Date().toISOString(), latencyMs: Math.round(performance.now() - started), httpStatus, error, response,
+    };
+    const path = join(root, attemptPath(slot.set, slot.model.id, slot.variant, slot.label.file, slot.run, number));
+    mkdirSync(dirname(path), { recursive: true });
+    // Exclusive creation also protects against a second collector running concurrently.
+    writeFileSync(path, JSON.stringify(redact(attempt, key), null, 2) + "\n", { encoding: "utf8", flag: "wx" });
+    if (status === "ok") counts.ok += 1; else counts.failed += 1;
+    if (httpStatus === 401 || httpStatus === 402 || httpStatus === 403) {
+      throw new Error(`Sběr zastaven po HTTP ${httpStatus}: ověřte klíč, kredit nebo přístup. Pokus byl uložen; ok ${counts.ok}, failed ${counts.failed}.`);
+    }
+  }
+  return counts;
+}
+
+export function collectionPlan(saved: SavedSlot[]): { total: number; closed: number; open: number; exhausted: number; failed: number } {
+  validateSaved(saved);
+  let closed = 0; let exhausted = 0; let failed = 0;
+  for (const item of saved) {
+    failed += item.attempts.filter((attempt) => attempt.status === "failed").length;
+    if (item.attempts.some((attempt) => attempt.status === "ok")) closed += 1;
+    else if (item.attempts.length >= 3) exhausted += 1;
+  }
+  return { total: saved.length, closed, open: saved.length - closed - exhausted, exhausted, failed };
+}
+
+async function main(): Promise<void> {
+  const { values } = parseArgs({ options: {
+    check: { type: "boolean" }, "dry-run": { type: "boolean" }, model: { type: "string" },
+    set: { type: "string", default: "all" }, variant: { type: "string", default: "all" }, runs: { type: "string", default: "3" },
+  }, strict: true, allowPositionals: false });
+  const runs = Number(values.runs);
+  if (!Number.isInteger(runs) || runs < 1 || runs > 3 || !["all", "original", "mutated"].includes(values.set ?? "") ||
+      !["all", "T", "H"].includes(values.variant ?? "") || (values.check && values["dry-run"])) {
+    throw new Error("Neplatné volby: --runs 1 až 3, --set original|mutated|all, --variant T|H|all; --check a --dry-run nelze kombinovat.");
+  }
+  const models = loadModels();
+  if (values.model !== undefined && !models.some((model) => model.id === values.model)) throw new Error("Neznámý --model.");
+  const all = readSavedSlots(loadSlots());
+  validateSaved(all);
+  const selected = all.filter(({ slot }) => (values.model === undefined || slot.model.id === values.model) &&
+    (values.set === "all" || slot.set === values.set) && (values.variant === "all" || slot.variant === values.variant) && slot.run <= runs);
+  if (values.check) {
+    let failed = false;
+    for (const model of models) {
+      if (values.model !== undefined && values.model !== model.id) continue;
+      try {
+        const reply = await fetch(`https://openrouter.ai/api/v1/models/${model.id}/endpoints`, { signal: AbortSignal.timeout(15_000) });
+        if (!reply.ok) throw new Error(`HTTP ${reply.status}`);
+        console.log(endpointDescription(model, await reply.json()));
+      } catch (error) { console.error(`Kontrola selhala: ${error instanceof Error ? error.message : "síť"}`); failed = true; }
+    }
+    if (failed) process.exitCode = 1;
+    return;
+  }
+  if (values["dry-run"]) {
+    const plan = collectionPlan(selected);
+    console.log(`Slotů / uzavřeno / otevřeno / vyčerpáno / failed: ${plan.total} / ${plan.closed} / ${plan.open} / ${plan.exhausted} / ${plan.failed}`);
+    return;
+  }
+  if (existsSync(".env")) process.loadEnvFile(".env");
+  const key = process.env.OPENROUTER_API_KEY;
+  if (!key) throw new Error("Chybí OPENROUTER_API_KEY v .env nebo prostředí.");
+  const counts = await collectSlots(selected, key, fetch);
+  console.log(`Sběr: ok ${counts.ok} / failed ${counts.failed} / přeskočeno ${counts.skipped} / vyčerpáno ${counts.exhausted}`);
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error: unknown) => { console.error(`Chyba: ${error instanceof Error ? error.message : "Sběr selhal."}`); process.exitCode = 1; });
+}

@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "decide": "tsx src/cli/decide.ts --out reports/rozhodnuti.md",
     "eval": "tsx src/cli/evaluate.ts --out reports/mereni.md",
-    "all": "npm run typecheck && npm test && npm run decide && npm run eval"
+    "llm:collect": "tsx experiments/llm/collect.ts",
+    "llm:eval": "tsx experiments/llm/evaluate-llm.ts --out reports/llm-experiment.md",
+    "all": "npm run typecheck && npm test && npm run decide && npm run eval && npm run llm:eval"
   },
   "dependencies": {
     "cheerio": "1.2.0",

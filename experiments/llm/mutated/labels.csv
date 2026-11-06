@@ -1,0 +1,7 @@
+file,carrier,tracking_number,expected_state,note
+PN55100901.html,ParcelNord,PN55100901,UNKNOWN,"""Doručeno příjemci"" s datem 9. 11. 2026, stránka je ze 3. 11. 2026; rozporné, doručení nelze potvrdit"
+KV2026100902.html,Kurýr Vltava,KV2026100902,IN_TRANSIT,"uložena v Z-BOXu, lhůta k vyzvednutí běží; reklama ""Doručeno do Z-BOXu"""
+EX7710903.html,Expedo,EX7710903,DELIVERED,"anglická verze stránky; reklama ""Delivered in 24 hours!"""
+DT9100904.html,Doručto,DT9100904,IN_TRANSIT,"nový layout: aktuální krok jen třídou steps__item--current, bez SVG"
+PN55100905.html,ParcelNord,PN55100905,RETURNING,"nový layout: seznam místo tabulky, nejstarší událost nahoře"
+KV2026100906.html,Kurýr Vltava,KV2026100906,DELIVERED,"nový blok tracking-status a nová formulace ""převzala příjemkyně"""
