@@ -18,6 +18,18 @@ function codes(result: Layer1Result): ReasonCode[] {
 
 describe("evaluateRules", () => {
   it.each([
+    ["2026-11-01T09:00:00+01:00", "1 den"],
+    ["2026-10-31T09:00:00+01:00", "2 dny"],
+    ["2026-10-30T09:00:00+01:00", "3 dny"],
+    ["2026-10-29T09:00:00+01:00", "4 dny"],
+    ["2026-10-28T09:00:00+01:00", "5 dní"],
+    ["2026-10-20T09:00:00+02:00", "13 dní"],
+  ])("formats the day count and rule threshold for %s", (packedAt, days) => {
+    const ctx = makeContext();
+    ctx.rules.A.minDaysInStatus = 14;
+    expect(evaluate({ packedAt }, ctx).reasons).toEqual([{ code: "TOO_FEW_DAYS", detail: `${days} (minimum 14)` }]);
+  });
+  it.each([
     ["waiting_for_carrier", "2026-10-31T23:40:00+01:00", 2, []],
     ["waiting_for_carrier", "2026-11-01T09:00:00+01:00", 1, ["TOO_FEW_DAYS"]],
     ["carrier_picked_up", "2026-10-19T10:00:00+02:00", 14, []],

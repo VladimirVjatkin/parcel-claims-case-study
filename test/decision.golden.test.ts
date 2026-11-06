@@ -59,6 +59,9 @@ describe("final decision regression on supplied data", () => {
     expect(report).toContain("| Založit (CREATE) | 5 |");
     expect(report).toContain("| Ruční kontrola (NEEDS_REVIEW) | 12 |");
     expect(report).toContain("| Nezakládat (DO_NOT_CREATE) | 15 |");
+    expect(report).toContain("TOO_FEW_DAYS — 1 den (minimum 2)");
+    expect(report).toContain("TOO_FEW_DAYS — 13 dní (minimum 14)");
+    expect(report).toContain("| TRACKING_UNKNOWN | UNKNOWN — Zásilku jsme nenašli |");
     const section = report.split("## Nesoulad s Mailshipem")[1] ?? "";
     const labels: string[] = [];
     for (const line of section.split("\n")) {

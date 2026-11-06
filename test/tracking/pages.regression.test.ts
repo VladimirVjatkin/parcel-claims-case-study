@@ -4,32 +4,10 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { parserForCarrier } from "../../src/tracking/parseTrackingPage.js";
+import { readLabels } from "../../src/eval/labels.js";
 
 const trackingDir = fileURLToPath(new URL("../../data/tracking", import.meta.url));
-const lines = readFileSync(join(trackingDir, "labels.csv"), "utf8").trim().split(/\r?\n/);
-
-interface LabelRow {
-  file: string;
-  carrier: string;
-  trackingNumber: string;
-  expectedState: string;
-}
-
-function readLabels(): LabelRow[] {
-  if (lines[0]?.split(",", 4).join(",") !== "file,carrier,tracking_number,expected_state") {
-    throw new Error("Neplatná hlavička labels.csv.");
-  }
-  const labels: LabelRow[] = [];
-  for (const line of lines.slice(1)) {
-    // Only the fifth column contains quoted commas; notes are irrelevant here.
-    const [file, carrier, trackingNumber, expectedState] = line.split(",", 4);
-    if (!file || !carrier || !trackingNumber || !expectedState) throw new Error("Neplatný řádek labels.csv.");
-    labels.push({ file, carrier, trackingNumber, expectedState });
-  }
-  return labels;
-}
-
-const labels = readLabels();
+const labels = readLabels(join(trackingDir, "labels.csv"));
 
 describe("saved tracking pages regression", () => {
   it("covers all 20 labelled pages", () => expect(labels).toHaveLength(20));

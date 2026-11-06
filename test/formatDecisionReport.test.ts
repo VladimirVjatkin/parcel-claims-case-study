@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Decision } from "../src/decision/decide.js";
-import type { Outcome } from "../src/domain/types.js";
+import type { Outcome, ReasonCode } from "../src/domain/types.js";
 import { formatDecisionReport } from "../src/report/formatDecisionReport.js";
 
 const meta = { now: new Date("2026-11-02T06:30:00Z"), exportRowCount: 4 };
@@ -15,6 +15,28 @@ function makeDecision(overrides: Partial<Decision> = {}): Decision {
 }
 
 describe("formatDecisionReport", () => {
+  it.each<ReasonCode>(["TRACKING_UNKNOWN", "TRACKING_RETURNING", "DELIVERED_PER_TRACKING", "CARRIER_PICKUP_CONFIRMED"])("does not repeat the tracking quote in review reason %s", (code) => {
+    const report = formatDecisionReport([makeDecision({
+      outcome: "NEEDS_REVIEW", reasons: [{ code, detail: "Citace zásilky" }],
+      tracking: { state: "UNKNOWN", quote: "Citace zásilky", pickupPoint: null },
+    })], meta);
+    expect(report).toContain(`| ${code} | UNKNOWN — Citace zásilky |`);
+    expect(report.match(/Citace zásilky/g)).toHaveLength(1);
+  });
+  it("retains the quote in Nezakládat where there is no Tracking column", () => {
+    const report = formatDecisionReport([makeDecision({
+      outcome: "DO_NOT_CREATE", reasons: [{ code: "DELIVERED_PER_TRACKING", detail: "Doručeno příjemci" }],
+      tracking: { state: "DELIVERED", quote: "Doručeno příjemci", pickupPoint: null },
+    })], meta);
+    expect(report).toContain("DELIVERED_PER_TRACKING — Doručeno příjemci");
+  });
+  it("retains reason details which are different from the tracking quote", () => {
+    const report = formatDecisionReport([makeDecision({
+      outcome: "NEEDS_REVIEW", reasons: [{ code: "TRACKING_UNKNOWN", detail: "Doplňující vysvětlení" }],
+      tracking: { state: "UNKNOWN", quote: "Citace zásilky", pickupPoint: null },
+    })], meta);
+    expect(report).toContain("TRACKING_UNKNOWN — Doplňující vysvětlení");
+  });
   it("includes the summary, Prague date, shadow mode and all four sections", () => {
     const report = formatDecisionReport([
       makeDecision(),

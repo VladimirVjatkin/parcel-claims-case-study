@@ -1,5 +1,6 @@
 import type { Decision } from "../decision/decide.js";
 import type { Reason } from "../domain/types.js";
+import { addTable } from "./markdown.js";
 
 export interface DecisionReportMeta {
   now: Date;
@@ -16,32 +17,19 @@ function formatRunMoment(now: Date): string {
   return `${parts.day}. ${parts.month}. ${parts.year} ${parts.hour}:${parts.minute}`;
 }
 
-function escapeCell(value: string): string {
-  return value.replace(/\r\n|\r|\n/g, " ").replace(/\|/g, "\\|");
-}
-
-function tableRow(cells: string[]): string {
-  const escaped: string[] = [];
-  for (const cell of cells) escaped.push(escapeCell(cell));
-  return `| ${escaped.join(" | ")} |`;
-}
-
-function addTable(lines: string[], headers: string[], rows: string[][]): void {
-  lines.push(tableRow(headers));
-  lines.push(`|${headers.map(() => "---").join("|")}|`);
-  for (const row of rows) lines.push(tableRow(row));
-}
-
 function addSection(lines: string[], title: string, headers: string[], rows: string[][]): void {
   lines.push("", `## ${title}`, "");
   if (rows.length === 0) lines.push("Žádné objednávky.");
   else addTable(lines, headers, rows);
 }
 
-function formatReasons(reasons: Reason[]): string {
+function formatReasons(reasons: Reason[], trackingQuote: string | null): string {
   const values: string[] = [];
   for (const reason of reasons) {
-    values.push(reason.detail ? `${reason.code} — ${reason.detail}` : reason.code);
+    const quoteReason = reason.code === "TRACKING_UNKNOWN" || reason.code === "TRACKING_RETURNING" ||
+      reason.code === "DELIVERED_PER_TRACKING" || reason.code === "CARRIER_PICKUP_CONFIRMED";
+    const repeatedQuote = quoteReason && trackingQuote !== null && reason.detail === trackingQuote;
+    values.push(reason.detail && !repeatedQuote ? `${reason.code} — ${reason.detail}` : reason.code);
   }
   return values.join("; ");
 }
@@ -66,10 +54,10 @@ export function formatDecisionReport(decisions: Decision[], meta: DecisionReport
         createRows.push([...common, decision.complaintReason ?? "—", decision.reporter ?? "—", formatTracking(decision)]);
         break;
       case "NEEDS_REVIEW":
-        reviewRows.push([...common, formatReasons(decision.reasons), formatTracking(decision)]);
+        reviewRows.push([...common, formatReasons(decision.reasons, decision.tracking?.quote ?? null), formatTracking(decision)]);
         break;
       case "DO_NOT_CREATE":
-        rejectRows.push([...common, formatReasons(decision.reasons)]);
+        rejectRows.push([...common, formatReasons(decision.reasons, null)]);
         break;
     }
     if (decision.mailshipDiscrepancy) {

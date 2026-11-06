@@ -17,6 +17,10 @@ Bez parametru `--now` používá pevný okamžik 2. 11. 2026 07:30 (Praha); `npm
 Vlastní okamžik lze zadat například `npm run decide -- --now 2026-11-03T07:30:00+01:00`.
 Přímé spuštění `npx tsx src/cli/decide.ts` píše pouze na stdout; soubor vzniká jen při `--out <cesta>`, vstupní adresář lze změnit pomocí `--data <cesta>` (výchozí `data`, relativně ke kořeni projektu).
 
+`npm run eval` změří čtení 20 tracking stránek proti referenčním stavům a vypíše report na stdout i do `reports/mereni.md`; vysvětlení výsledků a omezení je v [EVALUATION.md](EVALUATION.md).
+Přímé spuštění `npx tsx src/cli/evaluate.ts` píše jen na stdout; `--data` a `--out` fungují stejně jako u `decide`, sdílený parametr `--now` se přijímá, ale na měření nemá vliv.
+`npm run all` provede kontrolu typů, testy, rozhodnutí i měření; při výchozím okamžiku běhu jsou oba reporty opakovatelné.
+
 ## Co je v repozitáři
 
 | Soubor / složka | Obsah |
@@ -50,7 +54,7 @@ Přímé spuštění `npx tsx src/cli/decide.ts` píše pouze na stdout; soubor 
 - Stav `DELIVERED` se uzná jen tehdy, když celá zpráva odpovídá známé formulaci doručení příjemci; jakákoli jiná formulace doručení (zápor, jiná osoba, doplněk mimo povolený vzor) vede na `UNKNOWN` a ruční kontrolu; chybná `DELIVERED` by skryla ztracenou zásilku, chybná `UNKNOWN` stojí jen ruční kontrolu.
 - U Kurýra Vltava a ParcelNordu se ostatní fráze (přeprava, návrat, výdejní místo) hledají pouze s hranicí slova na obou stranách podle Unicode písmen.
 - U ParcelNordu se vybírá událost s nejvyšším datem a časem, ne podle pořadí řádků; nečitelná data, více tabulek nebo více událostí se shodným nejnovějším časem znamenají nejednoznačnost (`UNKNOWN`).
-- `labels.csv` se v kódu rozhodování ani v parserech nečte; regresní test používá pouze první čtyři sloupce bez uvozovek a ignoruje pátý sloupec s poznámkami, který může obsahovat čárky v uvozovkách.
+- `labels.csv` se v kódu rozhodování ani v parserech nečte; měření i regresní test používají společný načítač v `src/eval/`, který zpracuje všech pět sloupců včetně čárek a zdvojených uvozovek v citovaných polích.
 - Test 20 tracking stránek je pouze regresní: stránky byly prohlédnuty při tvorbě parserů, nejde tedy o nezávislé měření.
 - „Převzal: soused“ nepotvrzuje doručení příjemci: stav je `UNKNOWN` a následuje ruční kontrola (`TRACKING_UNKNOWN`).
 - Stránka `DELIVERED` znamená reklamaci nezakládat a označit nesoulad s Mailshipem.

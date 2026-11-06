@@ -9,7 +9,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "decide": "tsx src/cli/decide.ts --out reports/rozhodnuti.md",
-    "eval": "tsx src/cli/evaluate.ts",
+    "eval": "tsx src/cli/evaluate.ts --out reports/mereni.md",
     "all": "npm run typecheck && npm test && npm run decide && npm run eval"
   },
   "dependencies": {

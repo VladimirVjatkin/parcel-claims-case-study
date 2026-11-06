@@ -61,7 +61,9 @@ export function evaluateRules(group: OrderGroup, ctx: RulesContext, now: Date): 
   } else {
     result.daysInStatus = calendarDaysInPrague(start, now);
     if (result.daysInStatus < rule.minDaysInStatus) {
-      result.reasons.push({ code: "TOO_FEW_DAYS", detail: String(result.daysInStatus) });
+      const days = result.daysInStatus;
+      const unit = days === 1 ? "den" : days >= 2 && days <= 4 ? "dny" : "dní";
+      result.reasons.push({ code: "TOO_FEW_DAYS", detail: `${days} ${unit} (minimum ${rule.minDaysInStatus})` });
     }
   }
   const shippingMethod = order.shippingMethod?.trim();
