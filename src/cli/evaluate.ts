@@ -7,7 +7,7 @@ import { evaluatePages } from "../eval/evaluatePages.js";
 import { formatEvaluation } from "../report/formatEvaluation.js";
 
 try {
-  // Evaluation is independent of time; accept the shared --now option without using it.
+  // Stored pages use the selected run moment as their reference for future events.
   const args = parseRunArgs(process.argv.slice(2), () => new Date(DEFAULT_RUN_MOMENT));
   const labels = readLabels(join(args.dataDir, LABELS_RELATIVE_PATH));
   const result = evaluatePages(labels, (file: string): string | null => {
@@ -17,7 +17,7 @@ try {
       if (error instanceof Error && "code" in error && error.code === "ENOENT") return null;
       throw error;
     }
-  });
+  }, args.now);
   const report = formatEvaluation(result);
   if (args.outPath !== null) {
     mkdirSync(dirname(args.outPath), { recursive: true });

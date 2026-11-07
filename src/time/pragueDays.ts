@@ -4,6 +4,16 @@ const pragueDateFormatter = new Intl.DateTimeFormat("en", {
   month: "2-digit",
   day: "2-digit",
 });
+const pragueTimeFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Prague", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+});
+
+export function isAfterReference(localDate: string, localTime: string | null, referenceMoment: Date): boolean {
+  const referenceDate = pragueDateKey(referenceMoment);
+  // Minute precision on the page means second zero; equality is never future.
+  if (localTime === null) return localDate > referenceDate;
+  return `${localDate}T${localTime}` > `${referenceDate}T${pragueTimeFormatter.format(referenceMoment)}`;
+}
 
 export function parseIsoInstant(value: string | null): Date | null {
   // An explicit offset prevents dependence on the machine's time zone.

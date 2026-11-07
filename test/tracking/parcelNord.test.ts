@@ -1,5 +1,8 @@
+import { DEFAULT_RUN_MOMENT as PARSER_REFERENCE_MOMENT } from "../../src/config.js";
 import { describe, expect, it } from "vitest";
 import { parseParcelNord } from "../../src/tracking/parsers/parcelNord.js";
+
+const REFERENCE_MOMENT = new Date(PARSER_REFERENCE_MOMENT);
 
 function row(date: string, time: string, event: string, place = "Praha"): string {
   return `<tr><td>${date}</td><td>${time}</td><td>${place}</td><td>${event}</td></tr>`;
@@ -20,7 +23,7 @@ describe("ParcelNord", () => {
     "Zásilka zpracována. Nedoručeno příjemci",
     "Nedoručeno příjemci, zásilka se vrací odesílateli",
   ])("rejects negated delivery evidence: %s", (quote) => {
-    expect(parseParcelNord(page(row("1. 11. 2026", "10:00", quote)))).toEqual({
+    expect(parseParcelNord(page(row("1. 11. 2026", "10:00", quote)), REFERENCE_MOMENT)).toEqual({
       state: "UNKNOWN", quote, pickupPoint: null,
     });
   });
@@ -30,7 +33,7 @@ describe("ParcelNord", () => {
     "Doručeno příjemci, podepsal: J. Dvořák",
     "DORUČENO PŘÍJEMCI",
   ])("accepts only a complete known delivery event: %s", (quote) => {
-    expect(parseParcelNord(page(row("1. 11. 2026", "10:00", quote)))).toEqual({
+    expect(parseParcelNord(page(row("1. 11. 2026", "10:00", quote)), REFERENCE_MOMENT)).toEqual({
       state: "DELIVERED", quote, pickupPoint: null,
     });
   });
@@ -38,21 +41,21 @@ describe("ParcelNord", () => {
     const oldest = row("31. 10. 2026", "23:59", "Zásilka vyzvednuta příjemcem");
     const earlierToday = row("1. 11. 2026", "09:00", "Zásilka předána kurýrovi");
     const newest = row("1. 11. 2026", "10:00", "Zásilka vrácena odesílateli");
-    expect(parseParcelNord(page(oldest + earlierToday + newest)).state).toBe("RETURNING");
-    expect(parseParcelNord(page(newest + earlierToday + oldest)).state).toBe("RETURNING");
+    expect(parseParcelNord(page(oldest + earlierToday + newest), REFERENCE_MOMENT).state).toBe("RETURNING");
+    expect(parseParcelNord(page(newest + earlierToday + oldest), REFERENCE_MOMENT).state).toBe("RETURNING");
   });
   it("extracts the pickup point and storage date from the latest event only", () => {
     const quote = "Zásilka je připravena k vyzvednutí. Úložní doba končí 4. 11. 2026.";
-    expect(parseParcelNord(page(row("19. 10. 2026", "15:02", quote, "Box Praha Florenc")))).toEqual({
+    expect(parseParcelNord(page(row("19. 10. 2026", "15:02", quote, "Box Praha Florenc")), REFERENCE_MOMENT)).toEqual({
       state: "IN_TRANSIT", quote, pickupPoint: { place: "Box Praha Florenc", storageUntil: "2026-11-04" },
     });
   });
   it("keeps a pickup point without a storage date", () => {
-    const result = parseParcelNord(page(row("19. 10. 2026", "15:02", "Zásilka je připravena k vyzvednutí.", "Box Praha Florenc")));
+    const result = parseParcelNord(page(row("19. 10. 2026", "15:02", "Zásilka je připravena k vyzvednutí.", "Box Praha Florenc")), REFERENCE_MOMENT);
     expect(result.pickupPoint).toEqual({ place: "Box Praha Florenc", storageUntil: null });
   });
   it("does not invent a place or use a date before the storage phrase", () => {
-    const result = parseParcelNord(page(row("19. 10. 2026", "15:02", "19. 10. 2026: Zásilka je připravena k vyzvednutí.", " ")));
+    const result = parseParcelNord(page(row("19. 10. 2026", "15:02", "19. 10. 2026: Zásilka je připravena k vyzvednutí.", " ")), REFERENCE_MOMENT);
     expect(result.pickupPoint).toEqual({ place: null, storageUntil: null });
   });
   it.each([
@@ -67,7 +70,7 @@ describe("ParcelNord", () => {
     ["Zásilka předána k doručení do boxu", "IN_TRANSIT"],
     ["Neznámý stav", "UNKNOWN"],
   ])("classifies the latest event %s", (event, expected) => {
-    const result = parseParcelNord(page(row("12. 10. 2026", "04:37", event)));
+    const result = parseParcelNord(page(row("12. 10. 2026", "04:37", event)), REFERENCE_MOMENT);
     expect(result.state).toBe(expected);
     expect(result.quote).toBe(event);
     expect(result.pickupPoint).toBeNull();
@@ -79,13 +82,13 @@ describe("ParcelNord", () => {
     page(row("1. 11. 2026", "25:00", "Doručeno příjemci")),
     page(row("1. 11. 2026", "10:00", "Doručeno příjemci") + row("abc", "09:00", "Zásilka zpracována")),
   ])("rejects empty or unreadable event history", (html) => {
-    expect(parseParcelNord(html)).toEqual({ state: "UNKNOWN", quote: "", pickupPoint: null });
+    expect(parseParcelNord(html, REFERENCE_MOMENT)).toEqual({ state: "UNKNOWN", quote: "", pickupPoint: null });
   });
   it("rejects two latest events with the same timestamp", () => {
     const html = page(row("1. 11. 2026", "10:00", "Doručeno příjemci") + row("1. 11. 2026", "10:00", "Zásilka zpracována"));
-    expect(parseParcelNord(html).state).toBe("UNKNOWN");
+    expect(parseParcelNord(html, REFERENCE_MOMENT).state).toBe("UNKNOWN");
   });
   it("rejects multiple tracking tables", () => {
-    expect(parseParcelNord(page(row("1. 11. 2026", "10:00", "Doručeno příjemci")) + page("")).state).toBe("UNKNOWN");
+    expect(parseParcelNord(page(row("1. 11. 2026", "10:00", "Doručeno příjemci")) + page(""), REFERENCE_MOMENT).state).toBe("UNKNOWN");
   });
 });

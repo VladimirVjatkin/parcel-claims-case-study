@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import type { TrackingResult } from "../types.js";
 import { containsPhrase, normalizeText, parseCzechDate } from "../text.js";
+import { isAfterReference } from "../../time/pragueDays.js";
 
 const RETURNING_PHRASES = ["vrací odesílateli", "vrací se odesílateli", "vrácena odesílateli"];
 // False DELIVERED hides a lost parcel; anything else goes to manual review.
@@ -11,7 +12,7 @@ const PICKUP_POINT_PHRASE = "připravena k vyzvednutí";
 const STORAGE_UNTIL_PHRASE = "úložní doba končí";
 const IN_TRANSIT_PHRASES = ["zpracována", "převzata od odesílatele", "předána kurýrovi", "předána k doručení"];
 
-export function parseParcelNord(html: string): TrackingResult {
+export function parseParcelNord(html: string, referenceMoment: Date): TrackingResult {
   const $ = cheerio.load(html);
   const tables = $("table.events");
   if (tables.length !== 1) return { state: "UNKNOWN", quote: "", pickupPoint: null };
@@ -19,6 +20,7 @@ export function parseParcelNord(html: string): TrackingResult {
   let quote = "";
   let place = "";
   let ambiguousLatest = false;
+  let dateQuote = "";
   for (const row of tables.find("tbody tr").toArray()) {
     const cells = $(row).children("td");
     if (cells.length !== 4) return { state: "UNKNOWN", quote: "", pickupPoint: null };
@@ -31,6 +33,7 @@ export function parseParcelNord(html: string): TrackingResult {
     const key = `${date}T${time}`;
     if (key > latestKey) {
       latestKey = key;
+      dateQuote = normalizeText(cells.eq(0).text());
       quote = normalizeText(cells.eq(3).text());
       place = normalizeText(cells.eq(2).text());
       ambiguousLatest = false;
@@ -39,6 +42,9 @@ export function parseParcelNord(html: string): TrackingResult {
     }
   }
   if (latestKey === "" || ambiguousLatest) return { state: "UNKNOWN", quote: "", pickupPoint: null };
+  if (isAfterReference(latestKey.substring(0, 10), latestKey.substring(11), referenceMoment)) {
+    return { state: "UNKNOWN", quote: `${dateQuote} | ${latestKey.substring(11)} | ${quote}`, pickupPoint: null };
+  }
   const text = quote.toLowerCase();
   if (DELIVERED_PATTERN.test(text)) return { state: "DELIVERED", quote, pickupPoint: null };
   if (DELIVERY_WORD_PATTERN.test(text)) return { state: "UNKNOWN", quote, pickupPoint: null };

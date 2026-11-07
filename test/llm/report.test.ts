@@ -1,3 +1,4 @@
+import { EXPERIMENT_FETCH_MOMENT as PARSER_REFERENCE_MOMENT } from "../../experiments/llm/prompt.js";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,9 +12,11 @@ import { evaluatePages } from "../../src/eval/evaluatePages.js";
 import { readLabels } from "../../src/eval/labels.js";
 import type { TrackingState } from "../../src/tracking/types.js";
 
+const REFERENCE_MOMENT = new Date(PARSER_REFERENCE_MOMENT);
+
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const model = loadModels(root)[0] as Model;
-const baseline = (dir: string) => evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"));
+const baseline = (dir: string) => evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"), REFERENCE_MOMENT);
 const original = baseline(join(root, "data/tracking"));
 const mutated = baseline(join(root, "experiments/llm/mutated"));
 function response(state: TrackingState, quote = "Na cestě"): unknown {
@@ -120,7 +123,7 @@ describe("formatLlmReport", () => {
   it("renders a deterministic pre-experiment report without claiming model results", () => {
     const report = formatLlmReport(fullSet().map((item) => ({ ...item, attempts: [] })), original, mutated, [model]);
     expect(report).toContain("Odpovědi modelů zatím nejsou uložené.");
-    expect(report).toContain("| Parser | 20/20 | 0/6 | 1 / 1 |");
+    expect(report).toContain("| Parser | 20/20 | 1/6 | 0 / 0 |");
     expect(report).toContain("po formální kontrole");
     expect(report).not.toContain("## Práh (vstup H)");
   });
@@ -130,7 +133,7 @@ describe("formatLlmReport", () => {
     for (const title of ["Metodika", "Práh (vstup H)", "Souhrn", "Změněné stránky", "Chyby", "Úplnost"]) expect(report).toContain(`## ${title}`);
     expect(report).toBe(formatLlmReport([...items].reverse(), original, mutated, [model]));
     expect(report).toContain("78/78 | 60/60 | 6/6 | 26/26 | splněno");
-    expect(report).toContain("| PN55100901.html | UNKNOWN | DELIVERED | --- | UUU |");
+    expect(report).toContain("| PN55100901.html | UNKNOWN | UNKNOWN | --- | UUU |");
   });
   it("sums costs of failed attempts too, and labels unknown costs explicitly", () => {
     const items = fullSet(); const item = first(items); const success = item.attempts[0] as Attempt;

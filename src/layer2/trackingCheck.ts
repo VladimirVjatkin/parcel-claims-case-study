@@ -8,7 +8,7 @@ export type TrackingLookup =
   | { kind: "unavailable"; detail: string }
   | { kind: "found"; result: TrackingResult };
 
-export function lookupTracking(order: Order, source: TrackingSource): TrackingLookup {
+export function lookupTracking(order: Order, source: TrackingSource, referenceMoment: Date): TrackingLookup {
   const carrier = order.carrier?.trim() ?? "";
   if (carrier === "") return { kind: "unavailable", detail: "carrier = null, parser nelze vybrat" };
   const parser = parserForCarrier(carrier);
@@ -19,7 +19,7 @@ export function lookupTracking(order: Order, source: TrackingSource): TrackingLo
   if (trackingNumber === "") return { kind: "unavailable", detail: "chybí číslo zásilky" };
   const html = source.getPage(trackingNumber);
   if (html === null) return { kind: "unavailable", detail: "tracking stránka není k dispozici" };
-  return { kind: "found", result: parser(html) };
+  return { kind: "found", result: parser(html, referenceMoment) };
 }
 
 export function checkTracking(definition: Definition, lookup: TrackingLookup, now: Date): Reason[] {

@@ -1,3 +1,4 @@
+import { EXPERIMENT_FETCH_MOMENT as PARSER_REFERENCE_MOMENT } from "../../experiments/llm/prompt.js";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
@@ -9,6 +10,8 @@ import { collectionPlan, collectSlots, endpointDescription, retryDelayMs, valida
 import { buildMessages, PROMPT_VERSION, SYNTHETIC_EXAMPLES, SYSTEM_PROMPT } from "../../experiments/llm/prompt.js";
 import { evaluatePages } from "../../src/eval/evaluatePages.js";
 import { readLabels } from "../../src/eval/labels.js";
+
+const REFERENCE_MOMENT = new Date(PARSER_REFERENCE_MOMENT);
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const models = loadModels(root);
@@ -66,11 +69,11 @@ describe("LLM input and protocol", () => {
     expect(cache[0]?.invalid).toHaveLength(1);
     expect(() => collectionPlan(cache)).toThrow("Nekompatibilní");
   });
-  it("keeps the known parser gap on the six changed pages (see NOTES after the experiment)", () => {
+  it("rejects the future event found by the experiment and preserves other changed-page outcomes", () => {
     const dir = join(root, "experiments/llm/mutated");
-    const result = evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"));
+    const result = evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"), REFERENCE_MOMENT);
     expect(result.pages).toHaveLength(6);
-    for (const page of result.pages) expect(page.predicted).toBe(page.file === "PN55100901.html" ? "DELIVERED" : "UNKNOWN");
+    for (const page of result.pages) expect(page.predicted).toBe("UNKNOWN");
   });
 });
 

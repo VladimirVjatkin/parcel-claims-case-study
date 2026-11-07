@@ -28,3 +28,10 @@ export function parseCzechDate(value: string): string | null {
   if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
   return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
+
+export function parseCzechDateTime(value: string): { date: string; time: string | null } | null {
+  const match = /^(\d{1,2}\.\s*\d{1,2}\.\s*\d{4})(?: ((?:[01]\d|2[0-3]):[0-5]\d))?$/.exec(normalizeText(value));
+  if (match?.[1] === undefined) return null;
+  const date = parseCzechDate(match[1]);
+  return date === null ? null : { date, time: match[2] ?? null };
+}

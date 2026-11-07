@@ -18,7 +18,7 @@ Vlastní okamžik lze zadat například `npm run decide -- --now 2026-11-03T07:3
 Přímé spuštění `npx tsx src/cli/decide.ts` píše pouze na stdout; soubor vzniká jen při `--out <cesta>`, vstupní adresář lze změnit pomocí `--data <cesta>` (výchozí `data`, relativně ke kořeni projektu).
 
 `npm run eval` změří čtení 20 tracking stránek proti referenčním stavům a vypíše report na stdout i do `reports/mereni.md`; vysvětlení výsledků a omezení je v [EVALUATION.md](EVALUATION.md).
-Přímé spuštění `npx tsx src/cli/evaluate.ts` píše jen na stdout; `--data` a `--out` fungují stejně jako u `decide`, sdílený parametr `--now` se přijímá, ale na měření nemá vliv.
+Přímé spuštění `npx tsx src/cli/evaluate.ts` píše jen na stdout; `--data` a `--out` fungují stejně jako u `decide`; `--now` určuje okamžik kontroly dat událostí na uložených stránkách.
 `npm run all` provede kontrolu typů, testy, rozhodnutí i měření; při výchozím okamžiku běhu jsou oba reporty opakovatelné.
 
 ## Experiment s jazykovými modely
@@ -44,6 +44,8 @@ Sekundární analýza v1 bez PN55100901 zachovává počet dovolených chyb (0 f
 | `NOTES.md` | Co jsem nestihl nebo vědomě vynechal |
 
 ## Výklad nejasností
+
+- Datum události nebo poslední aktualizace na stránce pozdější než okamžik stažení stránky (v řezu = okamžik běhu) → `UNKNOWN` (stránka není spolehlivá); lhůty (úložní doba, vyzvednutí do) se nekontrolují, stránka bez data se posuzuje jako dosud.
 
 - Dny ve stavu se počítají od `packedAt` (A) / `shippedAt` (B) jako kalendářní dny v Europe/Prague; `updatedAt` se pro výpočet nepoužívá, protože se mění při jakékoli úpravě objednávky.
 - Okamžik běhu je pevně 2. 11. 2026 07:30 (Praha), aby byl výsledek opakovatelný.

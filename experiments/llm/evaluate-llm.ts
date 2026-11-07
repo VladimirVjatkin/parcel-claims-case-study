@@ -8,7 +8,7 @@ import { readLabels } from "../../src/eval/labels.js";
 import { addTable } from "../../src/report/markdown.js";
 import { checkAnswer, isExhausted, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
 import type { CheckedAnswer, Model, SavedSlot } from "./llm.js";
-import { CHECK_MOMENT_LINE, PROMPT_VERSION, V2_EXPERIMENT } from "./prompt.js";
+import { CHECK_MOMENT_LINE, EXPERIMENT_FETCH_MOMENT, PROMPT_VERSION, V2_EXPERIMENT } from "./prompt.js";
 
 export interface Observation extends SavedSlot { answer: CheckedAnswer | null }
 export interface Metrics {
@@ -260,7 +260,7 @@ export function formatAdditionalAnalysis(v1: SavedSlot[], v2: SavedSlot[], model
 
 function main(): void {
   const { values } = parseArgs({ options: { out: { type: "string" } }, strict: true, allowPositionals: false });
-  const baseline = (dir: string): EvaluationResult => evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"));
+  const baseline = (dir: string): EvaluationResult => evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"), new Date(EXPERIMENT_FETCH_MOMENT));
   const v1 = readSavedSlots(loadSlots());
   const v2 = readSavedSlots(loadSlots(".", V2_EXPERIMENT), ".", V2_EXPERIMENT);
   const models = loadModels();

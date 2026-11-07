@@ -26,7 +26,7 @@ export interface EvaluationResult {
   pages: PageEvaluation[];
 }
 
-export function evaluatePages(labels: LabelRow[], readPage: (file: string) => string | null): EvaluationResult {
+export function evaluatePages(labels: LabelRow[], readPage: (file: string) => string | null, referenceMoment: Date): EvaluationResult {
   const pages: PageEvaluation[] = [];
   for (const label of labels) {
     let predicted: TrackingState = "UNKNOWN";
@@ -38,7 +38,7 @@ export function evaluatePages(labels: LabelRow[], readPage: (file: string) => st
       const html = readPage(label.file);
       if (html === null) quote = "tracking stránka není k dispozici";
       else {
-        const result = parser(html);
+        const result = parser(html, referenceMoment);
         predicted = result.state;
         quote = result.quote;
       }

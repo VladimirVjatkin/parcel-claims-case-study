@@ -1,3 +1,4 @@
+import { EXPERIMENT_FETCH_MOMENT as PARSER_REFERENCE_MOMENT } from "../../experiments/llm/prompt.js";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
@@ -14,11 +15,13 @@ import type { Attempt, SavedSlot, Slot } from "../../experiments/llm/llm.js";
 import { buildMessages, buildMessagesV2, CHECK_MOMENT_LINE, EXPERIMENT_FETCH_MOMENT, PROMPT_VERSION, V1_EXPERIMENT, V2_EXPERIMENT } from "../../experiments/llm/prompt.js";
 import type { Experiment } from "../../experiments/llm/prompt.js";
 
+const REFERENCE_MOMENT = new Date(PARSER_REFERENCE_MOMENT);
+
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const slots = loadSlots(root, V2_EXPERIMENT);
 const slot = slots[0] as Slot;
 const models = loadModels(root).filter((model) => V2_EXPERIMENT.models?.includes(model.id));
-const baseline = (dir: string) => evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"));
+const baseline = (dir: string) => evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"), REFERENCE_MOMENT);
 const original = baseline(join(root, "data/tracking"));
 const mutated = baseline(join(root, "experiments/llm/mutated"));
 const temporaryRoot = resolve(tmpdir());

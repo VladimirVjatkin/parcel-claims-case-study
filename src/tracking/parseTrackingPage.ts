@@ -4,7 +4,8 @@ import { parseParcelNord } from "./parsers/parcelNord.js";
 import { parseExpedo } from "./parsers/expedo.js";
 import { parseDoructo } from "./parsers/doructo.js";
 
-export type CarrierParser = (html: string) => TrackingResult;
+// In production the moment the page was fetched; in this slice pages are stored, so the run moment is passed.
+export type CarrierParser = (html: string, referenceMoment: Date) => TrackingResult;
 
 export function parserForCarrier(carrier: string | null): CarrierParser | null {
   if (carrier === null) return null;

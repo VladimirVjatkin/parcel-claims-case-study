@@ -1,3 +1,4 @@
+import { DEFAULT_RUN_MOMENT as PARSER_REFERENCE_MOMENT } from "../src/config.js";
 import { describe, expect, it } from "vitest";
 import type { Definition, ReasonCode } from "../src/domain/types.js";
 import { outcomeFromReasons } from "../src/domain/types.js";
@@ -5,6 +6,8 @@ import { checkTracking, lookupTracking } from "../src/layer2/trackingCheck.js";
 import { parseDoructo } from "../src/tracking/parsers/doructo.js";
 import type { TrackingResult, TrackingState } from "../src/tracking/types.js";
 import { makeOrder, NOW } from "./helpers/makeOrder.js";
+
+const REFERENCE_MOMENT = new Date(PARSER_REFERENCE_MOMENT);
 
 const definitions: Definition[] = ["A", "B"];
 const commonCases: { state: TrackingState; code: ReasonCode }[] = [
@@ -67,7 +70,7 @@ describe("pickup point storage for B", () => {
 
 describe("revision 3: any IN_TRANSIT for A", () => {
   it("sends Doručto Podáno to manual review", () => {
-    const result = parseDoructo('<svg class="timeline"><g class="step"><circle fill="#00a86b"/><text>Podáno</text></g></svg>');
+    const result = parseDoructo('<svg class="timeline"><g class="step"><circle fill="#00a86b"/><text>Podáno</text></g></svg>', REFERENCE_MOMENT);
     expect(result.state).toBe("IN_TRANSIT");
     const reasons = checkTracking("A", { kind: "found", result }, NOW);
     expect(reasons).toEqual([{ code: "CARRIER_PICKUP_CONFIRMED", detail: "Podáno" }]);
@@ -79,28 +82,28 @@ describe("lookupTracking", () => {
   it.each([null, "", "  "])("does not guess a parser for carrier=%j", (carrier) => {
     let calls = 0;
     const source = { getPage: () => { calls += 1; return ""; } };
-    expect(lookupTracking(makeOrder({ carrier }), source)).toEqual({ kind: "unavailable", detail: "carrier = null, parser nelze vybrat" });
+    expect(lookupTracking(makeOrder({ carrier }), source, REFERENCE_MOMENT)).toEqual({ kind: "unavailable", detail: "carrier = null, parser nelze vybrat" });
     expect(calls).toBe(0);
   });
   it("includes the unsupported carrier name before considering a missing number", () => {
     let calls = 0;
     const lookup = lookupTracking(makeOrder({ carrier: " Parcelo ", trackingNumber: null }), {
       getPage: () => { calls += 1; return ""; },
-    });
+    }, REFERENCE_MOMENT);
     expect(lookup).toEqual({ kind: "unavailable", detail: "pro dopravce Parcelo nemáme čtení tracking stránky" });
     expect(calls).toBe(0);
     expect(checkTracking("A", lookup, NOW)[0]?.code).toBe("TRACKING_UNAVAILABLE");
   });
   it.each([null, "", "  "])("does not read a page without a tracking number: %j", (trackingNumber) => {
     let calls = 0;
-    expect(lookupTracking(makeOrder({ trackingNumber }), { getPage: () => { calls += 1; return ""; } })).toEqual({
+    expect(lookupTracking(makeOrder({ trackingNumber }), { getPage: () => { calls += 1; return ""; } }, REFERENCE_MOMENT)).toEqual({
       kind: "unavailable", detail: "chybí číslo zásilky",
     });
     expect(calls).toBe(0);
   });
   it("distinguishes a missing saved page from a missing number", () => {
     const seen: string[] = [];
-    expect(lookupTracking(makeOrder(), { getPage: (number: string) => { seen.push(number); return null; } })).toEqual({
+    expect(lookupTracking(makeOrder(), { getPage: (number: string) => { seen.push(number); return null; } }, REFERENCE_MOMENT)).toEqual({
       kind: "unavailable", detail: "tracking stránka není k dispozici",
     });
     expect(seen).toEqual(["KV-test-1"]);
@@ -109,12 +112,12 @@ describe("lookupTracking", () => {
     const seen: string[] = [];
     const result = lookupTracking(makeOrder({ carrier: " Expedo ", trackingNumber: " EX123 " }), {
       getPage: (number: string) => { seen.push(number); return '<div class="status-card"><strong class="value">Na cestě</strong></div>'; },
-    });
+    }, REFERENCE_MOMENT);
     expect(seen).toEqual(["EX123"]);
     expect(result).toEqual({ kind: "found", result: { state: "IN_TRANSIT", quote: "Na cestě", pickupPoint: null } });
   });
   it("treats an existing empty page as UNKNOWN rather than unavailable", () => {
-    expect(lookupTracking(makeOrder(), { getPage: () => "" })).toEqual({
+    expect(lookupTracking(makeOrder(), { getPage: () => "" }, REFERENCE_MOMENT)).toEqual({
       kind: "found", result: { state: "UNKNOWN", quote: "", pickupPoint: null },
     });
   });

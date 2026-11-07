@@ -24,7 +24,7 @@ Odmítnutí jsou samostatné výsledky, zůstávají ve jmenovateli a nenahrazuj
 
 | Model / vstup | Správně původní | Správně změněné | Falešná D (surová / po kontrole) | NO_ANSWER | INVALID_JSON | INVALID_STATE | QUOTE_NOT_FOUND | Neúspěšné pokusy | Cena USD | Medián ms | Skutečný poskytovatel |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Parser | 20/20 | 0/6 | 1 / 1 | — | — | — | — | — | — | — | — |
+| Parser | 20/20 | 1/6 | 0 / 0 | — | — | — | — | — | — | — | — |
 | Qwen3.5 9B (malý, T) | 35/60 | 11/18 | 2 / 2 | 25 | 0 | 0 | 1 | 47 | ≥ 0.031631 USD, 47 pokusů s neznámou cenou | 42070 | DeepInfra |
 | Qwen3.5 9B (malý, H) | 43/60 | 14/18 | 2 / 2 | 19 | 0 | 0 | 0 | 41 | ≥ 0.032507 USD, 41 pokusů s neznámou cenou | 36633 | DeepInfra |
 | Ministral 3 8B (malý, T) | 33/60 | 9/18 | 3 / 3 | 0 | 0 | 0 | 30 | 0 | 0.004324 USD | 1020.5 | Mistral |
@@ -59,7 +59,7 @@ Gemma 4 31B: 4 sloty bez odpovědi, všech 10 pokusů skončilo omezením poskyt
 | EX7710903.html | DELIVERED | UNKNOWN | DDD | DDD | DDD | xxx | DD- | DDD | DDD | DDD | DDD | DDD | DDD | DDD |
 | KV2026100902.html | IN_TRANSIT | UNKNOWN | xTT | xTT | TTT | TTT | TTT | TTT | TTT | TTT | TTT | TTT | TTT | TTT |
 | KV2026100906.html | DELIVERED | UNKNOWN | DDD | DDD | DDD | DDD | DDD | DD- | DDD | DDD | DDD | DDD | DDD | DDD |
-| PN55100901.html | UNKNOWN | DELIVERED | xDD | DDx | DDD | DDD | DDD | DDD | DDD | DDD | xxD | DDD | DDD | DDD |
+| PN55100901.html | UNKNOWN | UNKNOWN | xDD | DDx | DDD | DDD | DDD | DDD | DDD | DDD | xxD | DDD | DDD | DDD |
 | PN55100905.html | RETURNING | UNKNOWN | RRR | RRR | xxx | Rxx | RRR | RR- | RRR | RRR | RRR | RRR | RRR | RRR |
 
 ## Chyby

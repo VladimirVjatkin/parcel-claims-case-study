@@ -29,7 +29,8 @@ export function decideOrder(group: OrderGroup, ctx: RulesContext, source: Tracki
   let tracking: TrackingResult | null = null;
   if (layer1.runTracking) {
     if (layer1.definition === null) throw new Error("Ověření trackingu vyžaduje definici A nebo B.");
-    const lookup = lookupTracking(group.order, source);
+    const referenceMoment = now;
+    const lookup = lookupTracking(group.order, source, referenceMoment);
     reasons.push(...checkTracking(layer1.definition, lookup, now));
     if (lookup.kind === "found") tracking = lookup.result;
   }
