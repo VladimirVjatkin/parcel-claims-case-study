@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "428992510ff3c6ca258f36ef527aa3895ab463e659cddbc190559e63edac00cf",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "KV2026100902.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 2,
+  "collectedAt": "2026-11-07T12:39:18.128Z",
+  "latencyMs": 4339,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794055153-IxacGHzgrkKSC6bmNkRF",
+    "object": "chat.completion",
+    "created": 1794055153,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilka je uložena v Z-BOXu\", \"reason\": \"Parcel is waiting at a pickup point (Z-BOX), not yet collected by recipient\", \"state\": \"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100902\n    *   Content: \"Zásilka je uložena v Z-BOXu Praha 7, Dukelských hrdinů 12. Vyzvedněte ji do 8. 11. 2026. Doručeno do Z-BOXu\"\n    *   Context: The parcel is currently in a Z-BOX (automated locker). The user is instructed to pick it up by a certain date.\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: Parcel is with carrier, or waits at a pickup point / box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   \"Zásilka je uložena v Z-BOXu\" (Parcel is stored in Z-BOX) -> This means it is waiting at a pickup point.\n    *   \"Vyzvedněte ji do 8. 11. 2026\" (Pick it up by...) -> Confirms it hasn't been picked up yet.\n    *   \"Doručeno do Z-BOXu\" (Delivered to Z-BOX) -> In the context of lockers, \"delivered to box\" means the carrier put it there, but the recipient hasn't collected it yet.\n\n    *   State: IN_TRANSIT (waits at a pickup point / box).\n    *   Quote: \"Zásilka je uložena v Z-BOXu\" or \"Vyzvedněte ji do 8. 11. 2026\".\n    *   Reason: Parcel is waiting in a Z-BOX for the recipient to collect it.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100902\n    *   Content: \"Zásilka je uložena v Z-BOXu Praha 7, Dukelských hrdinů 12. Vyzvedněte ji do 8. 11. 2026. Doručeno do Z-BOXu\"\n    *   Context: The parcel is currently in a Z-BOX (automated locker). The user is instructed to pick it up by a certain date.\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: Parcel is with carrier, or waits at a pickup point / box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   \"Zásilka je uložena v Z-BOXu\" (Parcel is stored in Z-BOX) -> This means it is waiting at a pickup point.\n    *   \"Vyzvedněte ji do 8. 11. 2026\" (Pick it up by...) -> Confirms it hasn't been picked up yet.\n    *   \"Doručeno do Z-BOXu\" (Delivered to Z-BOX) -> In the context of lockers, \"delivered to box\" means the carrier put it there, but the recipient hasn't collected it yet.\n\n    *   State: IN_TRANSIT (waits at a pickup point / box).\n    *   Quote: \"Zásilka je uložena v Z-BOXu\" or \"Vyzvedněte ji do 8. 11. 2026\".\n    *   Reason: Parcel is waiting in a Z-BOX for the recipient to collect it.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 793,
+      "completion_tokens": 455,
+      "total_tokens": 1248,
+      "cost": 0.00029302,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00029302,
+        "upstream_inference_prompt_cost": 0.00011102,
+        "upstream_inference_completions_cost": 0.000182
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 403,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

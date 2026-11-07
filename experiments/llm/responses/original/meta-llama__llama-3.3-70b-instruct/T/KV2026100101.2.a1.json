@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "ac6c53ea8284c4d095fe1504b5a49c58172252b7184314a0043c0f11d5db3077",
+  "config": {
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "coreweave/fp16",
+    "quantization": "fp16",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100101.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:22:00.452Z",
+  "latencyMs": 569,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000119-Sd8K7q3ldjlpGlPA17QE",
+    "object": "chat.completion",
+    "created": 1794000119,
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "CoreWeave",
+    "system_fingerprint": null,
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"Zásilka v přepravě\",\"reason\":\"parcel in transit, not delivered\"}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 842,
+      "completion_tokens": 28,
+      "total_tokens": 870,
+      "cost": 0.0006177,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 832,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0006177,
+        "upstream_inference_prompt_cost": 0.00059782,
+        "upstream_inference_completions_cost": 0.00001988
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

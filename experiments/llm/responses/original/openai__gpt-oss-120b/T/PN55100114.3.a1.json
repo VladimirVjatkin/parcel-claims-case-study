@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "0a01add35e0e6a9bf4e0b5a29ee1f7df07ee83898742d54264a7a0f3b5af3a8b",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100114.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:24:59.721Z",
+  "latencyMs": 3693,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000295-Ti4zQTfmULhMF8rvBeHV",
+    "object": "chat.completion",
+    "created": 1794000295,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"12. 10. 2026 06:37 Třídicí centrum Brno Zásilka zpracována\",\"reason\":\"latest event shows processing, not delivered\"}",
+          "refusal": null,
+          "reasoning": "We have events: last is 12.10 06:37 Třídicí centrum Brno Zásilka zpracována. No delivery. So IN_TRANSIT. Quote from latest event.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We have events: last is 12.10 06:37 Třídicí centrum Brno Zásilka zpracována. No delivery. So IN_TRANSIT. Quote from latest event.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 796,
+      "completion_tokens": 98,
+      "total_tokens": 894,
+      "cost": 0.000046112,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000046112,
+        "upstream_inference_prompt_cost": 0.000029452,
+        "upstream_inference_completions_cost": 0.00001666
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 34,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

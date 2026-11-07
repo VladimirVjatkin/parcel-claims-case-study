@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "3c03fc582ebfb6e6e5954ffcde5fe803f5a0554181b7c03aa8f3751fc1cd7c66",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100198.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:15:51.919Z",
+  "latencyMs": 107165,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793999644-khrKA6wHVqhHhPpbLW3Q",
+    "object": "chat.completion",
+    "created": 1793999644,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"RETURNING\", \"quote\": \"Vráceno\", \"reason\": \"Final timeline step is 'Vráceno' (Returned), marked with green color.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML snippet of a tracking page (carrier: Doručto, number: DT9100198).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event/current highlighted step determines state.\n        *   \"Ready for pickup\" / \"Planned\" != DELIVERED.\n        *   Handover to non-recipient (reception, neighbor) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Wrong DELIVERED is costly.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Doručto.\n    *   Tracking Number: DT9100198.\n    *   Timeline SVG:\n        *   Step 1: \"Podáno\" (Submitted) - Grey (`#d0d4d9`)\n        *   Step 2: \"V přepravě\" (In transit) - Grey (`#d0d4d9`)\n        *   Step 3: \"U kurýra\" (With courier) - Grey (`#d0d4d9`)\n        *   Step 4: \"Doručeno\" (Delivered) - Grey (`#d0d4d9`)\n        *   Step 5: \"Vráceno\" (Returned) - Green (`#00a86b`)\n    *   Text: \"Aktualizováno 29. 10. 2026 10:40\" (Updated 29. 10. 2026 10:40).\n    *   Visual cues: The last step \"Vráceno\" (Returned) has a distinct color (`#00a86b` - green) compared to the others (`#d0d4d9` - grey). Usually, in timelines, the current/final state is highlighted. The text \"Vráceno\" means \"Returned\".\n\n3.  **Evaluate State:**\n    *   The timeline shows a sequence of events.\n    *   The last event is \"Vráceno\" (Returned).\n    *   It is visually distinct (green color) compared to the previous steps (grey).\n    *   According to the definitions: \"RETURNING — the parcel is being returned, or was already returned, to the sender.\"\n    *   The state is clearly RETURNING.\n\n4.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: Need exact text or attribute fragment. \"Vráceno\" is the text. The color class isn't explicit in text, but the text \"Vráceno\" is the key. Let's use the text inside the SVG group. `<text x=\"520\" y=\"70\" text-anchor=\"middle\">Vráceno</text>`. Or just \"Vráceno\". The prompt asks for \"exact text or attribute fragment copied from the page\". \"Vráceno\" is good.\n    *   `reason`: Max 20 words. \"Last step in timeline is 'Vráceno' (Returned), marked with distinct color.\"\n\n5.  **Refine Reason:**\n    *   \"Latest event is 'Vráceno' (Returned), indicated by green color in timeline.\"\n    *   Word count: 12 words. Good.\n\n6.  **Final Check:**\n    *   Does \"Vráceno\" match RETURNING? Yes.\n    *   Is it the latest event? Yes, it's the last group in the SVG.\n    *   Is the quote accurate? Yes.\n    *   Is the reason accurate? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Vráceno\", \"reason\": \"Latest event is 'Vráceno' (Returned), indicated by green color in timeline.\"}\n    ```\n    Wait, I should check if there's any ambiguity. The timeline shows \"Doručeno\" then \"Vráceno\". Usually, if it's returned, it's RETURNING. The definition says \"was already returned\". This fits.\n\n    One detail: The prompt says \"The page may be in Czech.\" \"Vráceno\" means Returned.\n    The SVG structure:\n    `<g class=\"step\"><circle ... fill=\"#00a86b\"/><text ...>Vráceno</text></g>`\n    This is the last step.\n    So state is RETURNING.\n\n    Let's finalize the quote. \"Vráceno\" is the text content.\n    Reason: \"Final timeline step is 'Vráceno' (Returned), marked with green color.\"\n\n    Wait, checking the rules again: \"If you are not sure, answer UNKNOWN.\"\n    Here it seems clear. The last step is Returned.\n\n    One more check on the quote: \"exact text or attribute fragment copied from the page\".\n    \"Vráceno\" is exact text.\n\n    Final JSON construction.\n\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Vráceno\", \"reason\": \"Final timeline step is 'Vráceno' (Returned), marked with green color.\"}\n    ```\n    Wait, I need to make sure I don't exceed 20 words in reason.\n    \"Final timeline step is 'Vráceno' (Returned), marked with green color.\" -> 11 words. OK.\n\n    Wait, looking at the SVG again.\n    `<g class=\"step\"><circle cx=\"520\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"520\" y=\"70\" text-anchor=\"middle\">Vráceno</text></g>`\n    The text is \"Vráceno\".\n    The state is RETURNING.\n\n    Ready.\n\n    Wait, one nuance: The previous example (BK0000001) had \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN because handed to reception.\n    This example (DT9100198) has \"Vráceno\" (Returned). This is explicitly RETURNING.\n    The distinction is clear.\n\n    Let's write the response.\n    {\"state\": \"RETURNING\", \"quote\": \"Vráceno\", \"reason\": \"Final timeline step is 'Vráceno' (Returned), marked with green color.\"}\n    Actually, I can quote the full text fragment to be safer. \"Vráceno\" is fine.\n    Or `<text ...>Vráceno</text>`.\n    Let's stick to the text content as it's cleaner. \"Vráceno\".\n\n    Wait, I should check if \"Doručeno\" (Delivered) happened before \"Vráceno\". Yes. But the current state is defined by the latest event. The latest event is Returned. So it is RETURNING.\n\n    Okay, proceeding.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML snippet of a tracking page (carrier: Doručto, number: DT9100198).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event/current highlighted step determines state.\n        *   \"Ready for pickup\" / \"Planned\" != DELIVERED.\n        *   Handover to non-recipient (reception, neighbor) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Wrong DELIVERED is costly.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Doručto.\n    *   Tracking Number: DT9100198.\n    *   Timeline SVG:\n        *   Step 1: \"Podáno\" (Submitted) - Grey (`#d0d4d9`)\n        *   Step 2: \"V přepravě\" (In transit) - Grey (`#d0d4d9`)\n        *   Step 3: \"U kurýra\" (With courier) - Grey (`#d0d4d9`)\n        *   Step 4: \"Doručeno\" (Delivered) - Grey (`#d0d4d9`)\n        *   Step 5: \"Vráceno\" (Returned) - Green (`#00a86b`)\n    *   Text: \"Aktualizováno 29. 10. 2026 10:40\" (Updated 29. 10. 2026 10:40).\n    *   Visual cues: The last step \"Vráceno\" (Returned) has a distinct color (`#00a86b` - green) compared to the others (`#d0d4d9` - grey). Usually, in timelines, the current/final state is highlighted. The text \"Vráceno\" means \"Returned\".\n\n3.  **Evaluate State:**\n    *   The timeline shows a sequence of events.\n    *   The last event is \"Vráceno\" (Returned).\n    *   It is visually distinct (green color) compared to the previous steps (grey).\n    *   According to the definitions: \"RETURNING — the parcel is being returned, or was already returned, to the sender.\"\n    *   The state is clearly RETURNING.\n\n4.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: Need exact text or attribute fragment. \"Vráceno\" is the text. The color class isn't explicit in text, but the text \"Vráceno\" is the key. Let's use the text inside the SVG group. `<text x=\"520\" y=\"70\" text-anchor=\"middle\">Vráceno</text>`. Or just \"Vráceno\". The prompt asks for \"exact text or attribute fragment copied from the page\". \"Vráceno\" is good.\n    *   `reason`: Max 20 words. \"Last step in timeline is 'Vráceno' (Returned), marked with distinct color.\"\n\n5.  **Refine Reason:**\n    *   \"Latest event is 'Vráceno' (Returned), indicated by green color in timeline.\"\n    *   Word count: 12 words. Good.\n\n6.  **Final Check:**\n    *   Does \"Vráceno\" match RETURNING? Yes.\n    *   Is it the latest event? Yes, it's the last group in the SVG.\n    *   Is the quote accurate? Yes.\n    *   Is the reason accurate? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Vráceno\", \"reason\": \"Latest event is 'Vráceno' (Returned), indicated by green color in timeline.\"}\n    ```\n    Wait, I should check if there's any ambiguity. The timeline shows \"Doručeno\" then \"Vráceno\". Usually, if it's returned, it's RETURNING. The definition says \"was already returned\". This fits.\n\n    One detail: The prompt says \"The page may be in Czech.\" \"Vráceno\" means Returned.\n    The SVG structure:\n    `<g class=\"step\"><circle ... fill=\"#00a86b\"/><text ...>Vráceno</text></g>`\n    This is the last step.\n    So state is RETURNING.\n\n    Let's finalize the quote. \"Vráceno\" is the text content.\n    Reason: \"Final timeline step is 'Vráceno' (Returned), marked with green color.\"\n\n    Wait, checking the rules again: \"If you are not sure, answer UNKNOWN.\"\n    Here it seems clear. The last step is Returned.\n\n    One more check on the quote: \"exact text or attribute fragment copied from the page\".\n    \"Vráceno\" is exact text.\n\n    Final JSON construction.\n\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Vráceno\", \"reason\": \"Final timeline step is 'Vráceno' (Returned), marked with green color.\"}\n    ```\n    Wait, I need to make sure I don't exceed 20 words in reason.\n    \"Final timeline step is 'Vráceno' (Returned), marked with green color.\" -> 11 words. OK.\n\n    Wait, looking at the SVG again.\n    `<g class=\"step\"><circle cx=\"520\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"520\" y=\"70\" text-anchor=\"middle\">Vráceno</text></g>`\n    The text is \"Vráceno\".\n    The state is RETURNING.\n\n    Ready.\n\n    Wait, one nuance: The previous example (BK0000001) had \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN because handed to reception.\n    This example (DT9100198) has \"Vráceno\" (Returned). This is explicitly RETURNING.\n    The distinction is clear.\n\n    Let's write the response.\n    {\"state\": \"RETURNING\", \"quote\": \"Vráceno\", \"reason\": \"Final timeline step is 'Vráceno' (Returned), marked with green color.\"}\n    Actually, I can quote the full text fragment to be safer. \"Vráceno\" is fine.\n    Or `<text ...>Vráceno</text>`.\n    Let's stick to the text content as it's cleaner. \"Vráceno\".\n\n    Wait, I should check if \"Doručeno\" (Delivered) happened before \"Vráceno\". Yes. But the current state is defined by the latest event. The latest event is Returned. So it is RETURNING.\n\n    Okay, proceeding.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1132,
+      "completion_tokens": 1664,
+      "total_tokens": 2796,
+      "cost": 0.0003628,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0003628,
+        "upstream_inference_prompt_cost": 0.0001132,
+        "upstream_inference_completions_cost": 0.0002496
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1310,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

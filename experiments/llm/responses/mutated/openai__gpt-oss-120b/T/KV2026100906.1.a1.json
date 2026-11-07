@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "309f5404ed70931e3b4817d581eef60bfb8c3aa42149fdb7a7968171cee1e813",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "KV2026100906.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:28:23.924Z",
+  "latencyMs": 2509,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000501-QKizEBdcuVwKb5r7bi8g",
+    "object": "chat.completion",
+    "created": 1794000501,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"DELIVERED\",\"quote\":\"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\",\"reason\":\"recipient took over the parcel\"}",
+          "refusal": null,
+          "reasoning": "We have delivered text. So state DELIVERED. Quote exact.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We have delivered text. So state DELIVERED. Quote exact.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 735,
+      "completion_tokens": 72,
+      "total_tokens": 807,
+      "cost": 0.000039435,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000039435,
+        "upstream_inference_prompt_cost": 0.000027195,
+        "upstream_inference_completions_cost": 0.00001224
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 14,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

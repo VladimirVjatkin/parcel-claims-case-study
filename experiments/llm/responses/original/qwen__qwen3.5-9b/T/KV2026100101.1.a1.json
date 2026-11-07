@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "ac6c53ea8284c4d095fe1504b5a49c58172252b7184314a0043c0f11d5db3077",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100101.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T19:41:12.275Z",
+  "latencyMs": 81336,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793993991-IynAYcOfmLfthh5GJLlH",
+    "object": "chat.completion",
+    "created": 1793993991,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je na cestě k vám.\", \"reason\": \"Tracking status explicitly states parcel is on the way, not delivered.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100101.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Zásilka je na cestě k vám. O doručení vás budeme informovat SMS zprávou.\" (Parcel is on its way to you. We will inform you about delivery via SMS.)\n    *   Menu Highlight/State: The text \"Zásilka je na cestě k vám\" seems to be the active status description. The menu item \"Zásilka v přepravě\" (Parcel in transit) is likely the active tab, though the text explicitly says \"Zásilka je na cestě k vám\".\n    *   There is no explicit \"Doručeno\" (Delivered) status active. The text says \"Zásilka je na cestě k vám\" (Parcel is on the way to you).\n    *   There is a menu item \"Doručeno příjemci\" (Delivered to recipient) but it's just a link in the navigation, not the current status.\n    *   The current status description is \"Zásilka je na cestě k vám.\"\n\n3.  **Evaluate against Rules:**\n    *   Is it DELIVERED? No, the text says \"on the way\".\n    *   Is it RETURNING? No indication.\n    *   Is it IN_TRANSIT? Yes, \"Zásilka je na cestě k vám\" (Parcel is on the way to you) and \"Zásilka v přepravě\" (Parcel in transit) is in the navigation context.\n    *   Is it UNKNOWN? No, the status is clear.\n\n4.  **Draft the JSON:**\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je na cestě k vám.\"\n    *   Reason: Status indicates parcel is in transit, not yet delivered.\n\n5.  **Refine Reason (Max 20 words):**\n    *   \"Status text explicitly states parcel is on the way to recipient, not delivered yet.\" (13 words) - Good.\n    *   \"Parcel is on the way to you according to tracking status.\" (11 words) - Good.\n\n6.  **Final Check:**\n    *   JSON format? Yes.\n    *   Correct state? Yes (IN_TRANSIT).\n    *   Quote exact? Yes.\n    *   Reason concise? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je na cestě k vám.\", \"reason\": \"Status text explicitly states parcel is on the way to recipient, not delivered yet.\"}\n    ```\n    Wait, looking closer at the text: \"Zásilka je na cestě k vám. O doručení vás budeme informovat SMS zprávou.\"\n    The quote should be the most relevant fragment. \"Zásilka je na cestě k vám.\" is sufficient.\n\n    Let's check the menu items again: \"Zásilka v přepravě\" (Parcel in transit) vs \"Na cestě k vám\" (On the way to you). Both imply transit.\n    The text block says: \"Zásilka je na cestě k vám.\"\n    So IN_TRANSIT is correct.\n\n    One more check on the \"UNKNOWN\" rule: \"Handover to anyone other than the recipient... is UNKNOWN\". This is not a handover, it's transit.\n    \"Planned or expected delivery... is NOT delivery\". This is not expected delivery, it's current status \"on the way\".\n\n    Final decision: IN_TRANSIT.\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, it's safer to output raw JSON or JSON within a block. The prompt says \"Answer ONLY with JSON\". I will output raw JSON text.\n\n    Wait, looking at the previous turns in the conversation (few-shot style):\n    Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}`\n    Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}`\n    Turn 3 (Current): I should follow the same format.\n\n    Let's refine the quote to be exact text from the page.\n    Text: \"Zásilka je na cestě k vám.\"\n    Reason: \"Status indicates parcel is in transit, not yet delivered to recipient.\"\n\n    Word count check: \"Status indicates parcel is in transit, not yet delivered to recipient.\" (11 words).\n\n    Ready.\n\n    Wait, one detail in the input: \"Zásilka v přepravě\" is a menu item, \"Na cestě k vám\" is another menu item. The text below says \"Zásilka je na cestě k vám.\"\n    Actually, looking at the structure:\n    `Sledování zásilky Číslo zásilky: KV2026100101 ObjednávkaZásilka v přepravěNa cestě k vámDoručeno příjemci`\n    This looks like a navigation bar where the text is concatenated.\n    Then the status text: `Zásilka je na cestě k vám. O doručení vás budeme informovat SMS zprávou.`\n    This confirms the state is \"On the way\" (In Transit).\n\n    Final JSON construction.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je na cestě k vám.\", \"reason\": \"Status indicates parcel is in transit, not yet delivered to recipient.\"}\n    Wait, I should check if there is any ambiguity. \"O doručení vás budeme informovat\" (We will inform you about delivery). This implies delivery hasn't happened.\n    So IN_TRANSIT is solid.\n\n    One minor adjustment to the quote to be safe: \"Zásilka je na cestě k vám.\" is the core status.\n    Reason: \"Tracking status explicitly states parcel is on the way, not delivered.\" (11 words).\n\n    Let's go.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100101.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Zásilka je na cestě k vám. O doručení vás budeme informovat SMS zprávou.\" (Parcel is on its way to you. We will inform you about delivery via SMS.)\n    *   Menu Highlight/State: The text \"Zásilka je na cestě k vám\" seems to be the active status description. The menu item \"Zásilka v přepravě\" (Parcel in transit) is likely the active tab, though the text explicitly says \"Zásilka je na cestě k vám\".\n    *   There is no explicit \"Doručeno\" (Delivered) status active. The text says \"Zásilka je na cestě k vám\" (Parcel is on the way to you).\n    *   There is a menu item \"Doručeno příjemci\" (Delivered to recipient) but it's just a link in the navigation, not the current status.\n    *   The current status description is \"Zásilka je na cestě k vám.\"\n\n3.  **Evaluate against Rules:**\n    *   Is it DELIVERED? No, the text says \"on the way\".\n    *   Is it RETURNING? No indication.\n    *   Is it IN_TRANSIT? Yes, \"Zásilka je na cestě k vám\" (Parcel is on the way to you) and \"Zásilka v přepravě\" (Parcel in transit) is in the navigation context.\n    *   Is it UNKNOWN? No, the status is clear.\n\n4.  **Draft the JSON:**\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je na cestě k vám.\"\n    *   Reason: Status indicates parcel is in transit, not yet delivered.\n\n5.  **Refine Reason (Max 20 words):**\n    *   \"Status text explicitly states parcel is on the way to recipient, not delivered yet.\" (13 words) - Good.\n    *   \"Parcel is on the way to you according to tracking status.\" (11 words) - Good.\n\n6.  **Final Check:**\n    *   JSON format? Yes.\n    *   Correct state? Yes (IN_TRANSIT).\n    *   Quote exact? Yes.\n    *   Reason concise? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je na cestě k vám.\", \"reason\": \"Status text explicitly states parcel is on the way to recipient, not delivered yet.\"}\n    ```\n    Wait, looking closer at the text: \"Zásilka je na cestě k vám. O doručení vás budeme informovat SMS zprávou.\"\n    The quote should be the most relevant fragment. \"Zásilka je na cestě k vám.\" is sufficient.\n\n    Let's check the menu items again: \"Zásilka v přepravě\" (Parcel in transit) vs \"Na cestě k vám\" (On the way to you). Both imply transit.\n    The text block says: \"Zásilka je na cestě k vám.\"\n    So IN_TRANSIT is correct.\n\n    One more check on the \"UNKNOWN\" rule: \"Handover to anyone other than the recipient... is UNKNOWN\". This is not a handover, it's transit.\n    \"Planned or expected delivery... is NOT delivery\". This is not expected delivery, it's current status \"on the way\".\n\n    Final decision: IN_TRANSIT.\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, it's safer to output raw JSON or JSON within a block. The prompt says \"Answer ONLY with JSON\". I will output raw JSON text.\n\n    Wait, looking at the previous turns in the conversation (few-shot style):\n    Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}`\n    Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}`\n    Turn 3 (Current): I should follow the same format.\n\n    Let's refine the quote to be exact text from the page.\n    Text: \"Zásilka je na cestě k vám.\"\n    Reason: \"Status indicates parcel is in transit, not yet delivered to recipient.\"\n\n    Word count check: \"Status indicates parcel is in transit, not yet delivered to recipient.\" (11 words).\n\n    Ready.\n\n    Wait, one detail in the input: \"Zásilka v přepravě\" is a menu item, \"Na cestě k vám\" is another menu item. The text below says \"Zásilka je na cestě k vám.\"\n    Actually, looking at the structure:\n    `Sledování zásilky Číslo zásilky: KV2026100101 ObjednávkaZásilka v přepravěNa cestě k vámDoručeno příjemci`\n    This looks like a navigation bar where the text is concatenated.\n    Then the status text: `Zásilka je na cestě k vám. O doručení vás budeme informovat SMS zprávou.`\n    This confirms the state is \"On the way\" (In Transit).\n\n    Final JSON construction.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je na cestě k vám.\", \"reason\": \"Status indicates parcel is in transit, not yet delivered to recipient.\"}\n    Wait, I should check if there is any ambiguity. \"O doručení vás budeme informovat\" (We will inform you about delivery). This implies delivery hasn't happened.\n    So IN_TRANSIT is solid.\n\n    One minor adjustment to the quote to be safe: \"Zásilka je na cestě k vám.\" is the core status.\n    Reason: \"Tracking status explicitly states parcel is on the way, not delivered.\" (11 words).\n\n    Let's go.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 879,
+      "completion_tokens": 1689,
+      "total_tokens": 2568,
+      "cost": 0.00034125,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00034125,
+        "upstream_inference_prompt_cost": 0.0000879,
+        "upstream_inference_completions_cost": 0.00025335
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1472,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

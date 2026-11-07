@@ -3,9 +3,9 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { attemptPath, buildInput, buildRequestBody, canonical, checkAnswer, currentConfig, loadModels, loadSlots, readSavedSlots, sha256 } from "../../experiments/llm/llm.js";
+import { attemptPath, buildInput, buildRequestBody, canonical, checkAnswer, currentConfig, isExhausted, loadModels, loadSlots, readSavedSlots, sha256 } from "../../experiments/llm/llm.js";
 import type { Attempt, Model, SavedSlot, Slot } from "../../experiments/llm/llm.js";
-import { collectionPlan, collectSlots, endpointDescription, validateSaved } from "../../experiments/llm/collect.js";
+import { collectionPlan, collectSlots, endpointDescription, retryDelayMs, validateSaved } from "../../experiments/llm/collect.js";
 import { buildMessages, PROMPT_VERSION, SYNTHETIC_EXAMPLES, SYSTEM_PROMPT } from "../../experiments/llm/prompt.js";
 import { evaluatePages } from "../../src/eval/evaluatePages.js";
 import { readLabels } from "../../src/eval/labels.js";
@@ -99,6 +99,45 @@ describe("endpoint preflight", () => {
 });
 
 describe("collector with fake fetch only", () => {
+  it.each([
+    [[429, 429, 429], false],
+    [[429, 429, null, null, null], true],
+    [Array(10).fill(429), true],
+  ])("applies the separate rate-limit and total caps for %j", (statuses, expected) => {
+    const attempts = statuses.map((httpStatus, index) => attempt({ status: "failed", httpStatus, attempt: index + 1 }));
+    expect(isExhausted(attempts)).toBe(expected);
+    expect(collectionPlan([{ ...saved(), attempts }])).toMatchObject({ exhausted: expected ? 1 : 0, open: expected ? 0 : 1 });
+  });
+  it("reads a4 without altering earlier attempts and rejects a11", () => {
+    for (let number = 1; number <= 4; number += 1) persist(attempt({ status: "failed", httpStatus: 429, attempt: number }));
+    expect(readSavedSlots([slot], work)[0]).toMatchObject({ invalid: [] });
+    expect(readSavedSlots([slot], work)[0]?.attempts).toHaveLength(4);
+    persist(attempt({ status: "failed", httpStatus: 429, attempt: 11 }));
+    expect(() => readSavedSlots([slot], work)).toThrow("Neočekávaný soubor");
+  });
+  it.each([
+    ["5", null, 5000],
+    [null, { error: { metadata: { retry_after_seconds: 7 } } }, 7000],
+    [null, null, 10000],
+    ["120", null, 60000],
+    ["Sat, 07 Nov 2026 12:00:05 GMT", null, 5000],
+  ])("uses the bounded Retry-After delay from %s", (header, body, expected) => {
+    const reply = new Response("{}", { status: 429, headers: header === null ? {} : { "Retry-After": header } });
+    expect(retryDelayMs(reply, body, Date.parse("2026-11-07T12:00:00Z"))).toBe(expected);
+  });
+  it("pauses before the next call and stops a model after five consecutive 429s", async () => {
+    const cache = Array.from({ length: 7 }, (_, index): SavedSlot => ({ ...saved(), slot: { ...slot, label: { ...slot.label, file: `TEST${index}.html` } } }));
+    const waits: number[] = []; const messages: string[] = []; let calls = 0;
+    const counts = await collectSlots(cache, "test-secret", async () => {
+      expect(waits.length).toBe(calls);
+      calls += 1;
+      return new Response("{}", { status: 429, headers: { "Retry-After": "5" } });
+    }, work, async (ms) => { waits.push(ms); }, (message) => { messages.push(message); });
+    expect(calls).toBe(5);
+    expect(counts.failed).toBe(5);
+    expect(waits).toEqual([5000, 5000, 5000, 5000]);
+    expect(messages).toEqual([`${model.id}: Poskytovatel omezuje počet požadavků, zkuste později`]);
+  });
   it("skips a closed slot without calling fetch", async () => {
     const cache = [{ ...saved(), attempts: [attempt()] }]; let calls = 0;
     expect(await collectSlots(cache, "test-secret", async () => { calls += 1; return new Response("{}"); }, work)).toMatchObject({ skipped: 1 });

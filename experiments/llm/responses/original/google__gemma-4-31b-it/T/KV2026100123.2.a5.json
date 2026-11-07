@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "c153fd42892bf550a8477efd092a5d6208f51c3d8858b766983a007b057743f7",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100123.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 5,
+  "collectedAt": "2026-11-07T13:52:47.782Z",
+  "latencyMs": 11498,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059556-J91NTqcOti56LY9StVk1",
+    "object": "chat.completion",
+    "created": 1794059556,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilku právě nakládáme k doručení.\",\"reason\":\"Parcel is being loaded for delivery, not yet delivered.\",\"state\":\"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100123\n    *   Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Tracking section:\n            *   Steps listed: \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n            *   Current status text: \"Zásilku právě nakládáme k doručení. Předpokládaný čas doručení je 14:00–16:00.\" (We are currently loading the shipment for delivery. Expected delivery time is 14:00-16:00.)\n            *   Additional info: \"Změnu adresy nebo termínu doručení můžete zadat online...\" (You can change the address or delivery date online...).\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: With carrier, waiting at pickup point/box. (The parcel is being loaded for delivery).\n    *   RETURNING: Returning to sender. (Not the case here).\n    *   UNKNOWN: Not found, handed to 3rd party, contradictory.\n\n    *   The text \"Zásilku právě nakládáme k doručení\" (We are currently loading the shipment for delivery) indicates the parcel is with the carrier and on its way.\n    *   The \"Předpokládaný čas doručení\" (Expected delivery time) confirms it hasn't been delivered yet.\n    *   State: `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Zásilku právě nakládáme k doručení.\"\n    *   Reason: Parcel is being loaded for delivery, not yet delivered.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100123\n    *   Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Tracking section:\n            *   Steps listed: \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n            *   Current status text: \"Zásilku právě nakládáme k doručení. Předpokládaný čas doručení je 14:00–16:00.\" (We are currently loading the shipment for delivery. Expected delivery time is 14:00-16:00.)\n            *   Additional info: \"Změnu adresy nebo termínu doručení můžete zadat online...\" (You can change the address or delivery date online...).\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: With carrier, waiting at pickup point/box. (The parcel is being loaded for delivery).\n    *   RETURNING: Returning to sender. (Not the case here).\n    *   UNKNOWN: Not found, handed to 3rd party, contradictory.\n\n    *   The text \"Zásilku právě nakládáme k doručení\" (We are currently loading the shipment for delivery) indicates the parcel is with the carrier and on its way.\n    *   The \"Předpokládaný čas doručení\" (Expected delivery time) confirms it hasn't been delivered yet.\n    *   State: `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Zásilku právě nakládáme k doručení.\"\n    *   Reason: Parcel is being loaded for delivery, not yet delivered.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 888,
+      "completion_tokens": 461,
+      "total_tokens": 1349,
+      "cost": 0.00030872,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00030872,
+        "upstream_inference_prompt_cost": 0.00012432,
+        "upstream_inference_completions_cost": 0.0001844
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 420,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

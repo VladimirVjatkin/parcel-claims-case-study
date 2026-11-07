@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "0f128d6902ffbfc215a4018766c22a0a414d63ec94fa891a634b7699c39fde1d",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100190.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:45:32.129Z",
+  "latencyMs": 5494,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059126-g2ytnGlUQNyqUs4aNaDL",
+    "object": "chat.completion",
+    "created": 1794059126,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilku vracíme odesílateli.\", \"reason\": \"The parcel is being returned to the sender because the addressee is unknown.\", \"state\": \"RETURNING\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100190\n    *   Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Tracking status section: \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n        *   Specific status text: \"Zásilku vracíme odesílateli. Důvod: adresát na uvedené adrese neznámý.\" (We are returning the shipment to the sender. Reason: addressee unknown at the given address.)\n        *   Other text: \"Potřebujete změnit doručení?\" (Do you need to change delivery?)\n\n    *   DELIVERED: Recipient took it. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No, it's being returned)\n    *   RETURNING: Being returned or already returned to sender. (Yes: \"Zásilku vracíme odesílateli\")\n    *   UNKNOWN: Not confirmable.\n\n    *   State: RETURNING\n    *   Quote: \"Zásilku vracíme odesílateli.\"\n    *   Reason: The text explicitly states the parcel is being returned to the sender.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100190\n    *   Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Tracking status section: \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n        *   Specific status text: \"Zásilku vracíme odesílateli. Důvod: adresát na uvedené adrese neznámý.\" (We are returning the shipment to the sender. Reason: addressee unknown at the given address.)\n        *   Other text: \"Potřebujete změnit doručení?\" (Do you need to change delivery?)\n\n    *   DELIVERED: Recipient took it. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No, it's being returned)\n    *   RETURNING: Being returned or already returned to sender. (Yes: \"Zásilku vracíme odesílateli\")\n    *   UNKNOWN: Not confirmable.\n\n    *   State: RETURNING\n    *   Quote: \"Zásilku vracíme odesílateli.\"\n    *   Reason: The text explicitly states the parcel is being returned to the sender.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 881,
+      "completion_tokens": 352,
+      "total_tokens": 1233,
+      "cost": 0.00026414,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00026414,
+        "upstream_inference_prompt_cost": 0.00012334,
+        "upstream_inference_completions_cost": 0.0001408
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 305,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

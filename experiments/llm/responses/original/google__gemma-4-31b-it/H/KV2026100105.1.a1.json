@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "e02b67737957fc101b6b7d3e6a1d68be767c93cea981eb78a3ee831976ab7ab8",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100105.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:50:39.337Z",
+  "latencyMs": 15123,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001823-k9byGyPjiCU03JWx5grW",
+    "object": "chat.completion",
+    "created": 1794001823,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\",\"reason\":\"Explicitly states the parcel was delivered to the recipient.\",\"state\":\"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100105\n    *   Language: Czech\n    *   Key elements:\n        *   Progress bar: `width:100%`\n        *   Progress steps: \"Objednávka\" -> \"Zásilka v přepravě\" -> \"Na cestě k vám\" -> \"Doručeno příjemci\"\n        *   Shipment message: `<div class=\"shipment-message\"><p>Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.</p></div>`\n\n    *   `DELIVERED`: Recipient took over the parcel.\n    *   `IN_TRANSIT`: With carrier or at pickup point.\n    *   `RETURNING`: Returning to sender.\n    *   `UNKNOWN`: Not confirmable, handed to 3rd party, etc.\n\n    *   The text \"Zásilka byla doručena příjemci\" translates to \"The shipment was delivered to the recipient\".\n    *   The progress bar is at 100%.\n    *   The final step \"Doručeno příjemci\" is the end of the chain.\n\n    *   State: `DELIVERED`\n    *   Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   Reason: Explicitly states the parcel was delivered to the recipient.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100105\n    *   Language: Czech\n    *   Key elements:\n        *   Progress bar: `width:100%`\n        *   Progress steps: \"Objednávka\" -> \"Zásilka v přepravě\" -> \"Na cestě k vám\" -> \"Doručeno příjemci\"\n        *   Shipment message: `<div class=\"shipment-message\"><p>Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.</p></div>`\n\n    *   `DELIVERED`: Recipient took over the parcel.\n    *   `IN_TRANSIT`: With carrier or at pickup point.\n    *   `RETURNING`: Returning to sender.\n    *   `UNKNOWN`: Not confirmable, handed to 3rd party, etc.\n\n    *   The text \"Zásilka byla doručena příjemci\" translates to \"The shipment was delivered to the recipient\".\n    *   The progress bar is at 100%.\n    *   The final step \"Doručeno příjemci\" is the end of the chain.\n\n    *   State: `DELIVERED`\n    *   Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   Reason: Explicitly states the parcel was delivered to the recipient.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1363,
+      "completion_tokens": 406,
+      "total_tokens": 1769,
+      "cost": 0.00035322,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00035322,
+        "upstream_inference_prompt_cost": 0.00019082,
+        "upstream_inference_completions_cost": 0.0001624
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 348,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

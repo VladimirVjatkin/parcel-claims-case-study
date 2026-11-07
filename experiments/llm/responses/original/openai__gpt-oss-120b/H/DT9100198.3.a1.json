@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "3c03fc582ebfb6e6e5954ffcde5fe803f5a0554181b7c03aa8f3751fc1cd7c66",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100198.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:27:20.281Z",
+  "latencyMs": 2973,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000437-KH7rSBWnqqOufUmIBoW7",
+    "object": "chat.completion",
+    "created": 1794000437,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"RETURNING\",\"quote\":\"Vráceno\",\"reason\":\"latest highlighted step indicates parcel returned\"}",
+          "refusal": null,
+          "reasoning": "We see latest step colored #00a86b (green) with text \"Vráceno\" meaning returned. So state RETURNING. Quote: the text \"Vráceno\".",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We see latest step colored #00a86b (green) with text \"Vráceno\" meaning returned. So state RETURNING. Quote: the text \"Vráceno\".",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1084,
+      "completion_tokens": 68,
+      "total_tokens": 1152,
+      "cost": 0.000051668,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000051668,
+        "upstream_inference_prompt_cost": 0.000040108,
+        "upstream_inference_completions_cost": 0.00001156
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 33,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

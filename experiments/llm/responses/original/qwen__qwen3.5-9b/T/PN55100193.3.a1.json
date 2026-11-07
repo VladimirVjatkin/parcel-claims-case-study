@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "d8e4cc224b10d59d99fa460d475a82261e44e01497a77544806dccc9f25ceaaa",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100193.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:37:35.483Z",
+  "latencyMs": 8380,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793997446-Fhj1pfm01y9zYIRQURZO",
+    "object": "chat.completion",
+    "created": 1793997446,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"DELIVERED\", \"quote\": \"Doručeno příjemci, podepsal: J. Dvořák\", \"reason\": \"Latest event confirms delivery to recipient with signature.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the current delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than the recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100193.\n    *   Snippet Content:\n        *   Header/Nav: ParcelNordDomůSlužbyParcelNord BoxPomocPřihlásit...\n        *   Table/List of events:\n            *   26. 10. 2026 11:18 Plzeň: \"Doručeno příjemci, podepsal: J. Dvořák\" (Delivered to recipient, signed by: J. Dvořák)\n            *   26. 10. 2026 07:55 Depo Plzeň: \"Zásilka předána kurýrovi k doručení\" (Parcel handed to courier for delivery)\n            *   25. 10. 2026 01:30 Třídicí centrum Praha: \"Zásilka zpracována\" (Parcel processed)\n            *   24. 10. 2026 13:10 Odesílatel: \"Zásilka převzata od odesílatele\" (Parcel picked up from sender)\n    *   Latest Event: \"Doručeno příjemci, podepsal: J. Dvořák\" (Delivered to recipient, signed by: J. Dvořák).\n\n3.  **Evaluate State:**\n    *   The latest event explicitly states \"Doručeno příjemci\" (Delivered to recipient) and mentions a signature (\"podepsal\").\n    *   This matches the definition of DELIVERED: \"the RECIPIENT took over the parcel\".\n    *   It is not a pickup point (like Balíkomat in previous examples), it's a direct delivery to the recipient with signature.\n    *   Therefore, State = DELIVERED.\n\n4.  **Draft JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Doručeno příjemci, podepsal: J. Dvořák\"\n    *   `reason`: \"Latest event confirms delivery to recipient with signature.\"\n\n5.  **Review Constraints:**\n    *   JSON format only.\n    *   Reason max 20 words.\n    *   Quote exact text.\n\n6.  **Final Polish:**\n    *   Quote: \"Doručeno příjemci, podepsal: J. Dvořák\"\n    *   Reason: \"Latest event confirms delivery to recipient with signature.\" (9 words) - Good.\n\n7.  **Output Generation.**\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the current delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than the recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100193.\n    *   Snippet Content:\n        *   Header/Nav: ParcelNordDomůSlužbyParcelNord BoxPomocPřihlásit...\n        *   Table/List of events:\n            *   26. 10. 2026 11:18 Plzeň: \"Doručeno příjemci, podepsal: J. Dvořák\" (Delivered to recipient, signed by: J. Dvořák)\n            *   26. 10. 2026 07:55 Depo Plzeň: \"Zásilka předána kurýrovi k doručení\" (Parcel handed to courier for delivery)\n            *   25. 10. 2026 01:30 Třídicí centrum Praha: \"Zásilka zpracována\" (Parcel processed)\n            *   24. 10. 2026 13:10 Odesílatel: \"Zásilka převzata od odesílatele\" (Parcel picked up from sender)\n    *   Latest Event: \"Doručeno příjemci, podepsal: J. Dvořák\" (Delivered to recipient, signed by: J. Dvořák).\n\n3.  **Evaluate State:**\n    *   The latest event explicitly states \"Doručeno příjemci\" (Delivered to recipient) and mentions a signature (\"podepsal\").\n    *   This matches the definition of DELIVERED: \"the RECIPIENT took over the parcel\".\n    *   It is not a pickup point (like Balíkomat in previous examples), it's a direct delivery to the recipient with signature.\n    *   Therefore, State = DELIVERED.\n\n4.  **Draft JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Doručeno příjemci, podepsal: J. Dvořák\"\n    *   `reason`: \"Latest event confirms delivery to recipient with signature.\"\n\n5.  **Review Constraints:**\n    *   JSON format only.\n    *   Reason max 20 words.\n    *   Quote exact text.\n\n6.  **Final Polish:**\n    *   Quote: \"Doručeno příjemci, podepsal: J. Dvořák\"\n    *   Reason: \"Latest event confirms delivery to recipient with signature.\" (9 words) - Good.\n\n7.  **Output Generation.**\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 864,
+      "completion_tokens": 847,
+      "total_tokens": 1711,
+      "cost": 0.00021345,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00021345,
+        "upstream_inference_prompt_cost": 0.0000864,
+        "upstream_inference_completions_cost": 0.00012705
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 642,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

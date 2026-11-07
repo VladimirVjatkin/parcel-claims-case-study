@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "987f8b3906c9b19d74f5a9420fb9f7a1c62d7106e803b9bb5b06a0dfaa428d68",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100112.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:55:33.167Z",
+  "latencyMs": 18357,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793998514-UdA4Y2C5IBPXeobkC9I3",
+    "object": "chat.completion",
+    "created": 1793998514,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"IN_TRANSIT\", \"quote\": \"U kurýra\", \"reason\": \"Current active step is 'U kurýra', parcel is with carrier.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML snippet of a tracking page (carrier: Doručto, number: DT9100112).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   Planned/expected delivery is NOT delivery.\n        *   Handover to anyone other than recipient (reception, neighbor) is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Wrong DELIVERED is costly.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Doručto.\n    *   Tracking Number: DT9100112.\n    *   Timeline SVG:\n        *   Step 1: \"Podáno\" (Submitted) - Color: #d0d4d9 (grey/inactive).\n        *   Step 2: \"V přepravě\" (In transit) - Color: #d0d4d9 (grey/inactive).\n        *   Step 3: \"U kurýra\" (With courier) - Color: #00a86b (green/active/current).\n        *   Step 4: \"Doručeno\" (Delivered) - Color: #d0d4d9 (grey/inactive).\n        *   Step 5: \"Vráceno\" (Returned) - Color: #d0d4d9 (grey/inactive).\n    *   Text: \"Aktualizováno 20. 10. 2026 08:12\".\n    *   Visual cues: The circle for \"U kurýra\" is green (#00a86b), others are grey (#d0d4d9). This indicates the current status is \"U kurýra\".\n\n3.  **Evaluate State:**\n    *   Current status: \"U kurýra\" (With courier).\n    *   Is it DELIVERED? No, the \"Doručeno\" step is grey (inactive).\n    *   Is it IN_TRANSIT? Yes, \"U kurýra\" implies the parcel is with the carrier, moving towards delivery.\n    *   Is it RETURNING? No, \"Vráceno\" is grey.\n    *   Is it UNKNOWN? No, the status is clear.\n\n4.  **Select Quote:**\n    *   Need exact text or attribute fragment supporting the state.\n    *   The green step text is \"U kurýra\".\n    *   Quote: \"U kurýra\" (from the SVG text element).\n\n5.  **Draft Reason:**\n    *   Current active step is \"U kurýra\", not delivered.\n    *   Max 20 words.\n\n6.  **Construct JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: \"U kurýra\"\n    *   `reason`: \"Current active step is 'U kurýra', delivery not yet confirmed.\"\n\n7.  **Review against Rules:**\n    *   LATEST event/current step: Yes (\"U kurýra\" is green).\n    *   Handover to third party? No info, but \"U kurýra\" is transit.\n    *   JSON format: Yes.\n    *   Language: JSON keys/values as requested.\n\n8.  **Final Check:**\n    *   The SVG shows \"U kurýra\" with green fill (#00a86b), others grey. This signifies the current state.\n    *   State definition: IN_TRANSIT — the parcel is with the carrier. \"U kurýra\" fits this perfectly.\n\n    *   Wait, let's double check the \"Doručeno\" step. It is grey. So it hasn't happened yet.\n    *   Let's check the \"Vráceno\" step. It is grey.\n    *   So the parcel is currently with the courier.\n    *   State: IN_TRANSIT.\n\n    *   Quote selection: \"U kurýra\" is the text inside the active step.\n    *   Reason: \"Current active step is 'U kurýra', indicating parcel is with courier.\"\n\n    *   Refining reason for brevity: \"Current active step is 'U kurýra', parcel is with carrier.\"\n\n    *   Wait, looking closely at the SVG structure:\n        `<g class=\"step\"><circle cx=\"280\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"280\" y=\"70\" text-anchor=\"middle\">U kurýra</text></g>`\n        This is the active one.\n        `<g class=\"step\"><circle cx=\"400\" cy=\"30\" r=\"14\" fill=\"#d0d4d9\"/><text x=\"400\" y=\"70\" text-anchor=\"middle\">Doručeno</text></g>`\n        This is inactive.\n\n    *   Conclusion remains IN_TRANSIT.\n\n    *   One nuance: Sometimes \"U kurýra\" could be interpreted as \"Out for delivery\". Still IN_TRANSIT until \"Doručeno\" (Delivered) is marked active.\n\n    *   Final JSON construction.\n\n```json\n{\"state\": \"IN_TRANSIT\", \"quote\": \"U kurýra\", \"reason\": \"Current active step is 'U kurýra', parcel is with carrier.\"}\n```\nWait, I need to make sure I copy the quote exactly from the page.\nThe text is \"U kurýra\".\nThe reason should be max 20 words.\n\nLet's verify the \"quote\" requirement: \"<exact text or attribute fragment copied from the page that supports the state>\".\n\"U kurýra\" is exact text.\n\nReason: \"Current active step is 'U kurýra', parcel is with carrier.\" (9 words).\n\nLooks good.\n\nOne more check: The prompt says \"The page may be in Czech.\"\nThe state definitions are in English.\nThe output JSON keys are English.\nThe values (state, quote, reason) follow the rules.\n\nState: IN_TRANSIT.\nQuote: \"U kurýra\"\nReason: Current active step is 'U kurýra', parcel is with carrier.\n\nWait, is there any ambiguity?\n\"U kurýra\" means \"With courier\".\n\"Doručeno\" means \"Delivered\".\nSince \"Doručeno\" is grey (inactive) and \"U kurýra\" is green (active), it is not delivered yet.\nSo IN_TRANSIT is correct.\n\nFinal check on JSON syntax.\nDouble quotes for keys and string values.\nNo trailing commas.\n\nReady.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML snippet of a tracking page (carrier: Doručto, number: DT9100112).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   Planned/expected delivery is NOT delivery.\n        *   Handover to anyone other than recipient (reception, neighbor) is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Wrong DELIVERED is costly.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Doručto.\n    *   Tracking Number: DT9100112.\n    *   Timeline SVG:\n        *   Step 1: \"Podáno\" (Submitted) - Color: #d0d4d9 (grey/inactive).\n        *   Step 2: \"V přepravě\" (In transit) - Color: #d0d4d9 (grey/inactive).\n        *   Step 3: \"U kurýra\" (With courier) - Color: #00a86b (green/active/current).\n        *   Step 4: \"Doručeno\" (Delivered) - Color: #d0d4d9 (grey/inactive).\n        *   Step 5: \"Vráceno\" (Returned) - Color: #d0d4d9 (grey/inactive).\n    *   Text: \"Aktualizováno 20. 10. 2026 08:12\".\n    *   Visual cues: The circle for \"U kurýra\" is green (#00a86b), others are grey (#d0d4d9). This indicates the current status is \"U kurýra\".\n\n3.  **Evaluate State:**\n    *   Current status: \"U kurýra\" (With courier).\n    *   Is it DELIVERED? No, the \"Doručeno\" step is grey (inactive).\n    *   Is it IN_TRANSIT? Yes, \"U kurýra\" implies the parcel is with the carrier, moving towards delivery.\n    *   Is it RETURNING? No, \"Vráceno\" is grey.\n    *   Is it UNKNOWN? No, the status is clear.\n\n4.  **Select Quote:**\n    *   Need exact text or attribute fragment supporting the state.\n    *   The green step text is \"U kurýra\".\n    *   Quote: \"U kurýra\" (from the SVG text element).\n\n5.  **Draft Reason:**\n    *   Current active step is \"U kurýra\", not delivered.\n    *   Max 20 words.\n\n6.  **Construct JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: \"U kurýra\"\n    *   `reason`: \"Current active step is 'U kurýra', delivery not yet confirmed.\"\n\n7.  **Review against Rules:**\n    *   LATEST event/current step: Yes (\"U kurýra\" is green).\n    *   Handover to third party? No info, but \"U kurýra\" is transit.\n    *   JSON format: Yes.\n    *   Language: JSON keys/values as requested.\n\n8.  **Final Check:**\n    *   The SVG shows \"U kurýra\" with green fill (#00a86b), others grey. This signifies the current state.\n    *   State definition: IN_TRANSIT — the parcel is with the carrier. \"U kurýra\" fits this perfectly.\n\n    *   Wait, let's double check the \"Doručeno\" step. It is grey. So it hasn't happened yet.\n    *   Let's check the \"Vráceno\" step. It is grey.\n    *   So the parcel is currently with the courier.\n    *   State: IN_TRANSIT.\n\n    *   Quote selection: \"U kurýra\" is the text inside the active step.\n    *   Reason: \"Current active step is 'U kurýra', indicating parcel is with courier.\"\n\n    *   Refining reason for brevity: \"Current active step is 'U kurýra', parcel is with carrier.\"\n\n    *   Wait, looking closely at the SVG structure:\n        `<g class=\"step\"><circle cx=\"280\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"280\" y=\"70\" text-anchor=\"middle\">U kurýra</text></g>`\n        This is the active one.\n        `<g class=\"step\"><circle cx=\"400\" cy=\"30\" r=\"14\" fill=\"#d0d4d9\"/><text x=\"400\" y=\"70\" text-anchor=\"middle\">Doručeno</text></g>`\n        This is inactive.\n\n    *   Conclusion remains IN_TRANSIT.\n\n    *   One nuance: Sometimes \"U kurýra\" could be interpreted as \"Out for delivery\". Still IN_TRANSIT until \"Doručeno\" (Delivered) is marked active.\n\n    *   Final JSON construction.\n\n```json\n{\"state\": \"IN_TRANSIT\", \"quote\": \"U kurýra\", \"reason\": \"Current active step is 'U kurýra', parcel is with carrier.\"}\n```\nWait, I need to make sure I copy the quote exactly from the page.\nThe text is \"U kurýra\".\nThe reason should be max 20 words.\n\nLet's verify the \"quote\" requirement: \"<exact text or attribute fragment copied from the page that supports the state>\".\n\"U kurýra\" is exact text.\n\nReason: \"Current active step is 'U kurýra', parcel is with carrier.\" (9 words).\n\nLooks good.\n\nOne more check: The prompt says \"The page may be in Czech.\"\nThe state definitions are in English.\nThe output JSON keys are English.\nThe values (state, quote, reason) follow the rules.\n\nState: IN_TRANSIT.\nQuote: \"U kurýra\"\nReason: Current active step is 'U kurýra', parcel is with carrier.\n\nWait, is there any ambiguity?\n\"U kurýra\" means \"With courier\".\n\"Doručeno\" means \"Delivered\".\nSince \"Doručeno\" is grey (inactive) and \"U kurýra\" is green (active), it is not delivered yet.\nSo IN_TRANSIT is correct.\n\nFinal check on JSON syntax.\nDouble quotes for keys and string values.\nNo trailing commas.\n\nReady.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1132,
+      "completion_tokens": 1592,
+      "total_tokens": 2724,
+      "cost": 0.000352,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000352,
+        "upstream_inference_prompt_cost": 0.0001132,
+        "upstream_inference_completions_cost": 0.0002388
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1258,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

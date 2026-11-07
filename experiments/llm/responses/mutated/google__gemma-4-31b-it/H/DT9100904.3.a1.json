@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "275cffd549c5b534a73b493d06e0ec86a7c3090d878da2b1524548b4e74ebcad",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "DT9100904.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T12:16:16.099Z",
+  "latencyMs": 10298,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794053765-TeeqeCbY3PDyzSg1JqcA",
+    "object": "chat.completion",
+    "created": 1794053765,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\",\"reason\":\"Current step is 'U kurýra' (with courier), meaning it is still in transit.\",\"state\":\"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Doručto\n    *   Parcel Number: DT9100904\n    *   Page Content:\n        *   Steps list:\n            *   `steps__item--done`: Podáno (Submitted)\n            *   `steps__item--done`: V přepravě (In transit)\n            *   `steps__item--current`: U kurýra (With courier)\n            *   `steps__item`: Doručeno (Delivered)\n            *   `steps__item`: Vráceno (Returned)\n    *   Current state indicator: `steps__item--current` is on \"U kurýra\".\n\n    *   DELIVERED: Recipient took over.\n    *   IN_TRANSIT: With carrier, or waiting at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The current step is \"U kurýra\" (With courier).\n    *   This means the parcel is still with the carrier.\n    *   This fits the definition of `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    *   Reason: Current step is \"U kurýra\" (with courier).",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Doručto\n    *   Parcel Number: DT9100904\n    *   Page Content:\n        *   Steps list:\n            *   `steps__item--done`: Podáno (Submitted)\n            *   `steps__item--done`: V přepravě (In transit)\n            *   `steps__item--current`: U kurýra (With courier)\n            *   `steps__item`: Doručeno (Delivered)\n            *   `steps__item`: Vráceno (Returned)\n    *   Current state indicator: `steps__item--current` is on \"U kurýra\".\n\n    *   DELIVERED: Recipient took over.\n    *   IN_TRANSIT: With carrier, or waiting at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The current step is \"U kurýra\" (With courier).\n    *   This means the parcel is still with the carrier.\n    *   This fits the definition of `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    *   Reason: Current step is \"U kurýra\" (with courier).",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 920,
+      "completion_tokens": 356,
+      "total_tokens": 1276,
+      "cost": 0.0002712,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0002712,
+        "upstream_inference_prompt_cost": 0.0001288,
+        "upstream_inference_completions_cost": 0.0001424
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 301,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "25117d4369d94f5cfd3711df03bf09669b3f5335117955276cb04e1385483c50",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710117.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:41:54.999Z",
+  "latencyMs": 18475,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793997696-djdYT9MiRQSIxTRCF1HQ",
+    "object": "chat.completion",
+    "created": 1793997696,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla předána příjemci.\", \"reason\": \"Status shows 'Doručeno' and confirms handover to recipient.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML content of a tracking page (carrier: Expedo, number: EX7710117).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (or collected at pickup point).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party (unless pickup point collection counts as DELIVERED per shipper definition: \"at a pickup point: the recipient collected it\").\n        *   Planned/expected/failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo.\n    *   Tracking Number: EX7710117.\n    *   HTML Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero Ad (ignore).\n        *   Main Content:\n            *   `<h1>Kde je moje zásilka?</h1>`\n            *   `<p>Číslo zásilky: EX7710117</p>`\n            *   `<div class=\"status-card\"><span class=\"label\">Aktuální stav</span><strong class=\"value\">Doručeno</strong><small>Poslední aktualizace: 21. 10. 2026 16:03</small><p>Zásilka byla předána příjemci.</p></div>`\n            *   FAQ section (ignore).\n            *   Ads (ignore).\n            *   Footer (ignore).\n    *   Key Text:\n        *   `<strong class=\"value\">Doručeno</strong>` (Delivered).\n        *   `<p>Zásilka byla předána příjemci.</p>` (Parcel was handed over to the recipient).\n\n3.  **Evaluate against Rules:**\n    *   State: The status explicitly says \"Doručeno\" (Delivered) and \"Zásilka byla předána příjemci\" (Parcel was handed over to the recipient).\n    *   Definition of DELIVERED: \"the RECIPIENT took over the parcel\".\n    *   The text confirms \"předána příjemci\" (handed to recipient).\n    *   This is not a pickup point waiting status (like \"Ve výdejně\" in the previous example). It explicitly states it was handed to the recipient.\n    *   Quote: \"Zásilka byla předána příjemci.\" or \"Doručeno\".\n    *   Reason: Status shows \"Doručeno\" and text confirms handover to recipient.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Zásilka byla předána příjemci.\" (or \"Doručeno\")\n    *   `reason`: \"Status 'Doručeno' and text confirms handover to recipient.\"\n\n5.  **Refine Quote:**\n    *   The prompt asks for \"exact text or attribute fragment copied from the page\".\n    *   \"Zásilka byla předána příjemci.\" is very clear.\n    *   \"Doručeno\" is also clear.\n    *   I'll use the descriptive sentence as it's more specific to the definition.\n\n6.  **Refine Reason:**\n    *   Max 20 words.\n    *   \"Status explicitly states 'Doručeno' and confirms handover to recipient.\"\n\n7.  **Final Check:**\n    *   Does it match the shipper's definition? Yes, recipient took over.\n    *   Is it JSON? Yes.\n    *   Are there any contradictions? No.\n    *   Is it Czech? The input is Czech, the output keys are English (as per instruction), values can be mixed but quote must be exact text.\n\n    *   Wait, check the \"Handover to anyone other than the recipient\" rule.\n    *   Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Text says: \"Zásilka byla předána příjemci.\" (handed to recipient).\n    *   So it is DELIVERED.\n\n    *   Previous example (Balíkomat) had \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN (handed to reception).\n    *   This example (Expedo) has \"Zásilka byla předána příjemci.\" -> DELIVERED.\n    *   Distinction is clear.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla předána příjemci.\", \"reason\": \"Status 'Doručeno' and text confirms handover to recipient.\"}\n    ```\n    Wait, check word count for reason: \"Status 'Doručeno' and text confirms handover to recipient.\" -> 8 words. Good.\n    Check quote: \"Zásilka byla předána příjemci.\" -> Exact text. Good.\n\n    One more check on the HTML: `<strong class=\"value\">Doručeno</strong>`.\n    I can use either. The sentence is more descriptive. I will use the sentence.\n\n    Wait, I need to make sure I don't include markdown code blocks in the final output if the instruction says \"Answer ONLY with JSON\". Usually, this means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the instruction: \"Answer ONLY with JSON\".\n    I should not wrap it in ```json ... ```.\n\n    Let's finalize.\n    State: DELIVERED\n    Quote: Zásilka byla předána příjemci.\n    Reason: Status shows 'Doručeno' and confirms handover to recipient.\n\n    Wait, checking the instruction again: \"Answer ONLY with JSON\".\n    Okay.\n\n    One detail: The prompt says \"The page may be in Czech...\". The output keys are English. The quote should be exact text from the page.\n    Quote: \"Zásilka byla předána příjemci.\"\n    Reason: \"Status shows 'Doručeno' and confirms handover to recipient.\"\n\n    Ready.\n\n    Wait, I need to check if there is any ambiguity about \"předána příjemci\".\n    In the first example: \"předána na recepci budovy\" -> UNKNOWN.\n    In this example: \"předána příjemci\" -> DELIVERED.\n    This distinction is crucial. \"Příjemci\" means recipient. \"Recepci\" means reception/office.\n    So DELIVERED is correct.\n\n    Final check on JSON syntax.\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla předána příjemci.\", \"reason\": \"Status shows 'Doručeno' and confirms handover to recipient.\"}\n    Looks good.\n\n    Wait, I should check if there are any other events.\n    The HTML shows a status card with \"Aktuální stav\" (Current status) -> \"Doručeno\".\n    This is the latest event.\n    So DELIVERED is correct.\n\n    One minor thing: The instruction says \"quote\": \"<exact text or attribute fragment copied from the page that supports the state>\".\n    \"Zásilka byla předána příjemci.\" is exact text.\n    \"Doručeno\" is also exact text.\n    I will use the sentence as it is more robust.\n\n    Reason length: \"Status shows 'Doručeno' and confirms handover to recipient.\" (9 words).\n    Limit is 20 words.\n    Okay.\n\n    Let's write it.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML content of a tracking page (carrier: Expedo, number: EX7710117).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (or collected at pickup point).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party (unless pickup point collection counts as DELIVERED per shipper definition: \"at a pickup point: the recipient collected it\").\n        *   Planned/expected/failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo.\n    *   Tracking Number: EX7710117.\n    *   HTML Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero Ad (ignore).\n        *   Main Content:\n            *   `<h1>Kde je moje zásilka?</h1>`\n            *   `<p>Číslo zásilky: EX7710117</p>`\n            *   `<div class=\"status-card\"><span class=\"label\">Aktuální stav</span><strong class=\"value\">Doručeno</strong><small>Poslední aktualizace: 21. 10. 2026 16:03</small><p>Zásilka byla předána příjemci.</p></div>`\n            *   FAQ section (ignore).\n            *   Ads (ignore).\n            *   Footer (ignore).\n    *   Key Text:\n        *   `<strong class=\"value\">Doručeno</strong>` (Delivered).\n        *   `<p>Zásilka byla předána příjemci.</p>` (Parcel was handed over to the recipient).\n\n3.  **Evaluate against Rules:**\n    *   State: The status explicitly says \"Doručeno\" (Delivered) and \"Zásilka byla předána příjemci\" (Parcel was handed over to the recipient).\n    *   Definition of DELIVERED: \"the RECIPIENT took over the parcel\".\n    *   The text confirms \"předána příjemci\" (handed to recipient).\n    *   This is not a pickup point waiting status (like \"Ve výdejně\" in the previous example). It explicitly states it was handed to the recipient.\n    *   Quote: \"Zásilka byla předána příjemci.\" or \"Doručeno\".\n    *   Reason: Status shows \"Doručeno\" and text confirms handover to recipient.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Zásilka byla předána příjemci.\" (or \"Doručeno\")\n    *   `reason`: \"Status 'Doručeno' and text confirms handover to recipient.\"\n\n5.  **Refine Quote:**\n    *   The prompt asks for \"exact text or attribute fragment copied from the page\".\n    *   \"Zásilka byla předána příjemci.\" is very clear.\n    *   \"Doručeno\" is also clear.\n    *   I'll use the descriptive sentence as it's more specific to the definition.\n\n6.  **Refine Reason:**\n    *   Max 20 words.\n    *   \"Status explicitly states 'Doručeno' and confirms handover to recipient.\"\n\n7.  **Final Check:**\n    *   Does it match the shipper's definition? Yes, recipient took over.\n    *   Is it JSON? Yes.\n    *   Are there any contradictions? No.\n    *   Is it Czech? The input is Czech, the output keys are English (as per instruction), values can be mixed but quote must be exact text.\n\n    *   Wait, check the \"Handover to anyone other than the recipient\" rule.\n    *   Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Text says: \"Zásilka byla předána příjemci.\" (handed to recipient).\n    *   So it is DELIVERED.\n\n    *   Previous example (Balíkomat) had \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN (handed to reception).\n    *   This example (Expedo) has \"Zásilka byla předána příjemci.\" -> DELIVERED.\n    *   Distinction is clear.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla předána příjemci.\", \"reason\": \"Status 'Doručeno' and text confirms handover to recipient.\"}\n    ```\n    Wait, check word count for reason: \"Status 'Doručeno' and text confirms handover to recipient.\" -> 8 words. Good.\n    Check quote: \"Zásilka byla předána příjemci.\" -> Exact text. Good.\n\n    One more check on the HTML: `<strong class=\"value\">Doručeno</strong>`.\n    I can use either. The sentence is more descriptive. I will use the sentence.\n\n    Wait, I need to make sure I don't include markdown code blocks in the final output if the instruction says \"Answer ONLY with JSON\". Usually, this means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the instruction: \"Answer ONLY with JSON\".\n    I should not wrap it in ```json ... ```.\n\n    Let's finalize.\n    State: DELIVERED\n    Quote: Zásilka byla předána příjemci.\n    Reason: Status shows 'Doručeno' and confirms handover to recipient.\n\n    Wait, checking the instruction again: \"Answer ONLY with JSON\".\n    Okay.\n\n    One detail: The prompt says \"The page may be in Czech...\". The output keys are English. The quote should be exact text from the page.\n    Quote: \"Zásilka byla předána příjemci.\"\n    Reason: \"Status shows 'Doručeno' and confirms handover to recipient.\"\n\n    Ready.\n\n    Wait, I need to check if there is any ambiguity about \"předána příjemci\".\n    In the first example: \"předána na recepci budovy\" -> UNKNOWN.\n    In this example: \"předána příjemci\" -> DELIVERED.\n    This distinction is crucial. \"Příjemci\" means recipient. \"Recepci\" means reception/office.\n    So DELIVERED is correct.\n\n    Final check on JSON syntax.\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla předána příjemci.\", \"reason\": \"Status shows 'Doručeno' and confirms handover to recipient.\"}\n    Looks good.\n\n    Wait, I should check if there are any other events.\n    The HTML shows a status card with \"Aktuální stav\" (Current status) -> \"Doručeno\".\n    This is the latest event.\n    So DELIVERED is correct.\n\n    One minor thing: The instruction says \"quote\": \"<exact text or attribute fragment copied from the page that supports the state>\".\n    \"Zásilka byla předána příjemci.\" is exact text.\n    \"Doručeno\" is also exact text.\n    I will use the sentence as it is more robust.\n\n    Reason length: \"Status shows 'Doručeno' and confirms handover to recipient.\" (9 words).\n    Limit is 20 words.\n    Okay.\n\n    Let's write it.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1238,
+      "completion_tokens": 1913,
+      "total_tokens": 3151,
+      "cost": 0.00041075,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00041075,
+        "upstream_inference_prompt_cost": 0.0001238,
+        "upstream_inference_completions_cost": 0.00028695
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1684,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

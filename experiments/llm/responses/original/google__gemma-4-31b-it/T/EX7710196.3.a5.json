@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "aee3432d46eb01f250d9a65c388dfbd68d01d4d7c300fd90773b741eb8a97d98",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710196.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 5,
+  "collectedAt": "2026-11-07T19:23:13.695Z",
+  "latencyMs": 13284,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794079381-4mrjrwVfxiSG2IEgLYOf",
+    "object": "chat.completion",
+    "created": 1794079381,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Aktuální stav Převzato dopravcem\",\"reason\":\"The parcel has been picked up by the carrier and is in transit.\",\"state\":\"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Tracking Number: EX7710196\n    *   Content: A mix of cookie banners, marketing (\"Doručeno do 24 hodin!\", \"Black Friday\"), and the actual tracking section.\n    *   Tracking Section: \"Kde je moje zásilka? Číslo zásilky: EX7710196 Aktuální stav Převzato dopravcem Poslední aktualizace: 31. 10. 2026 18:20\"\n\n    *   \"Aktuální stav: Převzato dopravcem\" (Current status: Picked up by carrier).\n    *   \"Poslední aktualizace: 31. 10. 2026 18:20\" (Last update: Oct 31, 2026).\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: Parcel is with the carrier or at a pickup point. (\"Převzato dopravcem\" means the carrier has it).\n    *   RETURNING: Returning to sender. (Not mentioned).\n    *   UNKNOWN: Not confirmable.\n\n    *   The status \"Převzato dopravcem\" clearly indicates the parcel is with the carrier.\n    *   This fits the definition of `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Aktuální stav Převzato dopravcem\"\n    *   Reason: Parcel is currently with the carrier.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Tracking Number: EX7710196\n    *   Content: A mix of cookie banners, marketing (\"Doručeno do 24 hodin!\", \"Black Friday\"), and the actual tracking section.\n    *   Tracking Section: \"Kde je moje zásilka? Číslo zásilky: EX7710196 Aktuální stav Převzato dopravcem Poslední aktualizace: 31. 10. 2026 18:20\"\n\n    *   \"Aktuální stav: Převzato dopravcem\" (Current status: Picked up by carrier).\n    *   \"Poslední aktualizace: 31. 10. 2026 18:20\" (Last update: Oct 31, 2026).\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: Parcel is with the carrier or at a pickup point. (\"Převzato dopravcem\" means the carrier has it).\n    *   RETURNING: Returning to sender. (Not mentioned).\n    *   UNKNOWN: Not confirmable.\n\n    *   The status \"Převzato dopravcem\" clearly indicates the parcel is with the carrier.\n    *   This fits the definition of `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Aktuální stav Převzato dopravcem\"\n    *   Reason: Parcel is currently with the carrier.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 936,
+      "completion_tokens": 397,
+      "total_tokens": 1333,
+      "cost": 0.00028984,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00028984,
+        "upstream_inference_prompt_cost": 0.00013104,
+        "upstream_inference_completions_cost": 0.0001588
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 356,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

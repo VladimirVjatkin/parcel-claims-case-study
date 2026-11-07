@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "309f5404ed70931e3b4817d581eef60bfb8c3aa42149fdb7a7968171cee1e813",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "KV2026100906.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T12:16:43.242Z",
+  "latencyMs": 11376,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794053791-DMhFeIiu1QoUTocLwPTA",
+    "object": "chat.completion",
+    "created": 1794053791,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilku převzala příjemkyně Jana Nováková\", \"reason\": \"The recipient took over the parcel.\", \"state\": \"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100906\n    *   Key text: \"Doručeno Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\"\n    *   Translation: \"Delivered. The parcel was taken over by the recipient Jana Nováková on 31. 10. 2026 at 11:20.\"\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable, handed to third party, etc.\n\n    *   The text explicitly states \"Doručeno\" (Delivered) and \"Zásilku převzala příjemkyně\" (The parcel was taken over by the recipient).\n    *   This matches the definition of DELIVERED.\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilku převzala příjemkyně Jana Nováková\"\n    *   Reason: Recipient took over the parcel.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100906\n    *   Key text: \"Doručeno Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\"\n    *   Translation: \"Delivered. The parcel was taken over by the recipient Jana Nováková on 31. 10. 2026 at 11:20.\"\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable, handed to third party, etc.\n\n    *   The text explicitly states \"Doručeno\" (Delivered) and \"Zásilku převzala příjemkyně\" (The parcel was taken over by the recipient).\n    *   This matches the definition of DELIVERED.\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilku převzala příjemkyně Jana Nováková\"\n    *   Reason: Recipient took over the parcel.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 754,
+      "completion_tokens": 324,
+      "total_tokens": 1078,
+      "cost": 0.00023516,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00023516,
+        "upstream_inference_prompt_cost": 0.00010556,
+        "upstream_inference_completions_cost": 0.0001296
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 282,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

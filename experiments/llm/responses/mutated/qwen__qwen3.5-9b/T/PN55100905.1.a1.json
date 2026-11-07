@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "3b93c6617bd80c839a356ad54f4a81ad04db459dc9837d576a360d78b0575bd6",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "PN55100905.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:38:55.949Z",
+  "latencyMs": 21764,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001113-vch96xo9rMWITnbhrJKz",
+    "object": "chat.completion",
+    "created": 1794001113,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"RETURNING\", \"quote\": \"Úložní doba uplynula, zásilka se vrací odesílateli.\", \"reason\": \"Latest event states storage expired and parcel is returning to sender.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the current delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord\n    *   Number: PN55100905\n    *   Timeline events:\n        1.  20. 10. 2026 10:10 Odesílatel — Zásilka převzata od odesílatele (Sender - Parcel picked up)\n        2.  21. 10. 2026 02:30 Třídicí centrum Brno — Zásilka zpracována (Sorting center - Processed)\n        3.  22. 10. 2026 13:05 Box Brno Lesná — Zásilka je připravena k vyzvednutí. Úložní doba končí 29. 10. 2026. (Box Brno Lesná - Ready for pickup. Storage ends 29.10.2026.)\n        4.  30. 10. 2026 06:00 Box Brno Lesná — Úložní doba uplynula, zásilka se vrací odesílateli. (Box Brno Lesná - Storage time expired, parcel is being returned to sender.)\n    *   Current Status: The latest event is \"Úložní doba uplynula, zásilka se vrací odesílateli.\" (Storage time expired, parcel is being returned to sender).\n    *   Date context: The dates are in the future relative to \"now\" (2026), but within the context of the tracking log, this is the latest event.\n    *   State Definition Check:\n        *   DELIVERED: Recipient took over. (No)\n        *   IN_TRANSIT: With carrier or waiting at pickup point. (The last event says it's being returned).\n        *   RETURNING: Parcel is being returned, or was already returned, to the sender. (Yes, \"zásilka se vrací odesílateli\").\n        *   UNKNOWN: Not sure. (No, the text is explicit).\n\n3.  **Determine the State:**\n    *   The latest event explicitly states \"zásilka se vrací odesílateli\" (parcel is being returned to sender).\n    *   This matches the definition of **RETURNING**.\n\n4.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   `reason`: \"Latest event states parcel is being returned to sender.\"\n\n5.  **Review Constraints:**\n    *   JSON only.\n    *   Reason max 20 words.\n    *   Quote exact text.\n\n6.  **Final Polish:**\n    *   Quote: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   Reason: \"Latest event indicates storage expired and parcel is returning to sender.\" (13 words) - Good.\n\n7.  **Output Generation:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Úložní doba uplynula, zásilka se vrací odesílateli.\", \"reason\": \"Latest event indicates storage expired and parcel is returning to sender.\"}\n    ```\n    Wait, checking the definition of RETURNING: \"the parcel is being returned, or was already returned, to the sender.\"\n    The text says \"zásilka se vrací odesílateli\" (parcel is returning to sender). This fits perfectly.\n\n    One check on the dates: 2026. This is future-dated data, but logically within the tracking flow provided, the last event is the current state. The instruction says \"Decide by the LATEST event\". So I follow the timeline provided.\n\n    Final check on JSON validity.\n    Escape quotes if necessary inside the string. The quote contains no double quotes, so it's safe.\n\n    Let's refine the reason to be concise.\n    \"Latest event states storage expired and parcel is returning to sender.\" (12 words).\n\n    Ready.cw\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the current delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord\n    *   Number: PN55100905\n    *   Timeline events:\n        1.  20. 10. 2026 10:10 Odesílatel — Zásilka převzata od odesílatele (Sender - Parcel picked up)\n        2.  21. 10. 2026 02:30 Třídicí centrum Brno — Zásilka zpracována (Sorting center - Processed)\n        3.  22. 10. 2026 13:05 Box Brno Lesná — Zásilka je připravena k vyzvednutí. Úložní doba končí 29. 10. 2026. (Box Brno Lesná - Ready for pickup. Storage ends 29.10.2026.)\n        4.  30. 10. 2026 06:00 Box Brno Lesná — Úložní doba uplynula, zásilka se vrací odesílateli. (Box Brno Lesná - Storage time expired, parcel is being returned to sender.)\n    *   Current Status: The latest event is \"Úložní doba uplynula, zásilka se vrací odesílateli.\" (Storage time expired, parcel is being returned to sender).\n    *   Date context: The dates are in the future relative to \"now\" (2026), but within the context of the tracking log, this is the latest event.\n    *   State Definition Check:\n        *   DELIVERED: Recipient took over. (No)\n        *   IN_TRANSIT: With carrier or waiting at pickup point. (The last event says it's being returned).\n        *   RETURNING: Parcel is being returned, or was already returned, to the sender. (Yes, \"zásilka se vrací odesílateli\").\n        *   UNKNOWN: Not sure. (No, the text is explicit).\n\n3.  **Determine the State:**\n    *   The latest event explicitly states \"zásilka se vrací odesílateli\" (parcel is being returned to sender).\n    *   This matches the definition of **RETURNING**.\n\n4.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   `reason`: \"Latest event states parcel is being returned to sender.\"\n\n5.  **Review Constraints:**\n    *   JSON only.\n    *   Reason max 20 words.\n    *   Quote exact text.\n\n6.  **Final Polish:**\n    *   Quote: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   Reason: \"Latest event indicates storage expired and parcel is returning to sender.\" (13 words) - Good.\n\n7.  **Output Generation:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Úložní doba uplynula, zásilka se vrací odesílateli.\", \"reason\": \"Latest event indicates storage expired and parcel is returning to sender.\"}\n    ```\n    Wait, checking the definition of RETURNING: \"the parcel is being returned, or was already returned, to the sender.\"\n    The text says \"zásilka se vrací odesílateli\" (parcel is returning to sender). This fits perfectly.\n\n    One check on the dates: 2026. This is future-dated data, but logically within the tracking flow provided, the last event is the current state. The instruction says \"Decide by the LATEST event\". So I follow the timeline provided.\n\n    Final check on JSON validity.\n    Escape quotes if necessary inside the string. The quote contains no double quotes, so it's safe.\n\n    Let's refine the reason to be concise.\n    \"Latest event states storage expired and parcel is returning to sender.\" (12 words).\n\n    Ready.cw\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 841,
+      "completion_tokens": 1206,
+      "total_tokens": 2047,
+      "cost": 0.000265,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000265,
+        "upstream_inference_prompt_cost": 0.0000841,
+        "upstream_inference_completions_cost": 0.0001809
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 977,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

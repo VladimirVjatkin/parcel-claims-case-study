@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "1e605510dcc220db03df2ce682124caa1bdc5a1e172bebb1d18c83e36e8062c8",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710194.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 5,
+  "collectedAt": "2026-11-07T19:21:26.518Z",
+  "latencyMs": 13899,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794079274-vMQRHek5Im4MGBDaq5Vh",
+    "object": "chat.completion",
+    "created": 1794079274,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Aktuální stav Na cestě\",\"reason\":\"The parcel is currently on its way and left the sorting center.\",\"state\":\"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Tracking Number: EX7710194\n    *   Content:\n        *   Cookie banner/Ads: \"Vaše soukromí...\", \"Expedo Premium...\", \"Black Friday...\" (Ignore)\n        *   Tracking section: \"Kde je moje zásilka? Číslo zásilky: EX7710194\"\n        *   Current status: \"Aktuální stav Na cestě\" (Current state: On the way)\n        *   Latest update: \"Poslední aktualizace: 1. 11. 2026 22:40 Zásilka opustila třídicí centrum Ostrava.\" (Parcel left sorting center Ostrava)\n        *   FAQ/General info: \"Většinu zásilek doručujeme...\", \"Co když nejsem doma?...\" (Ignore)\n\n    *   DELIVERED: Recipient took over. (Not the case)\n    *   IN_TRANSIT: With carrier, or waiting at pickup point. (Matches \"Na cestě\" and \"opustila třídicí centrum\")\n    *   RETURNING: Returning to sender. (Not the case)\n    *   UNKNOWN: Not confirmable. (Not the case)\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Aktuální stav Na cestě\" or \"Zásilka opustila třídicí centrum Ostrava.\"\n    *   Reason: Parcel is on its way and left the sorting center.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Tracking Number: EX7710194\n    *   Content:\n        *   Cookie banner/Ads: \"Vaše soukromí...\", \"Expedo Premium...\", \"Black Friday...\" (Ignore)\n        *   Tracking section: \"Kde je moje zásilka? Číslo zásilky: EX7710194\"\n        *   Current status: \"Aktuální stav Na cestě\" (Current state: On the way)\n        *   Latest update: \"Poslední aktualizace: 1. 11. 2026 22:40 Zásilka opustila třídicí centrum Ostrava.\" (Parcel left sorting center Ostrava)\n        *   FAQ/General info: \"Většinu zásilek doručujeme...\", \"Co když nejsem doma?...\" (Ignore)\n\n    *   DELIVERED: Recipient took over. (Not the case)\n    *   IN_TRANSIT: With carrier, or waiting at pickup point. (Matches \"Na cestě\" and \"opustila třídicí centrum\")\n    *   RETURNING: Returning to sender. (Not the case)\n    *   UNKNOWN: Not confirmable. (Not the case)\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Aktuální stav Na cestě\" or \"Zásilka opustila třídicí centrum Ostrava.\"\n    *   Reason: Parcel is on its way and left the sorting center.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 947,
+      "completion_tokens": 383,
+      "total_tokens": 1330,
+      "cost": 0.00028578,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00028578,
+        "upstream_inference_prompt_cost": 0.00013258,
+        "upstream_inference_completions_cost": 0.0001532
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 346,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

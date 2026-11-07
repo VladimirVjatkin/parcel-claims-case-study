@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "0a01add35e0e6a9bf4e0b5a29ee1f7df07ee83898742d54264a7a0f3b5af3a8b",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100114.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 5,
+  "collectedAt": "2026-11-07T13:54:35.504Z",
+  "latencyMs": 8991,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059666-LfFA8FfM4iyEUc9zKTel",
+    "object": "chat.completion",
+    "created": 1794059666,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilka zpracována\", \"reason\": \"Latest event shows the parcel is being processed at a sorting center.\", \"state\": \"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100114\n    *   Events:\n        *   12. 10. 2026 04:37: Třídicí centrum Brno - Zásilka zpracována (Processed)\n        *   10. 10. 2026 22:15: Třídicí centrum Praha - Zásilka zpracována (Processed)\n        *   09. 10. 2026 15:20: Odesílatel - Zásilka převzata od odesílatele (Picked up from sender)\n    *   Latest event: \"Zásilka zpracována\" (Processed) at \"Třídicí centrum Brno\".\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (Yes, it's at a sorting center)\n    *   RETURNING: Returning to sender. (No)\n    *   UNKNOWN: Not confirmable. (No, it's clearly in transit)\n\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka zpracována\" (at Třídicí centrum Brno)\n    *   Reason: Latest event shows the parcel was processed at a sorting center.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100114\n    *   Events:\n        *   12. 10. 2026 04:37: Třídicí centrum Brno - Zásilka zpracována (Processed)\n        *   10. 10. 2026 22:15: Třídicí centrum Praha - Zásilka zpracována (Processed)\n        *   09. 10. 2026 15:20: Odesílatel - Zásilka převzata od odesílatele (Picked up from sender)\n    *   Latest event: \"Zásilka zpracována\" (Processed) at \"Třídicí centrum Brno\".\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (Yes, it's at a sorting center)\n    *   RETURNING: Returning to sender. (No)\n    *   UNKNOWN: Not confirmable. (No, it's clearly in transit)\n\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka zpracována\" (at Třídicí centrum Brno)\n    *   Reason: Latest event shows the parcel was processed at a sorting center.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 825,
+      "completion_tokens": 350,
+      "total_tokens": 1175,
+      "cost": 0.0002555,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0002555,
+        "upstream_inference_prompt_cost": 0.0001155,
+        "upstream_inference_completions_cost": 0.00014
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 310,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

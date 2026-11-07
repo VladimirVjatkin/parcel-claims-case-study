@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "aee3432d46eb01f250d9a65c388dfbd68d01d4d7c300fd90773b741eb8a97d98",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710196.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 5,
+  "collectedAt": "2026-11-07T19:23:00.410Z",
+  "latencyMs": 8092,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794079373-fDdYju2vk3nd67170kFD",
+    "object": "chat.completion",
+    "created": 1794079373,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Aktuální stavPřevzato dopravcem\", \"reason\": \"Parcel has been picked up by the carrier.\", \"state\": \"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Tracking Number: EX7710196\n    *   Content:\n        *   Cookie banner/header info (irrelevant).\n        *   \"Kde je moje zásilka? Číslo zásilky: EX7710196\" (Tracking section).\n        *   \"Aktuální stav: Převzato dopravcem\" (Current status: Picked up by carrier).\n        *   \"Poslední aktualizace: 31. 10. 2026 18:20\" (Last update).\n        *   General info about delivery times and Expedo Points (irrelevant).\n\n    *   \"Převzato dopravcem\" means the carrier has picked up the parcel from the sender.\n    *   The parcel is currently with the carrier.\n\n    *   DELIVERED: No.\n    *   IN_TRANSIT: Yes (parcel is with the carrier).\n    *   RETURNING: No.\n    *   UNKNOWN: No.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Aktuální stavPřevzato dopravcem\" (or just \"Převzato dopravcem\")\n    *   Reason: Parcel has been picked up by the carrier and is in transit.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Tracking Number: EX7710196\n    *   Content:\n        *   Cookie banner/header info (irrelevant).\n        *   \"Kde je moje zásilka? Číslo zásilky: EX7710196\" (Tracking section).\n        *   \"Aktuální stav: Převzato dopravcem\" (Current status: Picked up by carrier).\n        *   \"Poslední aktualizace: 31. 10. 2026 18:20\" (Last update).\n        *   General info about delivery times and Expedo Points (irrelevant).\n\n    *   \"Převzato dopravcem\" means the carrier has picked up the parcel from the sender.\n    *   The parcel is currently with the carrier.\n\n    *   DELIVERED: No.\n    *   IN_TRANSIT: Yes (parcel is with the carrier).\n    *   RETURNING: No.\n    *   UNKNOWN: No.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Aktuální stavPřevzato dopravcem\" (or just \"Převzato dopravcem\")\n    *   Reason: Parcel has been picked up by the carrier and is in transit.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 936,
+      "completion_tokens": 334,
+      "total_tokens": 1270,
+      "cost": 0.00026464,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00026464,
+        "upstream_inference_prompt_cost": 0.00013104,
+        "upstream_inference_completions_cost": 0.0001336
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 294,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

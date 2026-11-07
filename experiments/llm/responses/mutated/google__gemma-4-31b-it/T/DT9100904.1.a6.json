@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "91513cdda1f780fb0ac4892c8723fa6f39f9bb0afae53617ce0c9e9a5da0d620",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "DT9100904.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 6,
+  "collectedAt": "2026-11-07T19:40:09.368Z",
+  "latencyMs": 17749,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794080393-D1eI2pmD7xMZHMMYBTqu",
+    "object": "chat.completion",
+    "created": 1794080393,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"PodánoV přepravěU kurýraDoručenoVráceno\", \"reason\": \"The page lists possible states but does not indicate which one is current.\", \"state\": \"UNKNOWN\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Doručto\n    *   Tracking Number: DT9100904\n    *   Content: \"DoručtoÚvodCeníkKontakt Stav zásilky Zásilka DT9100904 PodánoV přepravěU kurýraDoručenoVráceno Aktualizováno 2. 11. 2026 09:05 Máte dotaz? Napište nám na podpora@doructo.example. Doručto s.r.o. (fiktivní dopravce pro účely úlohy)\"\n\n    *   The text lists several states: \"Podáno\" (Submitted), \"V přepravě\" (In transit), \"U kurýra\" (With courier), \"Doručeno\" (Delivered), \"Vráceno\" (Returned).\n    *   However, there is no visual indicator (like \"current\", \"done\", \"highlighted\", or a specific status message) indicating *which* of these states the parcel is currently in.\n    *   It just lists the possible states of the tracking process.\n    *   The only specific info is \"Aktualizováno 2. 11. 2026 09:05\" (Updated on...).\n\n    *   DELIVERED: Recipient took it. (Not confirmed)\n    *   IN_TRANSIT: With carrier or at pickup point. (Not confirmed)\n    *   RETURNING: Returning to sender. (Not confirmed)\n    *   UNKNOWN: Page does not allow confirming. (Matches)\n\n    *   The page lists the tracking steps but doesn't highlight which one is active.\n    *   State: UNKNOWN.\n    *   Quote: \"PodánoV přepravěU kurýraDoručenoVráceno\" (or the whole block).\n    *   Reason: No current status is highlighted or specified.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Doručto\n    *   Tracking Number: DT9100904\n    *   Content: \"DoručtoÚvodCeníkKontakt Stav zásilky Zásilka DT9100904 PodánoV přepravěU kurýraDoručenoVráceno Aktualizováno 2. 11. 2026 09:05 Máte dotaz? Napište nám na podpora@doructo.example. Doručto s.r.o. (fiktivní dopravce pro účely úlohy)\"\n\n    *   The text lists several states: \"Podáno\" (Submitted), \"V přepravě\" (In transit), \"U kurýra\" (With courier), \"Doručeno\" (Delivered), \"Vráceno\" (Returned).\n    *   However, there is no visual indicator (like \"current\", \"done\", \"highlighted\", or a specific status message) indicating *which* of these states the parcel is currently in.\n    *   It just lists the possible states of the tracking process.\n    *   The only specific info is \"Aktualizováno 2. 11. 2026 09:05\" (Updated on...).\n\n    *   DELIVERED: Recipient took it. (Not confirmed)\n    *   IN_TRANSIT: With carrier or at pickup point. (Not confirmed)\n    *   RETURNING: Returning to sender. (Not confirmed)\n    *   UNKNOWN: Page does not allow confirming. (Matches)\n\n    *   The page lists the tracking steps but doesn't highlight which one is active.\n    *   State: UNKNOWN.\n    *   Quote: \"PodánoV přepravěU kurýraDoručenoVráceno\" (or the whole block).\n    *   Reason: No current status is highlighted or specified.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 713,
+      "completion_tokens": 469,
+      "total_tokens": 1182,
+      "cost": 0.00028742,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00028742,
+        "upstream_inference_prompt_cost": 0.00009982,
+        "upstream_inference_completions_cost": 0.0001876
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 421,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

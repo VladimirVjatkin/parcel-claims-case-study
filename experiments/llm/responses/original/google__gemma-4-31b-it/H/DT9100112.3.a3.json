@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "987f8b3906c9b19d74f5a9420fb9f7a1c62d7106e803b9bb5b06a0dfaa428d68",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100112.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 3,
+  "collectedAt": "2026-11-07T12:45:13.874Z",
+  "latencyMs": 14972,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794055498-XliWGM4hNrLNeP3DI8UL",
+    "object": "chat.completion",
+    "created": 1794055498,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"<g class=\\\"step\\\"><circle cx=\\\"280\\\" cy=\\\"30\\\" r=\\\"14\\\" fill=\\\"#00a86b\\\"/><text x=\\\"280\\\" y=\\\"70\\\" text-anchor=\\\"middle\\\">U kurýra</text></g>\",\"reason\":\"The current highlighted step is 'U kurýra' (With courier).\",\"state\":\"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Doručto\n    *   Parcel Number: DT9100112\n    *   Content: A timeline represented by an SVG.\n    *   Steps in SVG:\n        1.  Podáno (Submitted) - fill=\"#d0d4d9\" (grey)\n        2.  V přepravě (In transit) - fill=\"#d0d4d9\" (grey)\n        3.  U kurýra (With courier) - fill=\"#00a86b\" (green)\n        4.  Doručeno (Delivered) - fill=\"#d0d4d9\" (grey)\n        5.  Vráceno (Returned) - fill=\"#d0d4d9\" (grey)\n\n    *   The step \"U kurýra\" (With courier) is highlighted in green (`fill=\"#00a86b\"`), while others are grey (`fill=\"#d0d4d9\"`).\n    *   \"U kurýra\" means the parcel is currently with the courier.\n\n    *   DELIVERED: Recipient took it. (Not the case here, \"Doručeno\" is grey).\n    *   IN_TRANSIT: Parcel is with carrier or at pickup point. (\"U kurýra\" fits this).\n    *   RETURNING: Being returned. (Not the case here, \"Vráceno\" is grey).\n    *   UNKNOWN: Not clear.\n\n    *   State: IN_TRANSIT\n    *   Quote: `<circle cx=\"280\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"280\" y=\"70\" text-anchor=\"middle\">U kurýra</text>` (or a simplified version).\n    *   Reason: The current highlighted step is \"U kurýra\" (With courier).",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Doručto\n    *   Parcel Number: DT9100112\n    *   Content: A timeline represented by an SVG.\n    *   Steps in SVG:\n        1.  Podáno (Submitted) - fill=\"#d0d4d9\" (grey)\n        2.  V přepravě (In transit) - fill=\"#d0d4d9\" (grey)\n        3.  U kurýra (With courier) - fill=\"#00a86b\" (green)\n        4.  Doručeno (Delivered) - fill=\"#d0d4d9\" (grey)\n        5.  Vráceno (Returned) - fill=\"#d0d4d9\" (grey)\n\n    *   The step \"U kurýra\" (With courier) is highlighted in green (`fill=\"#00a86b\"`), while others are grey (`fill=\"#d0d4d9\"`).\n    *   \"U kurýra\" means the parcel is currently with the courier.\n\n    *   DELIVERED: Recipient took it. (Not the case here, \"Doručeno\" is grey).\n    *   IN_TRANSIT: Parcel is with carrier or at pickup point. (\"U kurýra\" fits this).\n    *   RETURNING: Being returned. (Not the case here, \"Vráceno\" is grey).\n    *   UNKNOWN: Not clear.\n\n    *   State: IN_TRANSIT\n    *   Quote: `<circle cx=\"280\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"280\" y=\"70\" text-anchor=\"middle\">U kurýra</text>` (or a simplified version).\n    *   Reason: The current highlighted step is \"U kurýra\" (With courier).",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1151,
+      "completion_tokens": 510,
+      "total_tokens": 1661,
+      "cost": 0.00036514,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00036514,
+        "upstream_inference_prompt_cost": 0.00016114,
+        "upstream_inference_completions_cost": 0.000204
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 416,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "status": "failed",
+  "promptVersion": "v1",
+  "inputSha256": "d2334ccedeae6ede492f1c3574201f15e059fb8af4533817c69d4e3f9da3b84b",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "PN55100905.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:28:21.413Z",
+  "latencyMs": 441,
+  "httpStatus": 429,
+  "error": "Chyba API (HTTP 429).",
+  "response": {
+    "error": {
+      "message": "Provider returned error",
+      "code": 429,
+      "metadata": {
+        "raw": "openai/gpt-oss-120b is temporarily rate-limited upstream. Please retry shortly, or add your own provider key to use your own limits: https://openrouter.ai/workspaces/default/byok",
+        "provider_name": "DeepInfra",
+        "is_byok": false,
+        "provider_error_code": "engine_overloaded",
+        "limit_source": "upstream_provider_shared_pool",
+        "remedy_hint": "Retry shortly, add your own provider key to use your own limits (https://openrouter.ai/workspaces/default/byok), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing."
+      }
+    },
+    "user_id": "user_2vra5owjsNjB914YSq291pOGQfC"
+  }
+}

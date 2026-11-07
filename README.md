@@ -21,6 +21,12 @@ Přímé spuštění `npx tsx src/cli/decide.ts` píše pouze na stdout; soubor 
 Přímé spuštění `npx tsx src/cli/evaluate.ts` píše jen na stdout; `--data` a `--out` fungují stejně jako u `decide`, sdílený parametr `--now` se přijímá, ale na měření nemá vliv.
 `npm run all` provede kontrolu typů, testy, rozhodnutí i měření; při výchozím okamžiku běhu jsou oba reporty opakovatelné.
 
+## Experiment s jazykovými modely
+
+`npm run llm:eval` vyhodnotí uložené odpovědi bez sítě a bez `.env`; je součástí `npm run all`.
+Sběr přes `npm run llm:collect` vyžaduje klíč v `.env` podle `.env.example` a používá placené API; existující odpovědi se nepřepisují.
+Čísla jsou v [reports/llm-experiment.md](reports/llm-experiment.md); výklad výsledků bude v [EXPERIMENT_LLM.md](EXPERIMENT_LLM.md).
+
 ## Co je v repozitáři
 
 | Soubor / složka | Obsah |
@@ -62,4 +68,6 @@ Přímé spuštění `npx tsx src/cli/evaluate.ts` píše jen na stdout; `--data
 - Definice A: jakýkoli stav `IN_TRANSIT` na stránce dopravce (včetně „Podáno“) zpochybňuje „nevyzvednuto“ a vyžaduje ruční kontrolu (`CARRIER_PICKUP_CONFIRMED`).
 - Definice B: zásilka čekající na výdejním místě s platnou úložní dobou vyžaduje ruční kontrolu (`AT_PICKUP_POINT_STORAGE_ACTIVE`); úložní doba platí včetně posledního dne podle pražského data, po uplynutí nebo bez data se postupuje podle pravidel.
 - Sledování se provádí i u případů `NEEDS_REVIEW` z první vrstvy, ale ne při důvodu `DO_NOT_CREATE` ani při konfliktu záznamů; důvody první vrstvy zůstávají před důvody trackingu.
+- Experiment s jazykovými modely: pokus s odpovědí HTTP 429 (omezení počtu požadavků u poskytovatele) se nezapočítává do limitu 3 pokusů na slot, nejvýše však 10 pokusů celkem; ostatní chyby (časový limit, chyba sítě, chybná odpověď modelu) se počítají jako dosud. Pravidlo bylo upřesněno během sběru, před vyhodnocením.
+- Slot se samými odpověďmi HTTP 429 je chybějící údaj kvůli omezení poskytovatele, nikoli `NO_ANSWER` modelu, i po vyčerpání 10 pokusů; práh příslušné dvojice nelze vyhodnotit (`nedostatek dat`), dílčí výsledky se zobrazují.
 - Výstup je pouze rozhodnutí v režimu nanečisto: `CREATE` znamená „založili bychom“, žádná reklamace se skutečně nezakládá.

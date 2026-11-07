@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "0a01add35e0e6a9bf4e0b5a29ee1f7df07ee83898742d54264a7a0f3b5af3a8b",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100114.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 2,
+  "collectedAt": "2026-11-07T12:38:31.909Z",
+  "latencyMs": 116039,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794054995-T26iwSvEyR8j8nebfNDR",
+    "object": "chat.completion",
+    "created": 1794054995,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka zpracována\", \"reason\": \"Latest event shows package processed at sorting center, not delivered.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100114.\n    *   Content:\n        *   Header/Nav: ParcelNordDomůSlužbyParcelNord BoxPomocPřihlásit...\n        *   Tracking Table:\n            *   12. 10. 2026 04:37 Třídicí centrum Brno Zásilka zpracována (Processed)\n            *   10. 10. 2026 22:15 Třídicí centrum Praha Zásilka zpracována (Processed)\n            *   09. 10. 2026 15:20 Odesílatel Zásilka převzata od odesílatele (Picked up from sender)\n        *   Footer: Události se mohou zobrazit se zpožděním...\n\n3.  **Evaluate the State:**\n    *   Latest event: \"12. 10. 2026 04:37 Třídicí centrum Brno Zásilka zpracována\".\n    *   Meaning: The package is at a sorting center in Brno.\n    *   Status: It is moving through the logistics network.\n    *   Is it delivered? No.\n    *   Is it returning? No.\n    *   Is it unknown? No, it's clearly in transit.\n    *   Is it ready for pickup? No mention of a pickup point or \"ready for collection\".\n    *   Conclusion: IN_TRANSIT.\n\n4.  **Draft the JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: \"Zásilka zpracována\" (or the full line, but shorter is better for quote). Let's use the latest event text. \"12. 10. 202604:37Třídicí centrum BrnoZásilka zpracována\". Or just \"Zásilka zpracována\". The rule says \"exact text or attribute fragment\".\n    *   `reason`: \"Latest event shows package processed at sorting center, not delivered.\" (13 words).\n\n5.  **Refine based on Rules:**\n    *   Quote: \"Zásilka zpracována\" is clear.\n    *   Reason: \"Latest event is processing at sorting center, no delivery confirmation.\"\n    *   Check word count: \"Latest event is processing at sorting center, no delivery confirmation.\" (10 words). Good.\n\n6.  **Final Check:**\n    *   Input language: Czech.\n    *   Output language: English (as per system instructions usually, but the prompt asks for JSON with specific keys. The example output in the prompt uses English keys and values for state/reason).\n    *   Wait, the prompt examples show English JSON keys and values for state/reason.\n    *   State: IN_TRANSIT.\n    *   Quote: \"Zásilka zpracována\" (from the text).\n    *   Reason: \"Latest event indicates processing at sorting center, not delivered.\"\n\n    Let's look at the specific text provided:\n    `12. 10. 202604:37Třídicí centrum BrnoZásilka zpracována`\n    I will extract \"Zásilka zpracována\" as the quote.\n\n    Reason: \"Latest event shows package processed at sorting center, not delivered.\"\n\n    Wait, I need to make sure I don't hallucinate. The text says \"Zásilka zpracována\" (Package processed). This is definitely IN_TRANSIT.\n\n    One detail: The prompt examples show the output JSON. I must follow that format.\n\n    Let's construct the JSON.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka zpracována\", \"reason\": \"Latest event shows package processed at sorting center, not delivered.\"}\n\n    Wait, checking the \"quote\" rule: \"exact text or attribute fragment copied from the page\".\n    The text is `Zásilka zpracována`.\n    Reason max 20 words.\n\n    Ready.\n\n7.  **Final Polish:**\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka zpracována\"\n    *   Reason: \"Latest event shows package processed at sorting center, not delivered.\"\n\n    Wait, looking at the previous turn examples provided in the prompt (few-shot style):\n    Example 1: {\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}\n    Example 2: {\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}\n\n    I should follow that style.\n\n    My input:\n    `12. 10. 202604:37Třídicí centrum BrnoZásilka zpracována`\n    Quote: \"Zásilka zpracována\"\n\n    Reason: \"Latest event shows package processed at sorting center, not delivered.\"\n\n    Looks good.\n\n    Wait, one more check on the \"quote\". The text is `Zásilka zpracována`.\n    Is there a better quote? `Třídicí centrum BrnoZásilka zpracována`.\n    \"Zásilka zpracována\" is sufficient and clear.\n\n    Let's finalize.\n\n    Wait, I need to check if there is any \"DELIVERED\" signal. No.\n    Any \"RETURNING\"? No.\n    Any \"UNKNOWN\"? No, it's clearly in transit.\n\n    Okay.\n\n    One nuance: The prompt says \"Answer ONLY with JSON\".\n    I will output just the JSON block.\n\n    Wait, I should check the date. 12. 10. 2026. It's in the future relative to now (2024), but within the context of the task, it's the latest event. The logic holds.\n\n    Final check on reason length: \"Latest event shows package processed at sorting center, not delivered.\" -> 10 words. OK.\n\n    Let's write it.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100114.\n    *   Content:\n        *   Header/Nav: ParcelNordDomůSlužbyParcelNord BoxPomocPřihlásit...\n        *   Tracking Table:\n            *   12. 10. 2026 04:37 Třídicí centrum Brno Zásilka zpracována (Processed)\n            *   10. 10. 2026 22:15 Třídicí centrum Praha Zásilka zpracována (Processed)\n            *   09. 10. 2026 15:20 Odesílatel Zásilka převzata od odesílatele (Picked up from sender)\n        *   Footer: Události se mohou zobrazit se zpožděním...\n\n3.  **Evaluate the State:**\n    *   Latest event: \"12. 10. 2026 04:37 Třídicí centrum Brno Zásilka zpracována\".\n    *   Meaning: The package is at a sorting center in Brno.\n    *   Status: It is moving through the logistics network.\n    *   Is it delivered? No.\n    *   Is it returning? No.\n    *   Is it unknown? No, it's clearly in transit.\n    *   Is it ready for pickup? No mention of a pickup point or \"ready for collection\".\n    *   Conclusion: IN_TRANSIT.\n\n4.  **Draft the JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: \"Zásilka zpracována\" (or the full line, but shorter is better for quote). Let's use the latest event text. \"12. 10. 202604:37Třídicí centrum BrnoZásilka zpracována\". Or just \"Zásilka zpracována\". The rule says \"exact text or attribute fragment\".\n    *   `reason`: \"Latest event shows package processed at sorting center, not delivered.\" (13 words).\n\n5.  **Refine based on Rules:**\n    *   Quote: \"Zásilka zpracována\" is clear.\n    *   Reason: \"Latest event is processing at sorting center, no delivery confirmation.\"\n    *   Check word count: \"Latest event is processing at sorting center, no delivery confirmation.\" (10 words). Good.\n\n6.  **Final Check:**\n    *   Input language: Czech.\n    *   Output language: English (as per system instructions usually, but the prompt asks for JSON with specific keys. The example output in the prompt uses English keys and values for state/reason).\n    *   Wait, the prompt examples show English JSON keys and values for state/reason.\n    *   State: IN_TRANSIT.\n    *   Quote: \"Zásilka zpracována\" (from the text).\n    *   Reason: \"Latest event indicates processing at sorting center, not delivered.\"\n\n    Let's look at the specific text provided:\n    `12. 10. 202604:37Třídicí centrum BrnoZásilka zpracována`\n    I will extract \"Zásilka zpracována\" as the quote.\n\n    Reason: \"Latest event shows package processed at sorting center, not delivered.\"\n\n    Wait, I need to make sure I don't hallucinate. The text says \"Zásilka zpracována\" (Package processed). This is definitely IN_TRANSIT.\n\n    One detail: The prompt examples show the output JSON. I must follow that format.\n\n    Let's construct the JSON.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka zpracována\", \"reason\": \"Latest event shows package processed at sorting center, not delivered.\"}\n\n    Wait, checking the \"quote\" rule: \"exact text or attribute fragment copied from the page\".\n    The text is `Zásilka zpracována`.\n    Reason max 20 words.\n\n    Ready.\n\n7.  **Final Polish:**\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka zpracována\"\n    *   Reason: \"Latest event shows package processed at sorting center, not delivered.\"\n\n    Wait, looking at the previous turn examples provided in the prompt (few-shot style):\n    Example 1: {\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}\n    Example 2: {\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}\n\n    I should follow that style.\n\n    My input:\n    `12. 10. 202604:37Třídicí centrum BrnoZásilka zpracována`\n    Quote: \"Zásilka zpracována\"\n\n    Reason: \"Latest event shows package processed at sorting center, not delivered.\"\n\n    Looks good.\n\n    Wait, one more check on the \"quote\". The text is `Zásilka zpracována`.\n    Is there a better quote? `Třídicí centrum BrnoZásilka zpracována`.\n    \"Zásilka zpracována\" is sufficient and clear.\n\n    Let's finalize.\n\n    Wait, I need to check if there is any \"DELIVERED\" signal. No.\n    Any \"RETURNING\"? No.\n    Any \"UNKNOWN\"? No, it's clearly in transit.\n\n    Okay.\n\n    One nuance: The prompt says \"Answer ONLY with JSON\".\n    I will output just the JSON block.\n\n    Wait, I should check the date. 12. 10. 2026. It's in the future relative to now (2024), but within the context of the task, it's the latest event. The logic holds.\n\n    Final check on reason length: \"Latest event shows package processed at sorting center, not delivered.\" -> 10 words. OK.\n\n    Let's write it.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 821,
+      "completion_tokens": 1630,
+      "total_tokens": 2451,
+      "cost": 0.0003266,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0003266,
+        "upstream_inference_prompt_cost": 0.0000821,
+        "upstream_inference_completions_cost": 0.0002445
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1387,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

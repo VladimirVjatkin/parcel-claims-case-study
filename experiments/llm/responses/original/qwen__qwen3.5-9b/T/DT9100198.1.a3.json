@@ -1,0 +1,26 @@
+{
+  "status": "failed",
+  "promptVersion": "v1",
+  "inputSha256": "17fde87463d2a2c05047c42d638513bf1066f21b19dbd021db70be28f7ac511a",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100198.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 3,
+  "collectedAt": "2026-11-07T13:17:50.970Z",
+  "latencyMs": 120004,
+  "httpStatus": 200,
+  "error": "Chyba sítě, časový limit nebo nečitelná odpověď API.",
+  "response": null
+}

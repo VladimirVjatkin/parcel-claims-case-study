@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "59f099a8ae0d6ecec8f235f5ef8f972e9b273d582914e31840f55b434f6bf7d9",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100191.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:47:00.259Z",
+  "latencyMs": 8886,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059211-wLWTlRQsOfNmHHO3giQ0",
+    "object": "chat.completion",
+    "created": 1794059211,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilka vyzvednuta příjemcem\",\"reason\":\"The latest event confirms the recipient collected the parcel.\",\"state\":\"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Parcel Number: PN55100191\n    *   Events:\n        *   24. 10. 2026 17:40: Box Brno Královo Pole - \"Zásilka vyzvednuta příjemcem\" (Parcel collected by recipient)\n        *   23. 10. 2026 11:02: Box Brno Královo Pole - \"Zásilka je připravena k vyzvednutí\" (Parcel ready for pickup)\n        *   22. 10. 2026 03:20: Třídicí centrum Brno - \"Zásilka zpracována\" (Parcel processed)\n        *   21. 10. 2026 14:00: Odesílatel - \"Zásilka převzata od odesílatele\" (Parcel picked up from sender)\n\n    *   The latest event is \"Zásilka vyzvednuta příjemcem\" on 24. 10. 2026.\n    *   \"Vyzvednuta příjemcem\" means the recipient collected the parcel.\n    *   According to the rules: \"DELIVERED — the RECIPIENT took over the parcel (at a pickup point: the recipient collected it).\"\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilka vyzvednuta příjemcem\"\n    *   Reason: Latest event confirms the recipient collected the parcel.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Parcel Number: PN55100191\n    *   Events:\n        *   24. 10. 2026 17:40: Box Brno Královo Pole - \"Zásilka vyzvednuta příjemcem\" (Parcel collected by recipient)\n        *   23. 10. 2026 11:02: Box Brno Královo Pole - \"Zásilka je připravena k vyzvednutí\" (Parcel ready for pickup)\n        *   22. 10. 2026 03:20: Třídicí centrum Brno - \"Zásilka zpracována\" (Parcel processed)\n        *   21. 10. 2026 14:00: Odesílatel - \"Zásilka převzata od odesílatele\" (Parcel picked up from sender)\n\n    *   The latest event is \"Zásilka vyzvednuta příjemcem\" on 24. 10. 2026.\n    *   \"Vyzvednuta příjemcem\" means the recipient collected the parcel.\n    *   According to the rules: \"DELIVERED — the RECIPIENT took over the parcel (at a pickup point: the recipient collected it).\"\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilka vyzvednuta příjemcem\"\n    *   Reason: Latest event confirms the recipient collected the parcel.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 887,
+      "completion_tokens": 389,
+      "total_tokens": 1276,
+      "cost": 0.00027978,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00027978,
+        "upstream_inference_prompt_cost": 0.00012418,
+        "upstream_inference_completions_cost": 0.0001556
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 353,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

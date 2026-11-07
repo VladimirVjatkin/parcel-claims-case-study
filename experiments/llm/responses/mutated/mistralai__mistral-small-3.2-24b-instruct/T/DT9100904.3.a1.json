@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "91513cdda1f780fb0ac4892c8723fa6f39f9bb0afae53617ce0c9e9a5da0d620",
+  "config": {
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "parasail/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "DT9100904.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:24:57.075Z",
+  "latencyMs": 1566,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000295-bS8L1YOqlbStcxKISmZp",
+    "object": "chat.completion",
+    "created": 1794000295,
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "Parasail",
+    "system_fingerprint": null,
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"UNKNOWN\",\"quote\":\"Aktualizováno 2. 11. 2026 09:05\",\"reason\":\"date in the future, no valid info\"}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 685,
+      "completion_tokens": 44,
+      "total_tokens": 729,
+      "cost": 0.00004797,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 672,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00004797,
+        "upstream_inference_prompt_cost": 0.00003477,
+        "upstream_inference_completions_cost": 0.0000132
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "42e3b375af3c3c8e953618aa606c8659ca64bd122277001d80d5486f3efff274",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100191.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:47:09.216Z",
+  "latencyMs": 3710,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059225-IHfEkJXPxveigzfViQyG",
+    "object": "chat.completion",
+    "created": 1794059225,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilka vyzvednuta příjemcem\", \"reason\": \"The latest event confirms the recipient collected the parcel.\", \"state\": \"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100191\n    *   Latest event: \"24. 10. 2026 17:40 Box Brno Královo Pole Zásilka vyzvednuta příjemcem\"\n    *   Translation: \"Parcel collected by recipient\"\n    *   State definition: DELIVERED — the RECIPIENT took over the parcel (at a pickup point: the recipient collected it).\n    *   The latest event explicitly states the recipient collected it.\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilka vyzvednuta příjemcem\"\n    *   Reason: Latest event confirms the recipient collected the parcel.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100191\n    *   Latest event: \"24. 10. 2026 17:40 Box Brno Královo Pole Zásilka vyzvednuta příjemcem\"\n    *   Translation: \"Parcel collected by recipient\"\n    *   State definition: DELIVERED — the RECIPIENT took over the parcel (at a pickup point: the recipient collected it).\n    *   The latest event explicitly states the recipient collected it.\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilka vyzvednuta příjemcem\"\n    *   Reason: Latest event confirms the recipient collected the parcel.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1227,
+      "completion_tokens": 207,
+      "total_tokens": 1434,
+      "cost": 0.00025458,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00025458,
+        "upstream_inference_prompt_cost": 0.00017178,
+        "upstream_inference_completions_cost": 0.0000828
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 167,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

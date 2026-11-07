@@ -1,0 +1,37 @@
+{
+  "status": "failed",
+  "promptVersion": "v1",
+  "inputSha256": "d8e4cc224b10d59d99fa460d475a82261e44e01497a77544806dccc9f25ceaaa",
+  "config": {
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "parasail/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100193.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:22:54.206Z",
+  "latencyMs": 320,
+  "httpStatus": 429,
+  "error": "Chyba API (HTTP 429).",
+  "response": {
+    "error": {
+      "message": "Provider returned error",
+      "code": 429,
+      "metadata": {
+        "raw": "mistralai/mistral-small-3.2-24b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own provider key to use your own limits: https://openrouter.ai/workspaces/default/byok",
+        "provider_name": "Parasail",
+        "is_byok": false,
+        "limit_source": "upstream_provider_shared_pool",
+        "remedy_hint": "Retry shortly, add your own provider key to use your own limits (https://openrouter.ai/workspaces/default/byok), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing."
+      }
+    },
+    "user_id": "user_2vra5owjsNjB914YSq291pOGQfC"
+  }
+}

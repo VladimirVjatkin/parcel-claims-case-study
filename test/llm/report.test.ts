@@ -85,7 +85,18 @@ describe("slot-level offline metrics", () => {
   });
   it("records only failed attempts as NO_ANSWER", () => {
     const item = first(fullSet());
-    item.attempts = item.attempts.map((attempt) => ({ ...attempt, status: "failed", response: null }));
+    const initial = item.attempts[0] as Attempt;
+    item.attempts = [1, 2, 3].map((number) => ({ ...initial, attempt: number, status: "failed", response: null }));
+    expect(observe(item).answer?.outcome).toBe("NO_ANSWER");
+  });
+  it("treats rate limits alone as missing data, even after ten attempts", () => {
+    const item = first(fullSet()); const initial = item.attempts[0] as Attempt;
+    item.attempts = [1, 2, 3].map((number) => ({ ...initial, attempt: number, status: "failed", httpStatus: 429, response: null }));
+    expect(observe(item).answer).toBeNull();
+    item.attempts = Array.from({ length: 10 }, (_, index) => ({ ...initial, attempt: index + 1, status: "failed", httpStatus: 429, response: null }));
+    expect(observe(item).answer).toBeNull();
+    expect(thresholdStatus(calculateMetrics([item].map(observe)))).toBe("nedostatek dat");
+    item.attempts[9] = { ...initial, attempt: 10, status: "failed", httpStatus: null, response: null };
     expect(observe(item).answer?.outcome).toBe("NO_ANSWER");
   });
   it("separates a raw false DELIVERED from its rejected quote", () => {
@@ -95,6 +106,17 @@ describe("slot-level offline metrics", () => {
 });
 
 describe("formatLlmReport", () => {
+  it("explains exhausted provider-only slots and keeps partial metrics", () => {
+    const items = fullSet();
+    for (const item of items.slice(0, 4)) {
+      const initial = item.attempts[0] as Attempt;
+      item.attempts = Array.from({ length: 10 }, (_, index) => ({ ...initial, attempt: index + 1, status: "failed", httpStatus: 429, response: null }));
+    }
+    const report = formatLlmReport(items, original, mutated, [model]);
+    expect(report).toContain(`${model.label}: 4 sloty bez odpovědi, všech 10 pokusů skončilo omezením poskytovatele (HTTP 429); jde o chybu sběru, ne modelu, práh proto nelze vyhodnotit.`);
+    expect(report).toContain("74/78 | 56/60 | 6/6 | 24/26 | nedostatek dat");
+    expect(report).toContain("| 0 | 0 | 0 | 0 | 40 |");
+  });
   it("renders a deterministic pre-experiment report without claiming model results", () => {
     const report = formatLlmReport(fullSet().map((item) => ({ ...item, attempts: [] })), original, mutated, [model]);
     expect(report).toContain("Odpovědi modelů zatím nejsou uložené.");
@@ -118,6 +140,15 @@ describe("formatLlmReport", () => {
     expect(formatLlmReport(items, original, mutated, [model])).toContain("0.577000 USD");
     failure.response = null;
     expect(formatLlmReport(items, original, mutated, [model])).toContain("≥ 0.377000 USD, 1 pokusů s neznámou cenou");
+  });
+  it("shows a dash for a pair without attempts and counts HTTP 429 separately", () => {
+    const items = fullSet(); const item = first(items); const success = item.attempts[0] as Attempt;
+    item.attempts.unshift({ ...success, status: "failed", httpStatus: 429, response: null });
+    const report = formatLlmReport(items, original, mutated, [model]);
+    const emptyPair = report.split("\n").find((line) => line.startsWith(`| ${model.label} (malý, T)`));
+    expect(emptyPair).toContain("| — | — | — |");
+    expect(report).toContain(`| ${model.label} | 1 |`);
+    expect(report).toContain("Pokusy s HTTP 429 se do limitu 3 nezapočítávají (upřesněno během sběru, před vyhodnocením).");
   });
   it("reports raw and checked false deliveries separately and escapes evidence", () => {
     const items = fullSet(); const item = first(items);

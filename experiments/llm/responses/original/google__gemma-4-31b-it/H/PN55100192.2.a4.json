@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "a11dd02ad2efa302fc49e4f2aace372f554b07612efc9438444ff910785a9317",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100192.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:47:15.927Z",
+  "latencyMs": 6710,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059229-gj9FeEU0dfY4pIRIdgmr",
+    "object": "chat.completion",
+    "created": 1794059229,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilka vrácena odesílateli\",\"reason\":\"The latest event states the parcel was returned to the sender.\",\"state\":\"RETURNING\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100192\n    *   Latest Event: \"29. 10. 2026 10:05 Odesílatel Zásilka vrácena odesílateli\" (Parcel returned to sender).\n    *   Previous Event: \"27. 10. 2026 08:30 Box Ostrava Centrum Úložní doba uplynula, zásilka se vrací odesílateli\" (Storage time expired, parcel is returning to sender).\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No, it's returning)\n    *   RETURNING: Being returned or already returned to sender. (Yes)\n    *   UNKNOWN: Not confirmable. (No)\n\n    *   State: RETURNING\n    *   Quote: \"Zásilka vrácena odesílateli\"\n    *   Reason: The latest event explicitly states the parcel was returned to the sender.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100192\n    *   Latest Event: \"29. 10. 2026 10:05 Odesílatel Zásilka vrácena odesílateli\" (Parcel returned to sender).\n    *   Previous Event: \"27. 10. 2026 08:30 Box Ostrava Centrum Úložní doba uplynula, zásilka se vrací odesílateli\" (Storage time expired, parcel is returning to sender).\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No, it's returning)\n    *   RETURNING: Being returned or already returned to sender. (Yes)\n    *   UNKNOWN: Not confirmable. (No)\n\n    *   State: RETURNING\n    *   Quote: \"Zásilka vrácena odesílateli\"\n    *   Reason: The latest event explicitly states the parcel was returned to the sender.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1238,
+      "completion_tokens": 294,
+      "total_tokens": 1532,
+      "cost": 0.00029092,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00029092,
+        "upstream_inference_prompt_cost": 0.00017332,
+        "upstream_inference_completions_cost": 0.0001176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 255,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

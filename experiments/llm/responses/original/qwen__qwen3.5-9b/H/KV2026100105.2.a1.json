@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "e02b67737957fc101b6b7d3e6a1d68be767c93cea981eb78a3ee831976ab7ab8",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100105.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T19:45:10.291Z",
+  "latencyMs": 24137,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793994286-irTIHxYUfBl0FPZFKnfC",
+    "object": "chat.completion",
+    "created": 1793994286,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Explicit message confirms delivery to recipient.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML tracking page (carrier: Kurýr Vltava, number: KV2026100105).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (pickup point = collected).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party.\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100105.\n    *   HTML Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Main content:\n            *   Title: Sledování zásilky KV2026100105.\n            *   Tracking Number: KV2026100105.\n            *   Progress Steps (ol class=\"progress\"):\n                1.  Objednávka (Order)\n                2.  Zásilka v přepravě (In transit)\n                3.  Na cestě k vám (On the way to you)\n                4.  Doručeno příjemci (Delivered to recipient)\n            *   Progress Bar: `width:100%` (indicates completion).\n            *   Shipment Message: `<p>Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.</p>` (Parcel was delivered to the recipient on 30. 10. 2026 at 13:12).\n        *   Footer/Promo (ignore).\n\n3.  **Evaluate State:**\n    *   The progress bar is full (100%).\n    *   The last step in the timeline is \"Doručeno příjemci\" (Delivered to recipient).\n    *   The explicit message says \"Zásilka byla doručena příjemci\" (Parcel was delivered to the recipient).\n    *   This matches the definition of \"DELIVERED\" (the RECIPIENT took over the parcel).\n    *   There is no indication of handover to a third party (like reception or neighbor) in this specific text. It explicitly says \"příjemci\" (recipient).\n    *   There is no indication of return.\n\n4.  **Select Quote:**\n    *   Best quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" or \"Doručeno příjemci\".\n    *   I'll use the explicit message text as it's the clearest confirmation.\n\n5.  **Draft Reason:**\n    *   Max 20 words.\n    *   \"Explicit message states parcel was delivered to recipient on 30. 10. 2026.\"\n\n6.  **Final Check:**\n    *   State: DELIVERED.\n    *   Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   Reason: Explicit message confirms delivery to recipient.\n    *   JSON format valid? Yes.\n\n7.  **Construct JSON:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Explicit message confirms delivery to recipient.\"}\n    ```\n\n    Wait, checking the rules again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    The text says \"příjemci\" (recipient). So it is DELIVERED.\n\n    One more check on the previous examples provided in the prompt context (few-shot style):\n    Example 1: \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN (handed to reception).\n    Example 2: \"Ve výdejně\" (current step) -> IN_TRANSIT (not collected).\n    Example 3 (Current): \"Doručeno příjemci\" + \"Zásilka byla doručena příjemci\". -> DELIVERED.\n\n    Looks consistent.\n\n    Refining the quote to be exact text fragment.\n    Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    Reason: \"Explicit message confirms delivery to recipient.\" (10 words).\n\n    Let's assemble.\n\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Explicit message confirms delivery to recipient.\"}\n    ```\n    Wait, I should check if there are any visual indicators like `class=\"done\"` or `class=\"current\"`.\n    In the HTML:\n    `<ol class=\"progress\"><li class=\"progress__step\">...</li>...<li class=\"progress__step\">Doručeno příjemci</li></ol>`\n    There are no specific classes like `done` or `current` on the list items in the provided HTML snippet (unlike Example 2). However, the progress bar is `width:100%` and the message explicitly states delivery.\n    The text \"Zásilka byla doručena příjemci\" is the strongest evidence.\n\n    Final check on constraints:\n    - Answer ONLY with JSON.\n    - Quote exact text.\n    - Reason max 20 words.\n\n    Ready.\n\n    One minor detail: The prompt says \"The page may be in Czech.\" The quote should be the exact text.\n    Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    Reason: \"Explicit message confirms delivery to recipient.\"\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, this means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the instruction: \"Answer ONLY with JSON\".\n    I will output the JSON string.\n\n    Wait, one more check on the \"UNKNOWN\" rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    The text says \"příjemci\" (recipient). So it is safe to say DELIVERED.\n\n    Final check on JSON syntax.\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Explicit message confirms delivery to recipient.\"}\n    Looks good.\n\n    Wait, I should check if the date \"30. 10. 2026\" is in the future relative to \"now\" (2024/2025)? The prompt says \"fiktivní dopravce\" (fictional carrier) and the date is 2026. This is a test scenario. I should treat the data as ground truth for the classification task regardless of real-world date. The logic holds: text says delivered -> DELIVERED.\n\n    Okay, proceeding.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML tracking page (carrier: Kurýr Vltava, number: KV2026100105).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (pickup point = collected).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party.\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100105.\n    *   HTML Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Main content:\n            *   Title: Sledování zásilky KV2026100105.\n            *   Tracking Number: KV2026100105.\n            *   Progress Steps (ol class=\"progress\"):\n                1.  Objednávka (Order)\n                2.  Zásilka v přepravě (In transit)\n                3.  Na cestě k vám (On the way to you)\n                4.  Doručeno příjemci (Delivered to recipient)\n            *   Progress Bar: `width:100%` (indicates completion).\n            *   Shipment Message: `<p>Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.</p>` (Parcel was delivered to the recipient on 30. 10. 2026 at 13:12).\n        *   Footer/Promo (ignore).\n\n3.  **Evaluate State:**\n    *   The progress bar is full (100%).\n    *   The last step in the timeline is \"Doručeno příjemci\" (Delivered to recipient).\n    *   The explicit message says \"Zásilka byla doručena příjemci\" (Parcel was delivered to the recipient).\n    *   This matches the definition of \"DELIVERED\" (the RECIPIENT took over the parcel).\n    *   There is no indication of handover to a third party (like reception or neighbor) in this specific text. It explicitly says \"příjemci\" (recipient).\n    *   There is no indication of return.\n\n4.  **Select Quote:**\n    *   Best quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" or \"Doručeno příjemci\".\n    *   I'll use the explicit message text as it's the clearest confirmation.\n\n5.  **Draft Reason:**\n    *   Max 20 words.\n    *   \"Explicit message states parcel was delivered to recipient on 30. 10. 2026.\"\n\n6.  **Final Check:**\n    *   State: DELIVERED.\n    *   Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   Reason: Explicit message confirms delivery to recipient.\n    *   JSON format valid? Yes.\n\n7.  **Construct JSON:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Explicit message confirms delivery to recipient.\"}\n    ```\n\n    Wait, checking the rules again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    The text says \"příjemci\" (recipient). So it is DELIVERED.\n\n    One more check on the previous examples provided in the prompt context (few-shot style):\n    Example 1: \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN (handed to reception).\n    Example 2: \"Ve výdejně\" (current step) -> IN_TRANSIT (not collected).\n    Example 3 (Current): \"Doručeno příjemci\" + \"Zásilka byla doručena příjemci\". -> DELIVERED.\n\n    Looks consistent.\n\n    Refining the quote to be exact text fragment.\n    Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    Reason: \"Explicit message confirms delivery to recipient.\" (10 words).\n\n    Let's assemble.\n\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Explicit message confirms delivery to recipient.\"}\n    ```\n    Wait, I should check if there are any visual indicators like `class=\"done\"` or `class=\"current\"`.\n    In the HTML:\n    `<ol class=\"progress\"><li class=\"progress__step\">...</li>...<li class=\"progress__step\">Doručeno příjemci</li></ol>`\n    There are no specific classes like `done` or `current` on the list items in the provided HTML snippet (unlike Example 2). However, the progress bar is `width:100%` and the message explicitly states delivery.\n    The text \"Zásilka byla doručena příjemci\" is the strongest evidence.\n\n    Final check on constraints:\n    - Answer ONLY with JSON.\n    - Quote exact text.\n    - Reason max 20 words.\n\n    Ready.\n\n    One minor detail: The prompt says \"The page may be in Czech.\" The quote should be the exact text.\n    Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    Reason: \"Explicit message confirms delivery to recipient.\"\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, this means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the instruction: \"Answer ONLY with JSON\".\n    I will output the JSON string.\n\n    Wait, one more check on the \"UNKNOWN\" rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    The text says \"příjemci\" (recipient). So it is safe to say DELIVERED.\n\n    Final check on JSON syntax.\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Explicit message confirms delivery to recipient.\"}\n    Looks good.\n\n    Wait, I should check if the date \"30. 10. 2026\" is in the future relative to \"now\" (2024/2025)? The prompt says \"fiktivní dopravce\" (fictional carrier) and the date is 2026. This is a test scenario. I should treat the data as ground truth for the classification task regardless of real-world date. The logic holds: text says delivered -> DELIVERED.\n\n    Okay, proceeding.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1344,
+      "completion_tokens": 1907,
+      "total_tokens": 3251,
+      "cost": 0.00042045,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00042045,
+        "upstream_inference_prompt_cost": 0.0001344,
+        "upstream_inference_completions_cost": 0.00028605
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1559,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

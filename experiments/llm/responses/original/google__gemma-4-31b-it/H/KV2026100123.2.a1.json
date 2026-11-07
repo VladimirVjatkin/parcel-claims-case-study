@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "4589178b73a2437bc889587b83f30c0eae29ec5c4df92bbd1ddfb7566ab777db",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100123.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T12:10:06.084Z",
+  "latencyMs": 17122,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794053388-USC1i3spYSY57HQPX5aK",
+    "object": "chat.completion",
+    "created": 1794053388,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilku právě nakládáme k doručení. Předpokládaný čas doručení je 14:00–16:00.\",\"reason\":\"Parcel is being loaded for delivery; expected delivery is not actual delivery.\",\"state\":\"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100123\n    *   Page Content:\n        *   Progress bar: `width: 66%`.\n        *   Steps: \"Objednávka\" -> \"Zásilka v přepravě\" -> \"Na cestě k vám\" -> \"Doručeno příjemci\".\n        *   Message: \"Zásilku právě nakládáme k doručení. Předpokládaný čas doručení je 14:00–16:00.\" (Parcel is being loaded for delivery. Expected delivery time is 14:00-16:00).\n        *   Other elements: Cookie banner, header, footer, promo section (irrelevant).\n\n    *   DELIVERED: Recipient took over.\n    *   IN_TRANSIT: With carrier, waiting at pickup point/box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable, handed to 3rd party, etc.\n\n    *   The message says \"Zásilku právě nakládáme k doručení\" (Parcel is being loaded for delivery) and mentions a \"Předpokládaný čas doručení\" (Expected delivery time).\n    *   The progress bar is at 66%, which corresponds to the \"Na cestě k vám\" (On the way to you) step, not \"Doručeno příjemci\" (Delivered to recipient).\n    *   According to the rules: \"Planned or expected delivery ('předpokládaný', 'plánováno')... is NOT delivery.\"\n    *   The parcel is currently with the carrier.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Zásilku právě nakládáme k doručení.\" or \"Na cestě k vám\"\n    *   Reason: Parcel is being loaded for delivery; expected delivery is not actual delivery.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100123\n    *   Page Content:\n        *   Progress bar: `width: 66%`.\n        *   Steps: \"Objednávka\" -> \"Zásilka v přepravě\" -> \"Na cestě k vám\" -> \"Doručeno příjemci\".\n        *   Message: \"Zásilku právě nakládáme k doručení. Předpokládaný čas doručení je 14:00–16:00.\" (Parcel is being loaded for delivery. Expected delivery time is 14:00-16:00).\n        *   Other elements: Cookie banner, header, footer, promo section (irrelevant).\n\n    *   DELIVERED: Recipient took over.\n    *   IN_TRANSIT: With carrier, waiting at pickup point/box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable, handed to 3rd party, etc.\n\n    *   The message says \"Zásilku právě nakládáme k doručení\" (Parcel is being loaded for delivery) and mentions a \"Předpokládaný čas doručení\" (Expected delivery time).\n    *   The progress bar is at 66%, which corresponds to the \"Na cestě k vám\" (On the way to you) step, not \"Doručeno příjemci\" (Delivered to recipient).\n    *   According to the rules: \"Planned or expected delivery ('předpokládaný', 'plánováno')... is NOT delivery.\"\n    *   The parcel is currently with the carrier.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Zásilku právě nakládáme k doručení.\" or \"Na cestě k vám\"\n    *   Reason: Parcel is being loaded for delivery; expected delivery is not actual delivery.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1367,
+      "completion_tokens": 508,
+      "total_tokens": 1875,
+      "cost": 0.00039458,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00039458,
+        "upstream_inference_prompt_cost": 0.00019138,
+        "upstream_inference_completions_cost": 0.0002032
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 441,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

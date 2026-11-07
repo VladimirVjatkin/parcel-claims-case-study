@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "bbe6078105a3b5df5654c08ef878d6bacc5f15a9846196faec807ca12c77433f",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100197.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 3,
+  "collectedAt": "2026-11-06T21:33:59.098Z",
+  "latencyMs": 8191,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000830-mcBdLQt2pHUq02gkVEeg",
+    "object": "chat.completion",
+    "created": 1794000830,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"UNKNOWN\",\"quote\":\"DoručenoVráceno\",\"reason\":\"cannot determine which status is current\"}",
+          "refusal": null,
+          "reasoning": "We need determine state. Text shows steps: Podáno, V přepravě, U kurýra, Doručeno, Vráceno. No indication which is current. Likely latest is Vráceno? But order unclear. Probably delivered? \"Doručeno\" means delivered. But also \"Vráceno\" means returned. Which is later? Usually list maybe shows all statuses, not highlighted. No marker. Unclear, so UNKNOWN.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need determine state. Text shows steps: Podáno, V přepravě, U kurýra, Doručeno, Vráceno. No indication which is current. Likely latest is Vráceno? But order unclear. Probably delivered? \"Doručeno\" means delivered. But also \"Vráceno\" means returned. Which is later? Usually list maybe shows all statuses, not highlighted. No marker. Unclear, so UNKNOWN.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 707,
+      "completion_tokens": 126,
+      "total_tokens": 833,
+      "cost": 0.000047579,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000047579,
+        "upstream_inference_prompt_cost": 0.000026159,
+        "upstream_inference_completions_cost": 0.00002142
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 92,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

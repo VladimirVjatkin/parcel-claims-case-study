@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "166ac8216881de6fea2bf590b766b22e33a2acd8e789c2ed842ef06fa9aed302",
+  "config": {
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "coreweave/fp16",
+    "quantization": "fp16",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100116.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:22:23.758Z",
+  "latencyMs": 646,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000142-T3aM9DfTAwkI91vLo3Jq",
+    "object": "chat.completion",
+    "created": 1794000142,
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "CoreWeave",
+    "system_fingerprint": null,
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"Zásilka je připravena k vyzvednutí\",\"reason\":\"ready for pickup, not collected\"}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 827,
+      "completion_tokens": 33,
+      "total_tokens": 860,
+      "cost": 0.0006106,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 800,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0006106,
+        "upstream_inference_prompt_cost": 0.00058717,
+        "upstream_inference_completions_cost": 0.00002343
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

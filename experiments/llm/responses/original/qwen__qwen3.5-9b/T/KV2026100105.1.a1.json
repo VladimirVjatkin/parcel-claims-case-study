@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "081e876c0b07c457c8ce72d46fce8bde3f5bb052834c3aba859edf8af31728c7",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100105.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T19:43:41.627Z",
+  "latencyMs": 24212,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793994197-854H1xs9LdV5axv3CMqJ",
+    "object": "chat.completion",
+    "created": 1793994197,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Parcel explicitly marked as delivered to the recipient.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbor, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100105.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" (Parcel was delivered to the recipient on 30. 10. 2026 at 13:12.)\n    *   Context: There is cookie banner text, navigation links, and footer text. The core tracking info is \"Zásilka byla doručena příjemci\".\n    *   Visual cues: \"Doručeno příjemci\" seems to be the active status in the menu list (\"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\").\n\n3.  **Evaluate against Rules:**\n    *   **State:** The text explicitly says \"Zásilka byla doručena příjemci\" (Parcel was delivered to the recipient). This matches the definition of DELIVERED (\"the RECIPIENT took over the parcel\").\n    *   **Quote:** Need exact text supporting the state. \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" is the strongest evidence.\n    *   **Reason:** The parcel was delivered to the recipient.\n    *   **Handover check:** It says \"příjemci\" (recipient), not \"recepci\" (reception) or \"sousedovi\" (neighbor). So it's not UNKNOWN.\n    *   **Timeline:** It's a past tense event (\"byla doručena\"), indicating completion.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   `reason`: \"Parcel explicitly marked as delivered to the recipient.\"\n\n5.  **Refine Reason (Max 20 words):**\n    *   \"Parcel explicitly marked as delivered to the recipient.\" (7 words) - Good.\n    *   \"Zásilka byla doručena příjemci\" confirms recipient took over.\" (8 words) - Also good.\n    *   Let's stick to English for the reason as per standard practice unless specified otherwise (prompt instructions are in English).\n    *   \"Parcel explicitly marked as delivered to the recipient.\"\n\n6.  **Final Check:**\n    *   JSON format? Yes.\n    *   State valid? Yes (DELIVERED).\n    *   Quote exact? Yes.\n    *   Reason under 20 words? Yes.\n    *   No extra text? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Parcel explicitly marked as delivered to the recipient.\"}\n    ```\n\n    Wait, checking the input again.\n    \"Doručeno příjemci Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    The text is clear.\n\n    One nuance: The prompt says \"Answer ONLY with JSON\".\n    I need to ensure no markdown code blocks if strictly interpreted, but usually, JSON blocks are expected. The instruction says \"Answer ONLY with JSON\". I will output raw JSON text to be safe, or a code block if that's standard for this interface. Usually, for \"Answer ONLY with JSON\", raw text is safer to avoid parsing errors, but often markdown blocks are accepted. I will output raw JSON string to be strictly compliant with \"Answer ONLY with JSON\". Actually, looking at previous turns in the few-shot examples (none provided here, but standard behavior), usually, a code block is fine. However, \"Answer ONLY with JSON\" often implies no markdown fencing. I will output plain text JSON.\n\n    Wait, looking at the system instruction: \"Answer ONLY with JSON\".\n    I will provide the JSON object directly.\n\n    Re-evaluating the quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" is the most specific.\n    Reason: \"Parcel explicitly marked as delivered to the recipient.\"\n\n    Let's double check the \"UNKNOWN\" rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    Here it says \"příjemci\" (recipient). So it is DELIVERED.\n\n    Final check on constraints.\n    State: DELIVERED\n    Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    Reason: \"Parcel explicitly marked as delivered to the recipient.\"\n\n    Ready.\n\n    Wait, one more check on the input text structure.\n    \"Doručeno příjemci Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    It seems like a status line.\n    Okay.\n\n    One detail: The prompt says \"Answer ONLY with JSON\". I should not include markdown ticks like ```json ... ``` if I want to be strictly compliant, but often it's rendered better. I'll output raw JSON to be safe.\n\n    Actually, looking at the previous turn in the conversation (the model's previous responses), they used JSON without markdown blocks in the thought trace, but the final output in the example provided in the prompt description (the few-shot examples) usually expects valid JSON. I will output valid JSON.\n\n    Wait, I see the previous user messages in the conversation history provided in the prompt context (the few-shot examples).\n    User 1: Tracking page...\n    Model 1: {\"state\":\"UNKNOWN\"...}\n    User 2: Tracking page...\n    Model 2: {\"state\":\"IN_TRANSIT\"...}\n    User 3 (Current): Tracking page...\n\n    So I should follow the format of Model 1 and Model 2. They did not use markdown code blocks in the examples provided in the prompt description (Wait, looking closely at the prompt provided to me *now*).\n    The prompt provided to me *now* includes the conversation history.\n    Model 1 output: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}`\n    Model 2 output: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}`\n\n    So I must output raw JSON without markdown code blocks.\n\n    Final check on quote escaping. The quote contains double quotes? No. It contains Czech characters.\n    \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    No internal double quotes. Safe.\n\n    Reason: \"Parcel explicitly marked as delivered to the recipient.\" (7 words).\n\n    Let's go.cw\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbor, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100105.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" (Parcel was delivered to the recipient on 30. 10. 2026 at 13:12.)\n    *   Context: There is cookie banner text, navigation links, and footer text. The core tracking info is \"Zásilka byla doručena příjemci\".\n    *   Visual cues: \"Doručeno příjemci\" seems to be the active status in the menu list (\"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\").\n\n3.  **Evaluate against Rules:**\n    *   **State:** The text explicitly says \"Zásilka byla doručena příjemci\" (Parcel was delivered to the recipient). This matches the definition of DELIVERED (\"the RECIPIENT took over the parcel\").\n    *   **Quote:** Need exact text supporting the state. \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" is the strongest evidence.\n    *   **Reason:** The parcel was delivered to the recipient.\n    *   **Handover check:** It says \"příjemci\" (recipient), not \"recepci\" (reception) or \"sousedovi\" (neighbor). So it's not UNKNOWN.\n    *   **Timeline:** It's a past tense event (\"byla doručena\"), indicating completion.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   `reason`: \"Parcel explicitly marked as delivered to the recipient.\"\n\n5.  **Refine Reason (Max 20 words):**\n    *   \"Parcel explicitly marked as delivered to the recipient.\" (7 words) - Good.\n    *   \"Zásilka byla doručena příjemci\" confirms recipient took over.\" (8 words) - Also good.\n    *   Let's stick to English for the reason as per standard practice unless specified otherwise (prompt instructions are in English).\n    *   \"Parcel explicitly marked as delivered to the recipient.\"\n\n6.  **Final Check:**\n    *   JSON format? Yes.\n    *   State valid? Yes (DELIVERED).\n    *   Quote exact? Yes.\n    *   Reason under 20 words? Yes.\n    *   No extra text? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\", \"reason\": \"Parcel explicitly marked as delivered to the recipient.\"}\n    ```\n\n    Wait, checking the input again.\n    \"Doručeno příjemci Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    The text is clear.\n\n    One nuance: The prompt says \"Answer ONLY with JSON\".\n    I need to ensure no markdown code blocks if strictly interpreted, but usually, JSON blocks are expected. The instruction says \"Answer ONLY with JSON\". I will output raw JSON text to be safe, or a code block if that's standard for this interface. Usually, for \"Answer ONLY with JSON\", raw text is safer to avoid parsing errors, but often markdown blocks are accepted. I will output raw JSON string to be strictly compliant with \"Answer ONLY with JSON\". Actually, looking at previous turns in the few-shot examples (none provided here, but standard behavior), usually, a code block is fine. However, \"Answer ONLY with JSON\" often implies no markdown fencing. I will output plain text JSON.\n\n    Wait, looking at the system instruction: \"Answer ONLY with JSON\".\n    I will provide the JSON object directly.\n\n    Re-evaluating the quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" is the most specific.\n    Reason: \"Parcel explicitly marked as delivered to the recipient.\"\n\n    Let's double check the \"UNKNOWN\" rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    Here it says \"příjemci\" (recipient). So it is DELIVERED.\n\n    Final check on constraints.\n    State: DELIVERED\n    Quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    Reason: \"Parcel explicitly marked as delivered to the recipient.\"\n\n    Ready.\n\n    Wait, one more check on the input text structure.\n    \"Doručeno příjemci Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    It seems like a status line.\n    Okay.\n\n    One detail: The prompt says \"Answer ONLY with JSON\". I should not include markdown ticks like ```json ... ``` if I want to be strictly compliant, but often it's rendered better. I'll output raw JSON to be safe.\n\n    Actually, looking at the previous turn in the conversation (the model's previous responses), they used JSON without markdown blocks in the thought trace, but the final output in the example provided in the prompt description (the few-shot examples) usually expects valid JSON. I will output valid JSON.\n\n    Wait, I see the previous user messages in the conversation history provided in the prompt context (the few-shot examples).\n    User 1: Tracking page...\n    Model 1: {\"state\":\"UNKNOWN\"...}\n    User 2: Tracking page...\n    Model 2: {\"state\":\"IN_TRANSIT\"...}\n    User 3 (Current): Tracking page...\n\n    So I should follow the format of Model 1 and Model 2. They did not use markdown code blocks in the examples provided in the prompt description (Wait, looking closely at the prompt provided to me *now*).\n    The prompt provided to me *now* includes the conversation history.\n    Model 1 output: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}`\n    Model 2 output: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}`\n\n    So I must output raw JSON without markdown code blocks.\n\n    Final check on quote escaping. The quote contains double quotes? No. It contains Czech characters.\n    \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    No internal double quotes. Safe.\n\n    Reason: \"Parcel explicitly marked as delivered to the recipient.\" (7 words).\n\n    Let's go.cw\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 886,
+      "completion_tokens": 1937,
+      "total_tokens": 2823,
+      "cost": 0.00037915,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00037915,
+        "upstream_inference_prompt_cost": 0.0000886,
+        "upstream_inference_completions_cost": 0.00029055
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1694,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

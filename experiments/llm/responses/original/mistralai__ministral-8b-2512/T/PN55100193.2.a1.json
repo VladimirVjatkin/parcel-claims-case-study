@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "d8e4cc224b10d59d99fa460d475a82261e44e01497a77544806dccc9f25ceaaa",
+  "config": {
+    "model": "mistralai/ministral-8b-2512",
+    "provider": "mistral/zdr",
+    "quantization": "unknown",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100193.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:45:47.773Z",
+  "latencyMs": 1035,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001546-PN18PJ2Yaeizrg5MkxZg",
+    "object": "chat.completion",
+    "created": 1794001546,
+    "model": "mistralai/ministral-8b-2512",
+    "provider": "Mistral",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"DELIVERED\",\"quote\":\"Doručeno příjemci, podepsal: J. Dvořák\",\"reason\":\"explicit confirmation of recipient's receipt and signature\"}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 848,
+      "completion_tokens": 41,
+      "total_tokens": 889,
+      "cost": 0.00005991,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 544,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00005991,
+        "upstream_inference_prompt_cost": 0.00005376,
+        "upstream_inference_completions_cost": 0.00000615
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

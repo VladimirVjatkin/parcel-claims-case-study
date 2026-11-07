@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "baa7b06da983d88d94297501e528e0119bad723dda69c8a6d7676b7c78fa2913",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "EX7710903.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:31:33.666Z",
+  "latencyMs": 14031,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000679-OyqjmNVXJ2iEqjYtFmLI",
+    "object": "chat.completion",
+    "created": 1794000679,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"DELIVERED\", \"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Explicitly states parcel handed over to the recipient.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: A tracking page text (carrier: Expedo, number: EX7710903).\n    *   Output Format: JSON with keys `state`, `quote`, `reason`.\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   \"Delivered\" means the RECIPIENT took over the parcel.\n        *   \"In Transit\" means with carrier, waiting at pickup point, etc.\n        *   \"Unknown\" if not sure, contradictory, or missing info.\n        *   Handover to anyone other than recipient = UNKNOWN.\n        *   Answer ONLY with JSON.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo\n    *   Tracking Number: EX7710903\n    *   Snippet Content:\n        *   Cookie banner text (ignore).\n        *   \"Current status Delivered\"\n        *   \"Last update: 2 Nov 2026 14:22\"\n        *   \"The parcel was handed over to the recipient.\"\n        *   Footer text (ignore).\n\n3.  **Evaluate the State:**\n    *   The text explicitly says \"Current status Delivered\".\n    *   The text explicitly says \"The parcel was handed over to the recipient.\"\n    *   This matches the definition of `DELIVERED` (the RECIPIENT took over the parcel).\n    *   There is no ambiguity here. It's not a pickup point (like Balíkomat in previous examples), it's direct handover to the recipient.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"The parcel was handed over to the recipient.\" (or \"Current status Delivered\")\n    *   `reason`: \"Explicitly states parcel handed over to recipient.\"\n\n5.  **Refine the Quote:**\n    *   \"The parcel was handed over to the recipient.\" is the strongest evidence.\n    *   \"Current status Delivered\" is also good.\n    *   I'll use the descriptive sentence as it confirms the recipient aspect.\n\n6.  **Refine the Reason:**\n    *   Max 20 words.\n    *   \"Parcel explicitly marked as delivered and handed over to the recipient.\"\n\n7.  **Final Check:**\n    *   JSON format? Yes.\n    *   Correct state? Yes (DELIVERED).\n    *   Quote from text? Yes.\n    *   Reason concise? Yes.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Explicitly states parcel handed over to the recipient.\"}\n    ```\n\n    Wait, checking the rules again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    The text says \"handed over to the recipient\". So it is DELIVERED.\n\n    Let's verify the quote selection.\n    \"Current status Delivered\" is also very clear.\n    \"The parcel was handed over to the recipient.\" is more descriptive.\n    I will use \"The parcel was handed over to the recipient.\"\n\n    Reason: \"Status explicitly states delivered and handed over to recipient.\" (10 words).\n\n    Final JSON construction.\n    {\"state\": \"DELIVERED\", \"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Status explicitly states delivered and handed over to recipient.\"}\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, it means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the previous turns in the conversation (few-shot style):\n    Turn 1: {\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}\n    Turn 2: {\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}\n\n    So I should follow that format exactly.\n\n    One more check on the input text:\n    \"Current statusDeliveredLast update: 2 Nov 2026 14:22The parcel was handed over to the recipient.\"\n    It seems there are no spaces in some parts due to scraping, but the meaning is clear.\n    Quote: \"The parcel was handed over to the recipient.\"\n\n    Reason: \"Explicitly states parcel handed over to the recipient.\"\n\n    Let's finalize.\n    {\"state\": \"DELIVERED\", \"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Explicitly states parcel handed over to the recipient.\"}\n    Word count check: \"Explicitly states parcel handed over to the recipient.\" -> 8 words. Good.\n    Quote check: Exact text fragment. \"The parcel was handed over to the recipient.\" is in the text.\n\n    Ready.cw\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: A tracking page text (carrier: Expedo, number: EX7710903).\n    *   Output Format: JSON with keys `state`, `quote`, `reason`.\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   \"Delivered\" means the RECIPIENT took over the parcel.\n        *   \"In Transit\" means with carrier, waiting at pickup point, etc.\n        *   \"Unknown\" if not sure, contradictory, or missing info.\n        *   Handover to anyone other than recipient = UNKNOWN.\n        *   Answer ONLY with JSON.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo\n    *   Tracking Number: EX7710903\n    *   Snippet Content:\n        *   Cookie banner text (ignore).\n        *   \"Current status Delivered\"\n        *   \"Last update: 2 Nov 2026 14:22\"\n        *   \"The parcel was handed over to the recipient.\"\n        *   Footer text (ignore).\n\n3.  **Evaluate the State:**\n    *   The text explicitly says \"Current status Delivered\".\n    *   The text explicitly says \"The parcel was handed over to the recipient.\"\n    *   This matches the definition of `DELIVERED` (the RECIPIENT took over the parcel).\n    *   There is no ambiguity here. It's not a pickup point (like Balíkomat in previous examples), it's direct handover to the recipient.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"The parcel was handed over to the recipient.\" (or \"Current status Delivered\")\n    *   `reason`: \"Explicitly states parcel handed over to recipient.\"\n\n5.  **Refine the Quote:**\n    *   \"The parcel was handed over to the recipient.\" is the strongest evidence.\n    *   \"Current status Delivered\" is also good.\n    *   I'll use the descriptive sentence as it confirms the recipient aspect.\n\n6.  **Refine the Reason:**\n    *   Max 20 words.\n    *   \"Parcel explicitly marked as delivered and handed over to the recipient.\"\n\n7.  **Final Check:**\n    *   JSON format? Yes.\n    *   Correct state? Yes (DELIVERED).\n    *   Quote from text? Yes.\n    *   Reason concise? Yes.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Explicitly states parcel handed over to the recipient.\"}\n    ```\n\n    Wait, checking the rules again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    The text says \"handed over to the recipient\". So it is DELIVERED.\n\n    Let's verify the quote selection.\n    \"Current status Delivered\" is also very clear.\n    \"The parcel was handed over to the recipient.\" is more descriptive.\n    I will use \"The parcel was handed over to the recipient.\"\n\n    Reason: \"Status explicitly states delivered and handed over to recipient.\" (10 words).\n\n    Final JSON construction.\n    {\"state\": \"DELIVERED\", \"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Status explicitly states delivered and handed over to recipient.\"}\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, it means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the previous turns in the conversation (few-shot style):\n    Turn 1: {\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}\n    Turn 2: {\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}\n\n    So I should follow that format exactly.\n\n    One more check on the input text:\n    \"Current statusDeliveredLast update: 2 Nov 2026 14:22The parcel was handed over to the recipient.\"\n    It seems there are no spaces in some parts due to scraping, but the meaning is clear.\n    Quote: \"The parcel was handed over to the recipient.\"\n\n    Reason: \"Explicitly states parcel handed over to the recipient.\"\n\n    Let's finalize.\n    {\"state\": \"DELIVERED\", \"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Explicitly states parcel handed over to the recipient.\"}\n    Word count check: \"Explicitly states parcel handed over to the recipient.\" -> 8 words. Good.\n    Quote check: Exact text fragment. \"The parcel was handed over to the recipient.\" is in the text.\n\n    Ready.cw\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 730,
+      "completion_tokens": 1216,
+      "total_tokens": 1946,
+      "cost": 0.0002554,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0002554,
+        "upstream_inference_prompt_cost": 0.000073,
+        "upstream_inference_completions_cost": 0.0001824
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1134,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

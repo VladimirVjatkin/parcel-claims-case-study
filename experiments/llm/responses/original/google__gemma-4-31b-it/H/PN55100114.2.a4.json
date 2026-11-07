@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "cf5f6dea91d24ba36389bc8da3d4439c7eb064a9f49eaa939623fd2152d3a9f5",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100114.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:46:39.288Z",
+  "latencyMs": 5577,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059193-GezgxUbT5kkLnYcBsWfy",
+    "object": "chat.completion",
+    "created": 1794059193,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilka zpracována\",\"reason\":\"Latest event shows the parcel is being processed at a sorting center.\",\"state\":\"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100114\n    *   Latest Event: \"12. 10. 2026 04:37 Třídicí centrum Brno Zásilka zpracována\" (Parcel processed at Brno sorting center).\n    *   Previous Events: \"10. 10. 2026 22:15 Třídicí centrum Praha Zásilka zpracována\" and \"09. 10. 2026 15:20 Odesílatel Zásilka převzata od odesílatele\".\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: Parcel is with carrier or at pickup point. (Yes, it's at a sorting center).\n    *   RETURNING: Returning to sender. (No indication).\n    *   UNKNOWN: Not confirmable.\n\n    *   The latest event is \"Zásilka zpracována\" (Parcel processed) at a sorting center. This means it is currently with the carrier.\n    *   State: `IN_TRANSIT`.\n    *   Quote: `Zásilka zpracována` (or the whole row).\n    *   Reason: Latest event shows the parcel is being processed at a sorting center.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100114\n    *   Latest Event: \"12. 10. 2026 04:37 Třídicí centrum Brno Zásilka zpracována\" (Parcel processed at Brno sorting center).\n    *   Previous Events: \"10. 10. 2026 22:15 Třídicí centrum Praha Zásilka zpracována\" and \"09. 10. 2026 15:20 Odesílatel Zásilka převzata od odesílatele\".\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: Parcel is with carrier or at pickup point. (Yes, it's at a sorting center).\n    *   RETURNING: Returning to sender. (No indication).\n    *   UNKNOWN: Not confirmable.\n\n    *   The latest event is \"Zásilka zpracována\" (Parcel processed) at a sorting center. This means it is currently with the carrier.\n    *   State: `IN_TRANSIT`.\n    *   Quote: `Zásilka zpracována` (or the whole row).\n    *   Reason: Latest event shows the parcel is being processed at a sorting center.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1142,
+      "completion_tokens": 342,
+      "total_tokens": 1484,
+      "cost": 0.00029668,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00029668,
+        "upstream_inference_prompt_cost": 0.00015988,
+        "upstream_inference_completions_cost": 0.0001368
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 306,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

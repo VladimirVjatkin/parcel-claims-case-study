@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "725fc4fed17ecbe99fdc215ed484a765eb3e1c3a41f5c14516a34083ba5201aa",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100118.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T19:49:18.102Z",
+  "latencyMs": 31536,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793994526-GdKzJpLlXFjLKT2pVFjJ",
+    "object": "chat.completion",
+    "created": 1793994526,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\", \"reason\": \"Parcel at depot, delivery rescheduled, not yet handed over.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbor, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100118.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Používáme cookies...\" (Cookie banner - ignore).\n    *   Status Text: \"Sledování zásilky Číslo zásilky: KV2026100118\".\n    *   Status Text: \"ObjednávkaZásilka v přepravěNa cestě k vámDoručeno příjemci\". This looks like a breadcrumb or status list.\n    *   Status Text: \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" (Recipient not caught. Parcel stored at depot Praha-Jih, delivery will be repeated next working day.)\n    *   Footer: \"© 2026 Kurýr Vltava s.r.o.\"\n\n3.  **Evaluate the State:**\n    *   The text says \"Zásilka je uložena na depu Praha-Jih\" (Parcel is stored at depot Praha-Jih).\n    *   It says \"doručení zopakujeme další pracovní den\" (delivery will be repeated next working day).\n    *   It says \"Příjemce nebyl zastižen\" (Recipient was not caught/available).\n    *   This indicates the parcel is still with the carrier, waiting for the next attempt. It is not delivered yet.\n    *   It is not returned (RETURNING).\n    *   It is not delivered (DELIVERED).\n    *   Is it IN_TRANSIT? Yes, it's with the carrier, waiting for the next delivery attempt.\n    *   Is it UNKNOWN? The status is clear: it's at the depot, waiting for redelivery. It hasn't been handed over.\n    *   Wait, check the \"Rules\": \"Planned or expected delivery... is NOT delivery.\" \"Handover to anyone other than the recipient... is UNKNOWN\".\n    *   The parcel is at the depot. It is in the process of being delivered (attempt failed, rescheduling).\n    *   State: IN_TRANSIT.\n    *   Quote: \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" or \"Příjemce nebyl zastižen.\"\n    *   Reason: Parcel is at depot, delivery rescheduled, not yet handed over.\n\n4.  **Refine the Output:**\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\"\n    *   Reason: Parcel at depot, delivery rescheduled, not yet handed over. (13 words)\n\n5.  **Final Check:**\n    *   Does \"Zásilka je uložena na depu\" mean IN_TRANSIT? Yes, it's still in the carrier's possession, awaiting delivery.\n    *   Is it DELIVERED? No.\n    *   Is it RETURNING? No.\n    *   Is it UNKNOWN? No, the status is explicit about being at the depot and rescheduling.\n    *   JSON format correct? Yes.\n    *   Reason under 20 words? Yes.\n\n6.  **Construct JSON:**\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\", \"reason\": \"Parcel at depot, delivery rescheduled, not yet handed over.\"}\n    ```\n    Wait, I should use Czech for the quote and reason to match the context, or English? The prompt instructions are in English, but the text is Czech. Usually, quotes should be exact text from the page. Reason can be English as per the prompt's instruction language (\"Answer ONLY with JSON...\"). I will keep the reason in English for consistency with the prompt's language, but the quote must be exact.\n    Actually, looking at previous turns in the few-shot examples (though there aren't any provided in this specific session, the system prompt implies English output for the JSON keys and values). I will write the reason in English.\n\n    Wait, checking the \"Rules\": \"Answer ONLY with JSON\".\n    Let's verify the quote. \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" is the most descriptive part.\n\n    Reason: Parcel is at depot, delivery rescheduled, not yet handed over.\n\n    One more check: \"Příjemce nebyl zastižen\" (Recipient not caught). This confirms it wasn't delivered. \"doručení zopakujeme\" (delivery will be repeated). This confirms it's still in transit/attempting delivery.\n\n    Final JSON construction.\n\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\", \"reason\": \"Parcel at depot, delivery rescheduled, not yet handed over.\"}\n    ```\n    Word count for reason: 9 words. Good.\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, it's safer to output raw JSON or within a block. The instruction says \"Answer ONLY with JSON\". I will output raw JSON text.\n\n    Wait, looking at the previous turns in the conversation history provided in the prompt (the few-shot examples):\n    Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}`\n    Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}`\n    Turn 3 (Current): I need to follow this format.\n\n    Okay, ready.\n\n    One detail: The prompt says \"The page may be in Czech.\" The output keys are English. The values (quote, reason) should probably be in the language of the text for quote, and English for reason (based on previous examples).\n    Example 1 reason: \"handed to reception, not the recipient\" (English).\n    Example 2 reason: \"current step is pickup point, not collected\" (English).\n    So reason in English. Quote exact text.\n\n    Quote selection: \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" captures the state well.\n\n    Final check on state definitions:\n    IN_TRANSIT: \"the parcel is with the carrier, or waits at a pickup point / box.\"\n    This parcel is at the depot (with carrier) waiting for next delivery. Fits IN_TRANSIT.\n\n    Let's write it.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbor, reception, etc.) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100118.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Používáme cookies...\" (Cookie banner - ignore).\n    *   Status Text: \"Sledování zásilky Číslo zásilky: KV2026100118\".\n    *   Status Text: \"ObjednávkaZásilka v přepravěNa cestě k vámDoručeno příjemci\". This looks like a breadcrumb or status list.\n    *   Status Text: \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" (Recipient not caught. Parcel stored at depot Praha-Jih, delivery will be repeated next working day.)\n    *   Footer: \"© 2026 Kurýr Vltava s.r.o.\"\n\n3.  **Evaluate the State:**\n    *   The text says \"Zásilka je uložena na depu Praha-Jih\" (Parcel is stored at depot Praha-Jih).\n    *   It says \"doručení zopakujeme další pracovní den\" (delivery will be repeated next working day).\n    *   It says \"Příjemce nebyl zastižen\" (Recipient was not caught/available).\n    *   This indicates the parcel is still with the carrier, waiting for the next attempt. It is not delivered yet.\n    *   It is not returned (RETURNING).\n    *   It is not delivered (DELIVERED).\n    *   Is it IN_TRANSIT? Yes, it's with the carrier, waiting for the next delivery attempt.\n    *   Is it UNKNOWN? The status is clear: it's at the depot, waiting for redelivery. It hasn't been handed over.\n    *   Wait, check the \"Rules\": \"Planned or expected delivery... is NOT delivery.\" \"Handover to anyone other than the recipient... is UNKNOWN\".\n    *   The parcel is at the depot. It is in the process of being delivered (attempt failed, rescheduling).\n    *   State: IN_TRANSIT.\n    *   Quote: \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" or \"Příjemce nebyl zastižen.\"\n    *   Reason: Parcel is at depot, delivery rescheduled, not yet handed over.\n\n4.  **Refine the Output:**\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\"\n    *   Reason: Parcel at depot, delivery rescheduled, not yet handed over. (13 words)\n\n5.  **Final Check:**\n    *   Does \"Zásilka je uložena na depu\" mean IN_TRANSIT? Yes, it's still in the carrier's possession, awaiting delivery.\n    *   Is it DELIVERED? No.\n    *   Is it RETURNING? No.\n    *   Is it UNKNOWN? No, the status is explicit about being at the depot and rescheduling.\n    *   JSON format correct? Yes.\n    *   Reason under 20 words? Yes.\n\n6.  **Construct JSON:**\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\", \"reason\": \"Parcel at depot, delivery rescheduled, not yet handed over.\"}\n    ```\n    Wait, I should use Czech for the quote and reason to match the context, or English? The prompt instructions are in English, but the text is Czech. Usually, quotes should be exact text from the page. Reason can be English as per the prompt's instruction language (\"Answer ONLY with JSON...\"). I will keep the reason in English for consistency with the prompt's language, but the quote must be exact.\n    Actually, looking at previous turns in the few-shot examples (though there aren't any provided in this specific session, the system prompt implies English output for the JSON keys and values). I will write the reason in English.\n\n    Wait, checking the \"Rules\": \"Answer ONLY with JSON\".\n    Let's verify the quote. \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" is the most descriptive part.\n\n    Reason: Parcel is at depot, delivery rescheduled, not yet handed over.\n\n    One more check: \"Příjemce nebyl zastižen\" (Recipient not caught). This confirms it wasn't delivered. \"doručení zopakujeme\" (delivery will be repeated). This confirms it's still in transit/attempting delivery.\n\n    Final JSON construction.\n\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\", \"reason\": \"Parcel at depot, delivery rescheduled, not yet handed over.\"}\n    ```\n    Word count for reason: 9 words. Good.\n\n    Wait, I need to make sure I don't include markdown code blocks if the instruction says \"Answer ONLY with JSON\". Usually, it's safer to output raw JSON or within a block. The instruction says \"Answer ONLY with JSON\". I will output raw JSON text.\n\n    Wait, looking at the previous turns in the conversation history provided in the prompt (the few-shot examples):\n    Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}`\n    Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}`\n    Turn 3 (Current): I need to follow this format.\n\n    Okay, ready.\n\n    One detail: The prompt says \"The page may be in Czech.\" The output keys are English. The values (quote, reason) should probably be in the language of the text for quote, and English for reason (based on previous examples).\n    Example 1 reason: \"handed to reception, not the recipient\" (English).\n    Example 2 reason: \"current step is pickup point, not collected\" (English).\n    So reason in English. Quote exact text.\n\n    Quote selection: \"Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" captures the state well.\n\n    Final check on state definitions:\n    IN_TRANSIT: \"the parcel is with the carrier, or waits at a pickup point / box.\"\n    This parcel is at the depot (with carrier) waiting for next delivery. Fits IN_TRANSIT.\n\n    Let's write it.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 890,
+      "completion_tokens": 1851,
+      "total_tokens": 2741,
+      "cost": 0.00036665,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00036665,
+        "upstream_inference_prompt_cost": 0.000089,
+        "upstream_inference_completions_cost": 0.00027765
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1666,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

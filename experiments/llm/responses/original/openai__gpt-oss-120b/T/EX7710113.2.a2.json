@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "14cf23afb10091117fa82d101a4e85c9175a5b532f9ececa95e524b157ab34a7",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710113.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 2,
+  "collectedAt": "2026-11-06T21:29:18.622Z",
+  "latencyMs": 1804,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000556-ib2ALNyNwyBy7lXQUx3g",
+    "object": "chat.completion",
+    "created": 1794000556,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"UNKNOWN\",\"quote\":\"Zásilku jsme nenašli\",\"reason\":\"parcel not found in system\"}",
+          "refusal": null,
+          "reasoning": "We have not found parcel, so UNKNOWN.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We have not found parcel, so UNKNOWN.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 936,
+      "completion_tokens": 43,
+      "total_tokens": 979,
+      "cost": 0.000041942,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000041942,
+        "upstream_inference_prompt_cost": 0.000034632,
+        "upstream_inference_completions_cost": 0.00000731
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 10,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

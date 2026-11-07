@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "77259ac315b5479dc50c278dc9fb10ba2c88541cf9a9eba9f9bf8e414a2341e5",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710195.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 3,
+  "collectedAt": "2026-11-07T12:44:56.645Z",
+  "latencyMs": 3912,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794055492-2qMOW0PkrHbhBwdyxEnr",
+    "object": "chat.completion",
+    "created": 1794055492,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Vrací se odesílateli\",\"reason\":\"The current status explicitly states the parcel is returning to the sender.\",\"state\":\"RETURNING\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Tracking Number: EX7710195\n    *   Page Content:\n        *   Cookie banner (ignore)\n        *   Header/Nav (ignore)\n        *   Hero ad (ignore)\n        *   Main section:\n            *   Tracking number: EX7710195\n            *   Status card:\n                *   Label: \"Aktuální stav\" (Current status)\n                *   Value: \"Vrací se odesílateli\" (Returning to sender)\n                *   Last update: 30. 10. 2026 09:15\n                *   Detail: \"Příjemce zásilku odmítl převzít.\" (Recipient refused to take the parcel.)\n        *   FAQ (ignore)\n        *   Ads (ignore)\n        *   Footer (ignore)\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No)\n    *   RETURNING: Being returned or already returned to sender. (Yes - \"Vrací se odesílateli\")\n    *   UNKNOWN: Not confirmable. (No)\n\n    *   State: RETURNING\n    *   Quote: \"Vrací se odesílateli\"\n    *   Reason: The current status explicitly states the parcel is returning to the sender.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Tracking Number: EX7710195\n    *   Page Content:\n        *   Cookie banner (ignore)\n        *   Header/Nav (ignore)\n        *   Hero ad (ignore)\n        *   Main section:\n            *   Tracking number: EX7710195\n            *   Status card:\n                *   Label: \"Aktuální stav\" (Current status)\n                *   Value: \"Vrací se odesílateli\" (Returning to sender)\n                *   Last update: 30. 10. 2026 09:15\n                *   Detail: \"Příjemce zásilku odmítl převzít.\" (Recipient refused to take the parcel.)\n        *   FAQ (ignore)\n        *   Ads (ignore)\n        *   Footer (ignore)\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No)\n    *   RETURNING: Being returned or already returned to sender. (Yes - \"Vrací se odesílateli\")\n    *   UNKNOWN: Not confirmable. (No)\n\n    *   State: RETURNING\n    *   Quote: \"Vrací se odesílateli\"\n    *   Reason: The current status explicitly states the parcel is returning to the sender.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1272,
+      "completion_tokens": 362,
+      "total_tokens": 1634,
+      "cost": 0.00032288,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00032288,
+        "upstream_inference_prompt_cost": 0.00017808,
+        "upstream_inference_completions_cost": 0.0001448
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 325,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

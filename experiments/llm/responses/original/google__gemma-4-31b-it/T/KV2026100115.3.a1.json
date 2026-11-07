@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "058c666a4a7987f04c617d3c87cd646f495464faf1e0125a6d2edd6636d1d584",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100115.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:52:09.336Z",
+  "latencyMs": 14851,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001914-vlYy9pF6uPTzGsDo179S",
+    "object": "chat.completion",
+    "created": 1794001914,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Převzal: soused (Novák), Lipová 12.\", \"reason\": \"Handed to a neighbor, not the recipient.\", \"state\": \"UNKNOWN\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100115\n    *   Key text: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    *   Context: The page says \"Doručeno příjemci\" (Delivered to recipient) in the status list, but the specific detail says \"Převzal: soused (Novák)\" (Picked up by: neighbor (Novák)).\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Page doesn't confirm recipient took it (e.g., handed to a third person).\n\n    *   The text explicitly states \"Převzal: soused (Novák)\" (Picked up by: neighbor (Novák)).\n    *   Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n\n    *   State: UNKNOWN\n    *   Quote: \"Převzal: soused (Novák), Lipová 12.\"\n    *   Reason: Handed to a neighbor, not the recipient.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100115\n    *   Key text: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    *   Context: The page says \"Doručeno příjemci\" (Delivered to recipient) in the status list, but the specific detail says \"Převzal: soused (Novák)\" (Picked up by: neighbor (Novák)).\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Page doesn't confirm recipient took it (e.g., handed to a third person).\n\n    *   The text explicitly states \"Převzal: soused (Novák)\" (Picked up by: neighbor (Novák)).\n    *   Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n\n    *   State: UNKNOWN\n    *   Quote: \"Převzal: soused (Novák), Lipová 12.\"\n    *   Reason: Handed to a neighbor, not the recipient.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 897,
+      "completion_tokens": 354,
+      "total_tokens": 1251,
+      "cost": 0.00026718,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00026718,
+        "upstream_inference_prompt_cost": 0.00012558,
+        "upstream_inference_completions_cost": 0.0001416
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 311,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

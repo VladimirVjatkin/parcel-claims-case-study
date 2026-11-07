@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "a11dd02ad2efa302fc49e4f2aace372f554b07612efc9438444ff910785a9317",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100192.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:35:20.566Z",
+  "latencyMs": 20945,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793997299-g5I3UAwLw4zeexZGtaDw",
+    "object": "chat.completion",
+    "created": 1793997299,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event states parcel returned to sender.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML tracking page (carrier: ParcelNord, number: PN55100192).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event determines state.\n        *   \"DELIVERED\" = Recipient took over (pickup point collection).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned or already returned to sender.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party.\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100192.\n    *   Events Table:\n        1.  29. 10. 2026, 10:05, Odesílatel (Sender): \"Zásilka vrácena odesílateli\" (Parcel returned to sender).\n        2.  27. 10. 2026, 08:30, Box Ostrava Centrum: \"Úložní doba uplynula, zásilka se vrací odesílateli\" (Storage time expired, parcel is being returned to sender).\n        3.  20. 10. 2026, 12:44, Box Ostrava Centrum: \"Zásilka je připravena k vyzvednutí...\" (Parcel ready for pickup...).\n        4.  19. 10. 2026, 09:00, Odesílatel: \"Zásilka převzata od odesílatele\" (Parcel picked up from sender).\n\n3.  **Determine the State:**\n    *   The latest event (29. 10. 2026) is \"Zásilka vrácena odesílateli\" (Parcel returned to sender).\n    *   The event before that (27. 10. 2026) explicitly states \"zásilka se vrací odesílateli\" (parcel is being returned to sender).\n    *   According to the definitions: \"RETURNING — the parcel is being returned, or was already returned, to the sender.\"\n    *   This matches the \"RETURNING\" state perfectly.\n\n4.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"Zásilka vrácena odesílateli\" (from the latest event) or \"zásilka se vrací odesílateli\". The latest event is the strongest indicator. Let's use the latest event text.\n    *   `reason`: \"Latest event states parcel returned to sender.\"\n\n5.  **Refine the Quote:**\n    *   Exact text from the page: \"Zásilka vrácena odesílateli\" (from the `<th>Událost</th>` column for the latest row).\n    *   Or the full row context: \"Zásilka vrácena odesílateli\".\n    *   Let's pick the specific event text.\n\n6.  **Refine the Reason:**\n    *   Max 20 words.\n    *   \"Latest event indicates the parcel was returned to the sender.\"\n\n7.  **Final Check:**\n    *   Does it match the rules? Yes.\n    *   Is it JSON? Yes.\n    *   Is the state correct? Yes (RETURNING).\n\n    *Self-Correction on Quote:* The prompt asks for \"exact text or attribute fragment copied from the page\".\n    Text: \"Zásilka vrácena odesílateli\"\n    Reason: \"Latest event confirms return to sender.\"\n\n    Wait, checking the definition of RETURNING: \"the parcel is being returned, or was already returned, to the sender.\"\n    The event says \"Zásilka vrácena odesílateli\" (Parcel returned to sender). This is definitive.\n\n    Let's construct the JSON.\n\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event confirms parcel was returned to sender.\"}\n    ```\n\n    Wait, I need to make sure I don't include markdown code blocks in the final output if the instruction says \"Answer ONLY with JSON\". Usually, it means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the previous turns in the conversation (few-shot style), the model outputted JSON inside a code block or just raw?\n    Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}` (No markdown block).\n    Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}` (No markdown block).\n\n    So I should output raw JSON text without markdown fences.\n\n    Wait, looking at the instruction: \"Answer ONLY with JSON\".\n    Okay, I will output raw JSON.\n\n    One more check on the quote.\n    Page text: `<tr><td>29. 10. 2026</td><td>10:05</td><td>Odesílatel</td><td>Zásilka vrácena odesílateli</td></tr>`\n    Quote: \"Zásilka vrácena odesílateli\"\n\n    Reason: \"Latest event states parcel returned to sender.\" (10 words).\n\n    Ready.\n\n    Wait, one detail in the prompt: \"The page may be in Czech.\"\n    My reasoning should be in English (based on the system instructions \"Answer ONLY with JSON\" and the examples provided in the few-shot history which have English reasons).\n    Turn 1 Reason: \"handed to reception, not the recipient\" (English).\n    Turn 2 Reason: \"current step is pickup point, not collected\" (English).\n    So Reason must be English.\n\n    Final check on state definitions:\n    RETURNING — the parcel is being returned, or was already returned, to the sender.\n    Event: \"Zásilka vrácena odesílateli\" -> Returned to sender.\n    State: RETURNING.\n\n    Okay, proceeding.cw\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML tracking page (carrier: ParcelNord, number: PN55100192).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event determines state.\n        *   \"DELIVERED\" = Recipient took over (pickup point collection).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned or already returned to sender.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party.\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100192.\n    *   Events Table:\n        1.  29. 10. 2026, 10:05, Odesílatel (Sender): \"Zásilka vrácena odesílateli\" (Parcel returned to sender).\n        2.  27. 10. 2026, 08:30, Box Ostrava Centrum: \"Úložní doba uplynula, zásilka se vrací odesílateli\" (Storage time expired, parcel is being returned to sender).\n        3.  20. 10. 2026, 12:44, Box Ostrava Centrum: \"Zásilka je připravena k vyzvednutí...\" (Parcel ready for pickup...).\n        4.  19. 10. 2026, 09:00, Odesílatel: \"Zásilka převzata od odesílatele\" (Parcel picked up from sender).\n\n3.  **Determine the State:**\n    *   The latest event (29. 10. 2026) is \"Zásilka vrácena odesílateli\" (Parcel returned to sender).\n    *   The event before that (27. 10. 2026) explicitly states \"zásilka se vrací odesílateli\" (parcel is being returned to sender).\n    *   According to the definitions: \"RETURNING — the parcel is being returned, or was already returned, to the sender.\"\n    *   This matches the \"RETURNING\" state perfectly.\n\n4.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"Zásilka vrácena odesílateli\" (from the latest event) or \"zásilka se vrací odesílateli\". The latest event is the strongest indicator. Let's use the latest event text.\n    *   `reason`: \"Latest event states parcel returned to sender.\"\n\n5.  **Refine the Quote:**\n    *   Exact text from the page: \"Zásilka vrácena odesílateli\" (from the `<th>Událost</th>` column for the latest row).\n    *   Or the full row context: \"Zásilka vrácena odesílateli\".\n    *   Let's pick the specific event text.\n\n6.  **Refine the Reason:**\n    *   Max 20 words.\n    *   \"Latest event indicates the parcel was returned to the sender.\"\n\n7.  **Final Check:**\n    *   Does it match the rules? Yes.\n    *   Is it JSON? Yes.\n    *   Is the state correct? Yes (RETURNING).\n\n    *Self-Correction on Quote:* The prompt asks for \"exact text or attribute fragment copied from the page\".\n    Text: \"Zásilka vrácena odesílateli\"\n    Reason: \"Latest event confirms return to sender.\"\n\n    Wait, checking the definition of RETURNING: \"the parcel is being returned, or was already returned, to the sender.\"\n    The event says \"Zásilka vrácena odesílateli\" (Parcel returned to sender). This is definitive.\n\n    Let's construct the JSON.\n\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event confirms parcel was returned to sender.\"}\n    ```\n\n    Wait, I need to make sure I don't include markdown code blocks in the final output if the instruction says \"Answer ONLY with JSON\". Usually, it means raw JSON text. I will output raw JSON.\n\n    Wait, looking at the previous turns in the conversation (few-shot style), the model outputted JSON inside a code block or just raw?\n    Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}` (No markdown block).\n    Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}` (No markdown block).\n\n    So I should output raw JSON text without markdown fences.\n\n    Wait, looking at the instruction: \"Answer ONLY with JSON\".\n    Okay, I will output raw JSON.\n\n    One more check on the quote.\n    Page text: `<tr><td>29. 10. 2026</td><td>10:05</td><td>Odesílatel</td><td>Zásilka vrácena odesílateli</td></tr>`\n    Quote: \"Zásilka vrácena odesílateli\"\n\n    Reason: \"Latest event states parcel returned to sender.\" (10 words).\n\n    Ready.\n\n    Wait, one detail in the prompt: \"The page may be in Czech.\"\n    My reasoning should be in English (based on the system instructions \"Answer ONLY with JSON\" and the examples provided in the few-shot history which have English reasons).\n    Turn 1 Reason: \"handed to reception, not the recipient\" (English).\n    Turn 2 Reason: \"current step is pickup point, not collected\" (English).\n    So Reason must be English.\n\n    Final check on state definitions:\n    RETURNING — the parcel is being returned, or was already returned, to the sender.\n    Event: \"Zásilka vrácena odesílateli\" -> Returned to sender.\n    State: RETURNING.\n\n    Okay, proceeding.cw\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1217,
+      "completion_tokens": 1616,
+      "total_tokens": 2833,
+      "cost": 0.0003641,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0003641,
+        "upstream_inference_prompt_cost": 0.0001217,
+        "upstream_inference_completions_cost": 0.0002424
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1333,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

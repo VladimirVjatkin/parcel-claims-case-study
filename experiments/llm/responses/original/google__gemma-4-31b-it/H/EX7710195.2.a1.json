@@ -1,0 +1,44 @@
+{
+  "status": "failed",
+  "promptVersion": "v1",
+  "inputSha256": "77259ac315b5479dc50c278dc9fb10ba2c88541cf9a9eba9f9bf8e414a2341e5",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710195.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T12:13:07.874Z",
+  "latencyMs": 268,
+  "httpStatus": 429,
+  "error": "Chyba API (HTTP 429).",
+  "response": {
+    "error": {
+      "message": "Provider returned error",
+      "code": 429,
+      "metadata": {
+        "raw": "google/gemma-4-31b-it is temporarily rate-limited upstream. Please retry shortly, or add your own provider key to use your own limits: https://openrouter.ai/workspaces/default/byok",
+        "provider_name": "Novita",
+        "is_byok": false,
+        "limit_source": "upstream_provider_shared_pool",
+        "remedy_hint": "Retry shortly, add your own provider key to use your own limits (https://openrouter.ai/workspaces/default/byok), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing.",
+        "retry_after_seconds": 5,
+        "retry_after_seconds_raw": 5,
+        "headers": {
+          "Retry-After": "5"
+        }
+      }
+    },
+    "user_id": "user_2vra5owjsNjB914YSq291pOGQfC"
+  }
+}

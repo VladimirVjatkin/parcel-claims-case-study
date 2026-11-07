@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "428992510ff3c6ca258f36ef527aa3895ab463e659cddbc190559e63edac00cf",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "KV2026100902.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T19:28:14.162Z",
+  "latencyMs": 17956,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794079677-fRtHaF1sNyUwOzxbTWu3",
+    "object": "chat.completion",
+    "created": 1794079677,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilka je uložena v Z-BOXu\", \"reason\": \"Parcel is waiting at a pickup point/box\", \"state\": \"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100902\n    *   Content: \"Zásilka je uložena v Z-BOXu Praha 7, Dukelských hrdinů 12. Vyzvedněte ji do 8. 11. 2026. Doručeno do Z-BOXu\"\n    *   Key phrase: \"Zásilka je uložena v Z-BOXu\" (Parcel is stored in Z-BOX) and \"Vyzvedněte ji\" (Pick it up).\n    *   Another phrase: \"Doručeno do Z-BOXu\" (Delivered to Z-BOX).\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: Parcel is with carrier, or waits at a pickup point / box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The parcel is in a Z-BOX (pickup point/box).\n    *   The recipient is told to pick it up (\"Vyzvedněte ji\").\n    *   \"Doručeno do Z-BOXu\" means it was delivered *to the box*, not *to the recipient*.\n    *   According to the rules: \"ready for pickup is NOT delivery\" and \"waits at a pickup point / box\" is IN_TRANSIT.\n\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je uložena v Z-BOXu\" or \"Vyzvedněte ji do 8. 11. 2026.\"\n    *   Reason: Parcel is waiting at a pickup point (Z-BOX).",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100902\n    *   Content: \"Zásilka je uložena v Z-BOXu Praha 7, Dukelských hrdinů 12. Vyzvedněte ji do 8. 11. 2026. Doručeno do Z-BOXu\"\n    *   Key phrase: \"Zásilka je uložena v Z-BOXu\" (Parcel is stored in Z-BOX) and \"Vyzvedněte ji\" (Pick it up).\n    *   Another phrase: \"Doručeno do Z-BOXu\" (Delivered to Z-BOX).\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: Parcel is with carrier, or waits at a pickup point / box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The parcel is in a Z-BOX (pickup point/box).\n    *   The recipient is told to pick it up (\"Vyzvedněte ji\").\n    *   \"Doručeno do Z-BOXu\" means it was delivered *to the box*, not *to the recipient*.\n    *   According to the rules: \"ready for pickup is NOT delivery\" and \"waits at a pickup point / box\" is IN_TRANSIT.\n\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je uložena v Z-BOXu\" or \"Vyzvedněte ji do 8. 11. 2026.\"\n    *   Reason: Parcel is waiting at a pickup point (Z-BOX).",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 793,
+      "completion_tokens": 441,
+      "total_tokens": 1234,
+      "cost": 0.00028742,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00028742,
+        "upstream_inference_prompt_cost": 0.00011102,
+        "upstream_inference_completions_cost": 0.0001764
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 397,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

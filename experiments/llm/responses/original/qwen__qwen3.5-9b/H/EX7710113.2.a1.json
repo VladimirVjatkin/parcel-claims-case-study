@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "efa5aedf6d5a926028bac75a8704cf0e39bf2d35a4c189e476914adb3c8d27c8",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710113.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:40:20.714Z",
+  "latencyMs": 18230,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793997602-0a7YHPQ7jhAuURrhb3fZ",
+    "object": "chat.completion",
+    "created": 1793997602,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"UNKNOWN\", \"quote\": \"Zásilku jsme nenašli\", \"reason\": \"Parcel not found by carrier, status unclear.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML content of a tracking page (carrier: Expedo, number: EX7710113).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event/current step determines state.\n        *   Planned/expected/failed pickup = NOT DELIVERED.\n        *   Handover to non-recipient = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Only consider the tracking block of THIS parcel (ignore cookie banners, ads, nav, FAQ).\n        *   Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo.\n    *   Tracking Number: EX7710113.\n    *   Page Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero Ad (ignore).\n        *   Main Section:\n            *   Title: \"Kde je moje zásilka?\" (Where is my parcel?)\n            *   Tracking Number: EX7710113.\n            *   Status Card:\n                *   Label: \"Aktuální stav\" (Current status)\n                *   Value: \"Zásilku jsme nenašli\" (We could not find the parcel)\n                *   Small text: \"Poslední aktualizace: —\" (Last update: —)\n                *   Description: \"Zásilku s tímto číslem jsme nenašli. Zkontrolujte číslo nebo to zkuste později.\" (We could not find the parcel with this number. Check the number or try again later.)\n        *   FAQ (ignore).\n        *   Ads (ignore).\n        *   Footer (ignore).\n\n3.  **Evaluate the State:**\n    *   The status explicitly says \"Zásilku jsme nenašli\" (We could not find the parcel).\n    *   This is not DELIVERED (recipient didn't take it).\n    *   This is not IN_TRANSIT (no active tracking steps shown, system says parcel not found).\n    *   This is not RETURNING (no return info).\n    *   This falls under \"UNKNOWN\" because the system cannot confirm the status. The parcel might be lost, the number might be wrong, or it might be in transit but not updated. The rules state: \"If you are not sure, answer UNKNOWN. A wrong DELIVERED is the most costly mistake.\" Also, \"UNKNOWN — the page does not allow confirming that the recipient took it over (e.g., parcel not found...)\".\n    *   Specifically, the definition of UNKNOWN includes: \"parcel not found\".\n\n4.  **Draft the JSON:**\n    *   `state`: \"UNKNOWN\"\n    *   `quote`: \"Zásilku jsme nenašli\" (or the full status card text)\n    *   `reason`: \"Parcel not found by carrier, status unclear\"\n\n5.  **Refine the Quote:**\n    *   The most relevant text is `<strong class=\"value\">Zásilku jsme nenašli</strong>`.\n    *   Or `<div class=\"status-card\"><span class=\"label\">Aktuální stav</span><strong class=\"value\">Zásilku jsme nenašli</strong>...`\n    *   Let's use the specific value text for clarity.\n\n6.  **Refine the Reason:**\n    *   \"Parcel not found by carrier, status unclear\" -> \"Zásilka nenalezena dopravcem, stav neurčitelný\" (Czech) or English? The prompt instructions are in English, but the text is Czech. Usually, the reason should be in English for consistency with the prompt's language, unless specified otherwise. The prompt says \"Answer ONLY with JSON\". The example outputs in the few-shot (if any) aren't provided here, but standard practice for these tasks is English reasoning.\n    *   Wait, looking at the previous turns in the conversation (few-shot style within the session):\n        *   Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}` (English reason).\n        *   Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}` (English reason).\n    *   So, reason must be in English.\n    *   Reason: \"Parcel not found by carrier, status unclear.\"\n\n7.  **Final Check:**\n    *   State: UNKNOWN (matches \"parcel not found\" rule).\n    *   Quote: Exact text from page.\n    *   Reason: Max 20 words.\n\n    *   Quote selection: \"Zásilku jsme nenašli\" is the core message.\n    *   Reason: \"Carrier could not find the parcel, status unknown.\"\n\n8.  **Construct JSON:**\n    ```json\n    {\"state\": \"UNKNOWN\", \"quote\": \"Zásilku jsme nenašli\", \"reason\": \"Carrier could not find the parcel, status unknown.\"}\n    ```\n\n    Wait, checking the rules again: \"UNKNOWN — the page does not allow confirming that the recipient took it over (e.g., parcel not found...)\". This fits perfectly.\n\n    One more check on the input: The page explicitly says \"Zásilku jsme nenašli\" (We didn't find the parcel). This is a specific error state, not necessarily \"in transit\" or \"delivered\". Since I cannot confirm delivery or transit, UNKNOWN is the correct classification based on the provided definitions.\n\n    Let's finalize the quote to be representative.\n    Quote: \"Zásilku jsme nenašli\"\n    Reason: \"Parcel not found by carrier, status unclear.\"\n\n    Wait, I should check if there's any other text.\n    `<div class=\"status-card\"><span class=\"label\">Aktuální stav</span><strong class=\"value\">Zásilku jsme nenašli</strong><small>Poslední aktualizace: —</small><p>Zásilku s tímto číslem jsme nenašli. Zkontrolujte číslo nebo to zkuste později.</p></div>`\n    The quote \"Zásilku jsme nenašli\" is sufficient.\n\n    Final check on constraints:\n    - JSON only.\n    - Keys: state, quote, reason.\n    - Values: specific strings.\n\n    Ready.\n\n    Wait, one detail from Turn 1 and Turn 2 in the conversation history provided in the prompt context:\n    Turn 1 User: Tracking page...\n    Turn 1 Model: {\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}\n    Turn 2 User: Tracking page...\n    Turn 2 Model: {\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}\n    Turn 3 User: Tracking page (Expedo)...\n    Turn 3 Model: (Me)\n\n    Okay, I will follow the format.\n\n    State: UNKNOWN\n    Quote: \"Zásilku jsme nenašli\"\n    Reason: \"Parcel not found by carrier, status unclear.\"\n\n    Wait, is \"Zásilku jsme nenašli\" the exact text? Yes.\n    Is the reason under 20 words? Yes (6 words).\n\n    Let's write it.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML content of a tracking page (carrier: Expedo, number: EX7710113).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event/current step determines state.\n        *   Planned/expected/failed pickup = NOT DELIVERED.\n        *   Handover to non-recipient = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Only consider the tracking block of THIS parcel (ignore cookie banners, ads, nav, FAQ).\n        *   Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo.\n    *   Tracking Number: EX7710113.\n    *   Page Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero Ad (ignore).\n        *   Main Section:\n            *   Title: \"Kde je moje zásilka?\" (Where is my parcel?)\n            *   Tracking Number: EX7710113.\n            *   Status Card:\n                *   Label: \"Aktuální stav\" (Current status)\n                *   Value: \"Zásilku jsme nenašli\" (We could not find the parcel)\n                *   Small text: \"Poslední aktualizace: —\" (Last update: —)\n                *   Description: \"Zásilku s tímto číslem jsme nenašli. Zkontrolujte číslo nebo to zkuste později.\" (We could not find the parcel with this number. Check the number or try again later.)\n        *   FAQ (ignore).\n        *   Ads (ignore).\n        *   Footer (ignore).\n\n3.  **Evaluate the State:**\n    *   The status explicitly says \"Zásilku jsme nenašli\" (We could not find the parcel).\n    *   This is not DELIVERED (recipient didn't take it).\n    *   This is not IN_TRANSIT (no active tracking steps shown, system says parcel not found).\n    *   This is not RETURNING (no return info).\n    *   This falls under \"UNKNOWN\" because the system cannot confirm the status. The parcel might be lost, the number might be wrong, or it might be in transit but not updated. The rules state: \"If you are not sure, answer UNKNOWN. A wrong DELIVERED is the most costly mistake.\" Also, \"UNKNOWN — the page does not allow confirming that the recipient took it over (e.g., parcel not found...)\".\n    *   Specifically, the definition of UNKNOWN includes: \"parcel not found\".\n\n4.  **Draft the JSON:**\n    *   `state`: \"UNKNOWN\"\n    *   `quote`: \"Zásilku jsme nenašli\" (or the full status card text)\n    *   `reason`: \"Parcel not found by carrier, status unclear\"\n\n5.  **Refine the Quote:**\n    *   The most relevant text is `<strong class=\"value\">Zásilku jsme nenašli</strong>`.\n    *   Or `<div class=\"status-card\"><span class=\"label\">Aktuální stav</span><strong class=\"value\">Zásilku jsme nenašli</strong>...`\n    *   Let's use the specific value text for clarity.\n\n6.  **Refine the Reason:**\n    *   \"Parcel not found by carrier, status unclear\" -> \"Zásilka nenalezena dopravcem, stav neurčitelný\" (Czech) or English? The prompt instructions are in English, but the text is Czech. Usually, the reason should be in English for consistency with the prompt's language, unless specified otherwise. The prompt says \"Answer ONLY with JSON\". The example outputs in the few-shot (if any) aren't provided here, but standard practice for these tasks is English reasoning.\n    *   Wait, looking at the previous turns in the conversation (few-shot style within the session):\n        *   Turn 1: `{\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}` (English reason).\n        *   Turn 2: `{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}` (English reason).\n    *   So, reason must be in English.\n    *   Reason: \"Parcel not found by carrier, status unclear.\"\n\n7.  **Final Check:**\n    *   State: UNKNOWN (matches \"parcel not found\" rule).\n    *   Quote: Exact text from page.\n    *   Reason: Max 20 words.\n\n    *   Quote selection: \"Zásilku jsme nenašli\" is the core message.\n    *   Reason: \"Carrier could not find the parcel, status unknown.\"\n\n8.  **Construct JSON:**\n    ```json\n    {\"state\": \"UNKNOWN\", \"quote\": \"Zásilku jsme nenašli\", \"reason\": \"Carrier could not find the parcel, status unknown.\"}\n    ```\n\n    Wait, checking the rules again: \"UNKNOWN — the page does not allow confirming that the recipient took it over (e.g., parcel not found...)\". This fits perfectly.\n\n    One more check on the input: The page explicitly says \"Zásilku jsme nenašli\" (We didn't find the parcel). This is a specific error state, not necessarily \"in transit\" or \"delivered\". Since I cannot confirm delivery or transit, UNKNOWN is the correct classification based on the provided definitions.\n\n    Let's finalize the quote to be representative.\n    Quote: \"Zásilku jsme nenašli\"\n    Reason: \"Parcel not found by carrier, status unclear.\"\n\n    Wait, I should check if there's any other text.\n    `<div class=\"status-card\"><span class=\"label\">Aktuální stav</span><strong class=\"value\">Zásilku jsme nenašli</strong><small>Poslední aktualizace: —</small><p>Zásilku s tímto číslem jsme nenašli. Zkontrolujte číslo nebo to zkuste později.</p></div>`\n    The quote \"Zásilku jsme nenašli\" is sufficient.\n\n    Final check on constraints:\n    - JSON only.\n    - Keys: state, quote, reason.\n    - Values: specific strings.\n\n    Ready.\n\n    Wait, one detail from Turn 1 and Turn 2 in the conversation history provided in the prompt context:\n    Turn 1 User: Tracking page...\n    Turn 1 Model: {\"state\":\"UNKNOWN\",\"quote\":\"Zásilka byla předána na recepci budovy.\",\"reason\":\"handed to reception, not the recipient\"}\n    Turn 2 User: Tracking page...\n    Turn 2 Model: {\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"step current\\\">Ve výdejně</li>\",\"reason\":\"current step is pickup point, not collected\"}\n    Turn 3 User: Tracking page (Expedo)...\n    Turn 3 Model: (Me)\n\n    Okay, I will follow the format.\n\n    State: UNKNOWN\n    Quote: \"Zásilku jsme nenašli\"\n    Reason: \"Parcel not found by carrier, status unclear.\"\n\n    Wait, is \"Zásilku jsme nenašli\" the exact text? Yes.\n    Is the reason under 20 words? Yes (6 words).\n\n    Let's write it.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1240,
+      "completion_tokens": 1781,
+      "total_tokens": 3021,
+      "cost": 0.00039115,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00039115,
+        "upstream_inference_prompt_cost": 0.000124,
+        "upstream_inference_completions_cost": 0.00026715
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1624,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "fd11860d4f0eb5594f0ecf1d2c91a87aa7042fa8d9b17404b5358b20b745f224",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "EX7710903.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:27:54.277Z",
+  "latencyMs": 2054,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000471-Rz0yD3lbeN7EH7KO15q8",
+    "object": "chat.completion",
+    "created": 1794000471,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"DELIVERED\",\"quote\":\"<strong class=\\\"value\\\">Delivered</strong>\",\"reason\":\"status indicates parcel handed to recipient\"}",
+          "refusal": null,
+          "reasoning": "We have Delivered status. So state DELIVERED. Quote from strong class value.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We have Delivered status. So state DELIVERED. Quote from strong class value.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 924,
+      "completion_tokens": 56,
+      "total_tokens": 980,
+      "cost": 0.000043708,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000043708,
+        "upstream_inference_prompt_cost": 0.000034188,
+        "upstream_inference_completions_cost": 0.00000952
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 19,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

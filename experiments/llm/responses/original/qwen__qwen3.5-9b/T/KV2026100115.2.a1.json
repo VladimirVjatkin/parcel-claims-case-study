@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "058c666a4a7987f04c617d3c87cd646f495464faf1e0125a6d2edd6636d1d584",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100115.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T19:46:44.177Z",
+  "latencyMs": 25498,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793994378-O13XwYHXrjJfNFkIkcjI",
+    "object": "chat.completion",
+    "created": 1793994378,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Handover to neighbor, not recipient\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a specific parcel from a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   Output Format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT `DELIVERED`.\n        *   Handover to anyone *other* than the recipient (neighbour, reception, etc.) = `UNKNOWN`, not `DELIVERED`.\n        *   If unsure, answer `UNKNOWN`.\n        *   Wrong `DELIVERED` is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100115.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    *   Translation/Interpretation:\n        *   \"Zásilka byla doručena\" = Parcel was delivered.\n        *   \"Převzal: soused (Novák)\" = Taken by: neighbor (Novák).\n        *   \"Lipová 12\" = Address.\n    *   Key Rule Check: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n\n3.  **Evaluate the State:**\n    *   The text explicitly says \"Převzal: soused\" (Taken by: neighbor).\n    *   According to the rules provided in the prompt: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Therefore, even though it says \"Doručeno\" (Delivered), the specific handover details indicate it was not the intended recipient.\n    *   State should be `UNKNOWN`.\n\n4.  **Draft the JSON:**\n    *   `state`: \"UNKNOWN\"\n    *   `quote`: \"Převzal: soused (Novák)\" (or the full sentence \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\")\n    *   `reason`: \"Handover to neighbor, not recipient\"\n\n5.  **Refine the Quote:**\n    *   The most relevant fragment is \"Převzal: soused (Novák)\".\n    *   Or the full status line: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    *   Let's use the specific part indicating the handover to be precise. \"Převzal: soused (Novák)\" is clear.\n\n6.  **Refine the Reason:**\n    *   Max 20 words.\n    *   \"Handover to neighbor instead of recipient, per rules.\"\n\n7.  **Final Check:**\n    *   Does it match the rules? Yes. Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    *   Is it JSON only? Yes.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Handover to neighbor, not recipient\"}\n    ```\n    Wait, looking closer at the prompt's rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    The text says \"Převzal: soused\". This is explicitly a neighbor.\n    So `UNKNOWN` is the correct classification based on the specific rules provided in the prompt instructions, even though colloquially it might be considered \"delivered\". The prompt explicitly defines this scenario as `UNKNOWN`.\n\n    Let's double check the quote. The text is: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    I will use the part that proves the neighbor handover.\n\n    Reason: \"Parcel handed to neighbor, not recipient.\" (5 words).\n\n    Final JSON structure check.\n\n    One more check: The prompt says \"The page may be in Czech.\" The text is Czech.\n    \"Převzal: soused\" -> Taken by: neighbor.\n    Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    Conclusion: UNKNOWN.\n\n    Wait, is there any ambiguity? \"Doručeno příjemci\" is in the navigation menu (\"Doručeno příjemci\"), but the specific status text says \"Převzal: soused\". The specific status text overrides the menu label. The rule about neighbor handover is strict.\n\n    Okay, proceeding with UNKNOWN.\n\n    Wait, I need to make sure I don't violate the \"Answer ONLY with JSON\" rule.\n\n    Let's finalize the quote. \"Převzal: soused (Novák)\" is good.\n    Reason: \"Handover to neighbor, not recipient.\"\n\n    Wait, looking at the previous turn examples in the few-shot style (though this is a single turn interaction with me acting as the model).\n    Actually, looking at the conversation history provided in the prompt:\n    User provided 3 examples (few-shot style within the prompt context? No, the prompt shows \"Tracking page...\" twice before, then the current one).\n    Wait, the prompt structure is:\n    System instruction.\n    User: Tracking page (carrier: Balíkomat, number: BK0000001): ...\n    Model: {\"state\":\"UNKNOWN\"...}\n    User: Tracking page (carrier: Balíkomat, number: BK0000002): ...\n    Model: {\"state\":\"IN_TRANSIT\"...}\n    User: Tracking page (carrier: Kurýr Vltava, number: KV2026100115): ...\n\n    So I am responding to the third user message.\n    The third message contains the \"Kurýr Vltava\" tracking info.\n    I need to output the JSON for this specific case.\n\n    Case: \"Převzal: soused (Novák)\"\n    Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    State: UNKNOWN.\n\n    Quote: \"Převzal: soused (Novák)\"\n    Reason: \"Handover to neighbor, not recipient.\"\n\n    Let's write it.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a specific parcel from a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   Output Format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" = NOT `DELIVERED`.\n        *   Handover to anyone *other* than the recipient (neighbour, reception, etc.) = `UNKNOWN`, not `DELIVERED`.\n        *   If unsure, answer `UNKNOWN`.\n        *   Wrong `DELIVERED` is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100115.\n    *   Navigation/Menu items: \"Sledování zásilky\", \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n    *   Status Text: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    *   Translation/Interpretation:\n        *   \"Zásilka byla doručena\" = Parcel was delivered.\n        *   \"Převzal: soused (Novák)\" = Taken by: neighbor (Novák).\n        *   \"Lipová 12\" = Address.\n    *   Key Rule Check: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n\n3.  **Evaluate the State:**\n    *   The text explicitly says \"Převzal: soused\" (Taken by: neighbor).\n    *   According to the rules provided in the prompt: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Therefore, even though it says \"Doručeno\" (Delivered), the specific handover details indicate it was not the intended recipient.\n    *   State should be `UNKNOWN`.\n\n4.  **Draft the JSON:**\n    *   `state`: \"UNKNOWN\"\n    *   `quote`: \"Převzal: soused (Novák)\" (or the full sentence \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\")\n    *   `reason`: \"Handover to neighbor, not recipient\"\n\n5.  **Refine the Quote:**\n    *   The most relevant fragment is \"Převzal: soused (Novák)\".\n    *   Or the full status line: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    *   Let's use the specific part indicating the handover to be precise. \"Převzal: soused (Novák)\" is clear.\n\n6.  **Refine the Reason:**\n    *   Max 20 words.\n    *   \"Handover to neighbor instead of recipient, per rules.\"\n\n7.  **Final Check:**\n    *   Does it match the rules? Yes. Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    *   Is it JSON only? Yes.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Handover to neighbor, not recipient\"}\n    ```\n    Wait, looking closer at the prompt's rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    The text says \"Převzal: soused\". This is explicitly a neighbor.\n    So `UNKNOWN` is the correct classification based on the specific rules provided in the prompt instructions, even though colloquially it might be considered \"delivered\". The prompt explicitly defines this scenario as `UNKNOWN`.\n\n    Let's double check the quote. The text is: \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    I will use the part that proves the neighbor handover.\n\n    Reason: \"Parcel handed to neighbor, not recipient.\" (5 words).\n\n    Final JSON structure check.\n\n    One more check: The prompt says \"The page may be in Czech.\" The text is Czech.\n    \"Převzal: soused\" -> Taken by: neighbor.\n    Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    Conclusion: UNKNOWN.\n\n    Wait, is there any ambiguity? \"Doručeno příjemci\" is in the navigation menu (\"Doručeno příjemci\"), but the specific status text says \"Převzal: soused\". The specific status text overrides the menu label. The rule about neighbor handover is strict.\n\n    Okay, proceeding with UNKNOWN.\n\n    Wait, I need to make sure I don't violate the \"Answer ONLY with JSON\" rule.\n\n    Let's finalize the quote. \"Převzal: soused (Novák)\" is good.\n    Reason: \"Handover to neighbor, not recipient.\"\n\n    Wait, looking at the previous turn examples in the few-shot style (though this is a single turn interaction with me acting as the model).\n    Actually, looking at the conversation history provided in the prompt:\n    User provided 3 examples (few-shot style within the prompt context? No, the prompt shows \"Tracking page...\" twice before, then the current one).\n    Wait, the prompt structure is:\n    System instruction.\n    User: Tracking page (carrier: Balíkomat, number: BK0000001): ...\n    Model: {\"state\":\"UNKNOWN\"...}\n    User: Tracking page (carrier: Balíkomat, number: BK0000002): ...\n    Model: {\"state\":\"IN_TRANSIT\"...}\n    User: Tracking page (carrier: Kurýr Vltava, number: KV2026100115): ...\n\n    So I am responding to the third user message.\n    The third message contains the \"Kurýr Vltava\" tracking info.\n    I need to output the JSON for this specific case.\n\n    Case: \"Převzal: soused (Novák)\"\n    Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    State: UNKNOWN.\n\n    Quote: \"Převzal: soused (Novák)\"\n    Reason: \"Handover to neighbor, not recipient.\"\n\n    Let's write it.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 900,
+      "completion_tokens": 1699,
+      "total_tokens": 2599,
+      "cost": 0.00034485,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00034485,
+        "upstream_inference_prompt_cost": 0.00009,
+        "upstream_inference_completions_cost": 0.00025485
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1441,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

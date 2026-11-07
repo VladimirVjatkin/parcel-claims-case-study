@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
-import { attemptPath, buildRequestBody, currentConfig, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
+import { attemptPath, buildRequestBody, currentConfig, isExhausted, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
 import type { Attempt, Model, SavedSlot } from "./llm.js";
 import { buildMessages, PROMPT_VERSION } from "./prompt.js";
 
@@ -45,14 +45,34 @@ function redact(value: unknown, key: string): unknown {
   return value;
 }
 
-export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fetcher, root = "."): Promise<CollectionCounts> {
+export function retryDelayMs(reply: Response, body: unknown, nowMs = Date.now()): number {
+  const header = reply.headers.get("Retry-After");
+  let seconds = header === null || header.trim() === "" ? NaN : Number(header);
+  if (!Number.isFinite(seconds) && header !== null) seconds = (Date.parse(header) - nowMs) / 1000;
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    const value = object(object(object(body).error).metadata).retry_after_seconds;
+    seconds = typeof value === "number" || (typeof value === "string" && value.trim() !== "") ? Number(value) : NaN;
+  }
+  if (!Number.isFinite(seconds) || seconds < 0) seconds = 10;
+  return Math.min(seconds, 60) * 1000;
+}
+
+export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fetcher, root = ".",
+  wait: (ms: number) => Promise<void> = (ms) => new Promise((done) => setTimeout(done, ms)),
+  notify: (message: string) => void = console.warn): Promise<CollectionCounts> {
   validateSaved(saved);
   if (key === "") throw new Error("Chybí OPENROUTER_API_KEY.");
   const counts: CollectionCounts = { ok: 0, failed: 0, skipped: 0, exhausted: 0 };
+  const blockedModels = new Set<string>();
+  const consecutive429 = new Map<string, number>();
+  let pendingDelay = 0;
   for (const item of saved) {
     if (item.attempts.some((attempt) => attempt.status === "ok")) { counts.skipped += 1; continue; }
-    if (item.attempts.length >= 3) { counts.exhausted += 1; continue; }
+    if (isExhausted(item.attempts)) { counts.exhausted += 1; continue; }
     const slot = item.slot;
+    if (blockedModels.has(slot.model.id)) continue;
+    // Delay the next actual call, without retrying this slot automatically.
+    if (pendingDelay > 0) { await wait(pendingDelay); pendingDelay = 0; }
     const number = item.attempts.length + 1;
     const started = performance.now();
     let httpStatus: number | null = null;
@@ -66,7 +86,9 @@ export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fet
         signal: AbortSignal.timeout(120_000),
       });
       httpStatus = reply.status;
+      if (httpStatus === 429) pendingDelay = retryDelayMs(reply, null);
       response = await reply.json();
+      if (httpStatus === 429) pendingDelay = retryDelayMs(reply, response);
       if (reply.ok && object(response).error === undefined) status = "ok";
       else error = `Chyba API (HTTP ${httpStatus}).`;
     } catch {
@@ -86,6 +108,12 @@ export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fet
     if (httpStatus === 401 || httpStatus === 402 || httpStatus === 403) {
       throw new Error(`Sběr zastaven po HTTP ${httpStatus}: ověřte klíč, kredit nebo přístup. Pokus byl uložen; ok ${counts.ok}, failed ${counts.failed}.`);
     }
+    const streak = httpStatus === 429 ? (consecutive429.get(slot.model.id) ?? 0) + 1 : 0;
+    consecutive429.set(slot.model.id, streak);
+    if (streak >= 5) {
+      blockedModels.add(slot.model.id);
+      notify(`${slot.model.id}: Poskytovatel omezuje počet požadavků, zkuste později`);
+    }
   }
   return counts;
 }
@@ -96,7 +124,7 @@ export function collectionPlan(saved: SavedSlot[]): { total: number; closed: num
   for (const item of saved) {
     failed += item.attempts.filter((attempt) => attempt.status === "failed").length;
     if (item.attempts.some((attempt) => attempt.status === "ok")) closed += 1;
-    else if (item.attempts.length >= 3) exhausted += 1;
+    else if (isExhausted(item.attempts)) exhausted += 1;
   }
   return { total: saved.length, closed, open: saved.length - closed - exhausted, exhausted, failed };
 }

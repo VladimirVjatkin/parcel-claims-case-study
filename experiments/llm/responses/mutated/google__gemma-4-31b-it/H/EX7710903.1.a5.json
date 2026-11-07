@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "fd11860d4f0eb5594f0ecf1d2c91a87aa7042fa8d9b17404b5358b20b745f224",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "EX7710903.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 5,
+  "collectedAt": "2026-11-07T19:35:09.049Z",
+  "latencyMs": 13032,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794080097-ztP3nzuB8YTq80xIUt5T",
+    "object": "chat.completion",
+    "created": 1794080097,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"The parcel was handed over to the recipient.\", \"reason\": \"Status explicitly states the recipient took over the parcel.\", \"state\": \"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Parcel Number: EX7710903\n    *   Content: HTML page.\n    *   Key elements:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero ad \"Delivered in 24 hours!\" (ignore - it's an ad).\n        *   Main section:\n            *   Parcel number: EX7710903 (matches).\n            *   Status card: `Current status` -> `Delivered`.\n            *   Detail: \"The parcel was handed over to the recipient.\"\n        *   FAQ (ignore).\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not found, handed to 3rd party, etc.\n\n    *   The status is explicitly \"Delivered\".\n    *   The text says \"The parcel was handed over to the recipient.\"\n    *   This matches the definition of DELIVERED.\n\n    *   State: DELIVERED\n    *   Quote: \"The parcel was handed over to the recipient.\" (or \"Delivered\")\n    *   Reason: Status explicitly states it was handed over to the recipient.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Parcel Number: EX7710903\n    *   Content: HTML page.\n    *   Key elements:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero ad \"Delivered in 24 hours!\" (ignore - it's an ad).\n        *   Main section:\n            *   Parcel number: EX7710903 (matches).\n            *   Status card: `Current status` -> `Delivered`.\n            *   Detail: \"The parcel was handed over to the recipient.\"\n        *   FAQ (ignore).\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not found, handed to 3rd party, etc.\n\n    *   The status is explicitly \"Delivered\".\n    *   The text says \"The parcel was handed over to the recipient.\"\n    *   This matches the definition of DELIVERED.\n\n    *   State: DELIVERED\n    *   Quote: \"The parcel was handed over to the recipient.\" (or \"Delivered\")\n    *   Reason: Status explicitly states it was handed over to the recipient.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 967,
+      "completion_tokens": 335,
+      "total_tokens": 1302,
+      "cost": 0.00026938,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00026938,
+        "upstream_inference_prompt_cost": 0.00013538,
+        "upstream_inference_completions_cost": 0.000134
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 297,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

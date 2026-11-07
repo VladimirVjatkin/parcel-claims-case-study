@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "efa5aedf6d5a926028bac75a8704cf0e39bf2d35a4c189e476914adb3c8d27c8",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710113.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:48:11.478Z",
+  "latencyMs": 7266,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059284-Vsmg3XmUjPwMrCOqEKir",
+    "object": "chat.completion",
+    "created": 1794059284,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilku jsme nenašli\",\"reason\":\"parcel not found\",\"state\":\"UNKNOWN\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Tracking Number: EX7710113\n    *   Page Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero ad (ignore).\n        *   Main section:\n            *   Tracking number: EX7710113.\n            *   Status card: \"Aktuální stav\" -> \"Zásilku jsme nenašli\" (Parcel not found).\n            *   Message: \"Zásilku s tímto číslem jsme nenašli. Zkontrolujte číslo nebo to zkuste později.\" (Parcel with this number not found. Check number or try later).\n        *   FAQ (ignore).\n        *   Ads (ignore).\n        *   Footer (ignore).\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No)\n    *   RETURNING: Returning to sender. (No)\n    *   UNKNOWN: Page does not allow confirming recipient took it over (e.g., parcel not found). (Yes)\n\n    *   State: UNKNOWN\n    *   Quote: \"Zásilku jsme nenašli\"\n    *   Reason: Parcel not found on the page.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Tracking Number: EX7710113\n    *   Page Content:\n        *   Cookie banner (ignore).\n        *   Header/Nav (ignore).\n        *   Hero ad (ignore).\n        *   Main section:\n            *   Tracking number: EX7710113.\n            *   Status card: \"Aktuální stav\" -> \"Zásilku jsme nenašli\" (Parcel not found).\n            *   Message: \"Zásilku s tímto číslem jsme nenašli. Zkontrolujte číslo nebo to zkuste později.\" (Parcel with this number not found. Check number or try later).\n        *   FAQ (ignore).\n        *   Ads (ignore).\n        *   Footer (ignore).\n\n    *   DELIVERED: Recipient took over. (No)\n    *   IN_TRANSIT: With carrier or at pickup point. (No)\n    *   RETURNING: Returning to sender. (No)\n    *   UNKNOWN: Page does not allow confirming recipient took it over (e.g., parcel not found). (Yes)\n\n    *   State: UNKNOWN\n    *   Quote: \"Zásilku jsme nenašli\"\n    *   Reason: Parcel not found on the page.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1263,
+      "completion_tokens": 317,
+      "total_tokens": 1580,
+      "cost": 0.00030362,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00030362,
+        "upstream_inference_prompt_cost": 0.00017682,
+        "upstream_inference_completions_cost": 0.0001268
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 292,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

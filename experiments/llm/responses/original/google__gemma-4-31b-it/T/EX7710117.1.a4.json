@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "b4f778ffea9d497f71bad955281d9ace920e91eb52e317c3d707b99e5923ee26",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710117.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:48:24.868Z",
+  "latencyMs": 7508,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059297-rltOzUThnCz65b3xhWQj",
+    "object": "chat.completion",
+    "created": 1794059297,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilka byla předána příjemci.\", \"reason\": \"The status is delivered and explicitly states it was handed to the recipient.\", \"state\": \"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Tracking Number: EX7710117\n    *   Content: A page with cookie banners, marketing text (\"Doručeno do 24 hodin!\", \"Black Friday\"), and a tracking section.\n    *   Tracking Section:\n        *   \"Číslo zásilky: EX7710117\"\n        *   \"Aktuální stav: Doručeno\"\n        *   \"Poslední aktualizace: 21. 10. 2026 16:03\"\n        *   \"Zásilka byla předána příjemci.\"\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable, handed to third party, etc.\n\n    *   The current state is explicitly stated as \"Doručeno\" (Delivered).\n    *   The detail says \"Zásilka byla předána příjemci\" (The shipment was handed over to the recipient).\n    *   This matches the definition of DELIVERED.\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilka byla předána příjemci.\" (or \"Aktuální stav Doručeno\")\n    *   Reason: The status is delivered and explicitly states it was handed to the recipient.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Tracking Number: EX7710117\n    *   Content: A page with cookie banners, marketing text (\"Doručeno do 24 hodin!\", \"Black Friday\"), and a tracking section.\n    *   Tracking Section:\n        *   \"Číslo zásilky: EX7710117\"\n        *   \"Aktuální stav: Doručeno\"\n        *   \"Poslední aktualizace: 21. 10. 2026 16:03\"\n        *   \"Zásilka byla předána příjemci.\"\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable, handed to third party, etc.\n\n    *   The current state is explicitly stated as \"Doručeno\" (Delivered).\n    *   The detail says \"Zásilka byla předána příjemci\" (The shipment was handed over to the recipient).\n    *   This matches the definition of DELIVERED.\n\n    *   State: DELIVERED\n    *   Quote: \"Zásilka byla předána příjemci.\" (or \"Aktuální stav Doručeno\")\n    *   Reason: The status is delivered and explicitly states it was handed to the recipient.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 943,
+      "completion_tokens": 364,
+      "total_tokens": 1307,
+      "cost": 0.00027762,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00027762,
+        "upstream_inference_prompt_cost": 0.00013202,
+        "upstream_inference_completions_cost": 0.0001456
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 321,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

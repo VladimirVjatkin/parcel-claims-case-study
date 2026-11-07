@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "166ac8216881de6fea2bf590b766b22e33a2acd8e789c2ed842ef06fa9aed302",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100116.html",
+  "variant": "T",
+  "run": 2,
+  "attempt": 7,
+  "collectedAt": "2026-11-07T17:36:56.056Z",
+  "latencyMs": 12545,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794073004-nlZzICWVTfC1Rrs0szol",
+    "object": "chat.completion",
+    "created": 1794073004,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Zásilka je připravena k vyzvednutí.\", \"reason\": \"Parcel is waiting at a pickup point/box.\", \"state\": \"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100116\n    *   Latest Event: \"19. 10. 2026 15:02 Box Praha Florenc Zásilka je připravena k vyzvednutí. Úložní doba končí 4. 11. 2026.\"\n    *   Translation: \"Parcel is ready for pickup. Storage period ends 4. 11. 2026.\"\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: Parcel is with carrier or waits at a pickup point/box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The latest event is \"Zásilka je připravena k vyzvednutí\" (Ready for pickup).\n    *   According to the rules: \"ready for pickup\" is NOT delivery.\n    *   It fits the definition of IN_TRANSIT (\"waits at a pickup point / box\").\n\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je připravena k vyzvednutí.\"\n    *   Reason: Parcel is waiting at the box for the recipient to collect it.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100116\n    *   Latest Event: \"19. 10. 2026 15:02 Box Praha Florenc Zásilka je připravena k vyzvednutí. Úložní doba končí 4. 11. 2026.\"\n    *   Translation: \"Parcel is ready for pickup. Storage period ends 4. 11. 2026.\"\n\n    *   DELIVERED: Recipient took over the parcel.\n    *   IN_TRANSIT: Parcel is with carrier or waits at a pickup point/box.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The latest event is \"Zásilka je připravena k vyzvednutí\" (Ready for pickup).\n    *   According to the rules: \"ready for pickup\" is NOT delivery.\n    *   It fits the definition of IN_TRANSIT (\"waits at a pickup point / box\").\n\n    *   State: IN_TRANSIT\n    *   Quote: \"Zásilka je připravena k vyzvednutí.\"\n    *   Reason: Parcel is waiting at the box for the recipient to collect it.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 881,
+      "completion_tokens": 333,
+      "total_tokens": 1214,
+      "cost": 0.00025654,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00025654,
+        "upstream_inference_prompt_cost": 0.00012334,
+        "upstream_inference_completions_cost": 0.0001332
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 290,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "d2334ccedeae6ede492f1c3574201f15e059fb8af4533817c69d4e3f9da3b84b",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "PN55100905.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:40:36.627Z",
+  "latencyMs": 31816,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001204-eTjWdQMvubCl8uqEkRmz",
+    "object": "chat.completion",
+    "created": 1794001204,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"RETURNING\", \"quote\": \"zásilka se vrací odesílateli.\", \"reason\": \"Latest event states parcel is being returned to sender.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: HTML snippet of a tracking page (Carrier: ParcelNord, Number: PN55100905).\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event.\n        *   \"Ready for pickup\" is NOT delivery.\n        *   Handover to anyone other than recipient is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is costly.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord\n    *   Tracking Number: PN55100905\n    *   Timeline Events:\n        1.  `20. 10. 2026 10:10` - Sender picked up parcel.\n        2.  `21. 10. 2026 02:30` - Sorting center Brno processed.\n        3.  `22. 10. 2026 13:05` - Box Brno Lesná - Parcel ready for pickup. Storage ends 29. 10. 2026.\n        4.  `30. 10. 2026 06:00` - Box Brno Lesná - Storage time expired, parcel is being returned to sender.\n\n3.  **Evaluate the Latest Event:**\n    *   The latest event is `30. 10. 2026 06:00`.\n    *   Text: \"Úložní doba uplynula, zásilka se vrací odesílateli.\" (Storage time expired, parcel is being returned to sender.)\n    *   This explicitly states the parcel is being returned to the sender.\n\n4.  **Map to States:**\n    *   `DELIVERED`: No, recipient didn't take it.\n    *   `IN_TRANSIT`: No, it's not just moving to a destination, it's going back.\n    *   `RETURNING`: Yes, \"zásilka se vrací odesílateli\" matches the definition \"the parcel is being returned, or was already returned, to the sender.\"\n    *   `UNKNOWN`: No, the status is clear.\n\n5.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"zásilka se vrací odesílateli\" (or the full line)\n    *   `reason`: \"Latest event states parcel is being returned to sender\"\n\n6.  **Refine Quote and Reason:**\n    *   Quote: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   Reason: \"Latest event indicates parcel is being returned to sender.\"\n\n7.  **Final Check:**\n    *   Does it match the rules? Yes.\n    *   Is it JSON? Yes.\n    *   Is the state correct based on definitions? Yes (RETURNING).\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"zásilka se vrací odesílateli.\", \"reason\": \"Latest event states parcel is being returned to sender.\"}\n    ```\n    Wait, I should check the exact text for the quote.\n    Text: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    Reason needs to be max 20 words.\n\n    Let's finalize.\n    State: RETURNING\n    Quote: \"zásilka se vrací odesílateli.\"\n    Reason: \"Latest event indicates the parcel is being returned to the sender.\"\n\n    Wait, looking at the previous examples provided in the prompt (few-shot style):\n    Example 1: UNKNOWN because handed to reception.\n    Example 2: IN_TRANSIT because current step is pickup point.\n    This example: RETURNING because latest event says returning.\n\n    Okay, ready to generate.\n\n    One detail: The prompt says \"Answer ONLY with JSON\".\n    I need to make sure I don't add markdown code blocks if strictly \"ONLY with JSON\", but usually, markdown blocks are acceptable for JSON formatting in these interfaces. However, the instruction says \"Answer ONLY with JSON\". I will output raw JSON text to be safe, or a code block if that's standard. Looking at the system instructions \"Answer ONLY with JSON\", I will provide the JSON string directly. Actually, usually, a code block is safer for parsing. But strict instruction \"Answer ONLY with JSON\" often means no markdown fences. I'll output raw JSON. Wait, looking at the previous turns in the conversation (the few-shot examples provided in the prompt description vs the actual conversation history). The conversation history shows the model outputting JSON inside a code block in the examples? No, the examples are part of the prompt description (\"You classify...\"). The actual conversation history shows:\n    User: Tracking page...\n    Model: {\"state\":\"UNKNOWN\",...}\n    User: Tracking page...\n    Model: {\"state\":\"IN_TRANSIT\",...}\n    So I should output raw JSON without markdown fences to match the pattern.\n\n    Wait, I am the model generating the response now. The previous turns in the *conversation* (the few-shot examples provided in the prompt text vs the actual chat history) show the model outputting JSON directly.\n    Actually, looking at the conversation provided in the prompt:\n    User: Tracking page (carrier: Balíkomat...)\n    Model: {\"state\":\"UNKNOWN\",...}\n    User: Tracking page (carrier: Balíkomat...)\n    Model: {\"state\":\"IN_TRANSIT\",...}\n    User: Tracking page (carrier: ParcelNord...)\n    Model: [My response]\n\n    So I must follow the format of the previous turns. Raw JSON.\n\n    Wait, I need to check the quote.\n    \"zásilka se vrací odesílateli.\" is part of the text.\n    Reason: \"Latest event states parcel is being returned to sender.\" (7 words).\n\n    Let's assemble.\n    {\"state\": \"RETURNING\", \"quote\": \"zásilka se vrací odesílateli.\", \"reason\": \"Latest event states parcel is being returned to sender.\"}\n\n    Double check constraints:\n    - JSON only.\n    - State: RETURNING.\n    - Quote: exact text.\n    - Reason: max 20 words.\n\n    Looks good.\n\n    Wait, one more check on the definition of RETURNING: \"the parcel is being returned, or was already returned, to the sender.\"\n    The text says \"zásilka se vrací odesílateli\" (parcel is being returned to sender). This fits perfectly.\n\n    Final check on JSON syntax.\n    Keys in double quotes.\n    Values in double quotes.\n    No trailing commas.\n\n    Ready.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: HTML snippet of a tracking page (Carrier: ParcelNord, Number: PN55100905).\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event.\n        *   \"Ready for pickup\" is NOT delivery.\n        *   Handover to anyone other than recipient is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is costly.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord\n    *   Tracking Number: PN55100905\n    *   Timeline Events:\n        1.  `20. 10. 2026 10:10` - Sender picked up parcel.\n        2.  `21. 10. 2026 02:30` - Sorting center Brno processed.\n        3.  `22. 10. 2026 13:05` - Box Brno Lesná - Parcel ready for pickup. Storage ends 29. 10. 2026.\n        4.  `30. 10. 2026 06:00` - Box Brno Lesná - Storage time expired, parcel is being returned to sender.\n\n3.  **Evaluate the Latest Event:**\n    *   The latest event is `30. 10. 2026 06:00`.\n    *   Text: \"Úložní doba uplynula, zásilka se vrací odesílateli.\" (Storage time expired, parcel is being returned to sender.)\n    *   This explicitly states the parcel is being returned to the sender.\n\n4.  **Map to States:**\n    *   `DELIVERED`: No, recipient didn't take it.\n    *   `IN_TRANSIT`: No, it's not just moving to a destination, it's going back.\n    *   `RETURNING`: Yes, \"zásilka se vrací odesílateli\" matches the definition \"the parcel is being returned, or was already returned, to the sender.\"\n    *   `UNKNOWN`: No, the status is clear.\n\n5.  **Draft the JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"zásilka se vrací odesílateli\" (or the full line)\n    *   `reason`: \"Latest event states parcel is being returned to sender\"\n\n6.  **Refine Quote and Reason:**\n    *   Quote: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   Reason: \"Latest event indicates parcel is being returned to sender.\"\n\n7.  **Final Check:**\n    *   Does it match the rules? Yes.\n    *   Is it JSON? Yes.\n    *   Is the state correct based on definitions? Yes (RETURNING).\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"zásilka se vrací odesílateli.\", \"reason\": \"Latest event states parcel is being returned to sender.\"}\n    ```\n    Wait, I should check the exact text for the quote.\n    Text: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    Reason needs to be max 20 words.\n\n    Let's finalize.\n    State: RETURNING\n    Quote: \"zásilka se vrací odesílateli.\"\n    Reason: \"Latest event indicates the parcel is being returned to the sender.\"\n\n    Wait, looking at the previous examples provided in the prompt (few-shot style):\n    Example 1: UNKNOWN because handed to reception.\n    Example 2: IN_TRANSIT because current step is pickup point.\n    This example: RETURNING because latest event says returning.\n\n    Okay, ready to generate.\n\n    One detail: The prompt says \"Answer ONLY with JSON\".\n    I need to make sure I don't add markdown code blocks if strictly \"ONLY with JSON\", but usually, markdown blocks are acceptable for JSON formatting in these interfaces. However, the instruction says \"Answer ONLY with JSON\". I will output raw JSON text to be safe, or a code block if that's standard. Looking at the system instructions \"Answer ONLY with JSON\", I will provide the JSON string directly. Actually, usually, a code block is safer for parsing. But strict instruction \"Answer ONLY with JSON\" often means no markdown fences. I'll output raw JSON. Wait, looking at the previous turns in the conversation (the few-shot examples provided in the prompt description vs the actual conversation history). The conversation history shows the model outputting JSON inside a code block in the examples? No, the examples are part of the prompt description (\"You classify...\"). The actual conversation history shows:\n    User: Tracking page...\n    Model: {\"state\":\"UNKNOWN\",...}\n    User: Tracking page...\n    Model: {\"state\":\"IN_TRANSIT\",...}\n    So I should output raw JSON without markdown fences to match the pattern.\n\n    Wait, I am the model generating the response now. The previous turns in the *conversation* (the few-shot examples provided in the prompt text vs the actual chat history) show the model outputting JSON directly.\n    Actually, looking at the conversation provided in the prompt:\n    User: Tracking page (carrier: Balíkomat...)\n    Model: {\"state\":\"UNKNOWN\",...}\n    User: Tracking page (carrier: Balíkomat...)\n    Model: {\"state\":\"IN_TRANSIT\",...}\n    User: Tracking page (carrier: ParcelNord...)\n    Model: [My response]\n\n    So I must follow the format of the previous turns. Raw JSON.\n\n    Wait, I need to check the quote.\n    \"zásilka se vrací odesílateli.\" is part of the text.\n    Reason: \"Latest event states parcel is being returned to sender.\" (7 words).\n\n    Let's assemble.\n    {\"state\": \"RETURNING\", \"quote\": \"zásilka se vrací odesílateli.\", \"reason\": \"Latest event states parcel is being returned to sender.\"}\n\n    Double check constraints:\n    - JSON only.\n    - State: RETURNING.\n    - Quote: exact text.\n    - Reason: max 20 words.\n\n    Looks good.\n\n    Wait, one more check on the definition of RETURNING: \"the parcel is being returned, or was already returned, to the sender.\"\n    The text says \"zásilka se vrací odesílateli\" (parcel is being returned to sender). This fits perfectly.\n\n    Final check on JSON syntax.\n    Keys in double quotes.\n    Values in double quotes.\n    No trailing commas.\n\n    Ready.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1011,
+      "completion_tokens": 1666,
+      "total_tokens": 2677,
+      "cost": 0.000351,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000351,
+        "upstream_inference_prompt_cost": 0.0001011,
+        "upstream_inference_completions_cost": 0.0002499
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1470,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "25a13e407293184a1bcfe275d4c9c028c01dc27d96b9d3e669db5647bdc39ae0",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100192.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:34:06.647Z",
+  "latencyMs": 14053,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793997232-mPleFm5jUM0tntDjekmo",
+    "object": "chat.completion",
+    "created": 1793997232,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event indicates the parcel was returned to the sender.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the current delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" is NOT delivery.\n        *   Handover to anyone other than the recipient (neighbour, reception, etc.) is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord\n    *   Tracking Number: PN55100192\n    *   Events (chronological order based on dates):\n        1.  29. 10. 2026 10:05: Odesílatel - Zásilka vrácena odesílateli (Returned to sender)\n        2.  27. 10. 2026 08:30: Box Ostrava Centrum - Úložní doba uplynula, zásilka se vrací odesílateli (Storage time expired, parcel is being returned to sender)\n        3.  20. 10. 2026 12:44: Box Ostrava Centrum - Zásilka je připravena k vyzvednutí (Ready for pickup)\n        4.  19. 10. 2026 09:00: Odesílatel - Zásilka převzata od odesílatele (Taken from sender)\n    *   Latest Event: \"Zásilka vrácena odesílateli\" (Returned to sender) on 29. 10. 2026.\n\n3.  **Evaluate State:**\n    *   The latest event explicitly states \"Zásilka vrácena odesílateli\" (Parcel returned to sender).\n    *   This matches the definition of `RETURNING` (\"the parcel is being returned, or was already returned, to the sender\").\n    *   Quote: \"Zásilka vrácena odesílateli\"\n    *   Reason: Latest event indicates return to sender.\n\n4.  **Draft JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"Zásilka vrácena odesílateli\"\n    *   `reason`: \"Latest event states parcel returned to sender.\"\n\n5.  **Review Constraints:**\n    *   JSON format? Yes.\n    *   State valid? Yes (RETURNING).\n    *   Quote exact? Yes.\n    *   Reason max 20 words? Yes (\"Latest event states parcel returned to sender.\" is 6 words).\n\n6.  **Final Check:**\n    *   Does \"Zásilka vrácena odesílateli\" mean RETURNING? Yes.\n    *   Is there any ambiguity? No, it's explicit.\n    *   Is the date the latest? Yes (29. 10. 2026).\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event states parcel returned to sender.\"}\n    ```\n    Wait, I need to make sure I copy the exact text fragment.\n    Text: \"Zásilka vrácena odesílateli\"\n    Reason: \"Latest event states parcel returned to sender.\"\n\n    Let's refine the reason to be strictly under 20 words and accurate.\n    \"Latest event indicates the parcel was returned to the sender.\" (10 words).\n\n    Final JSON structure check.\n    {\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event indicates the parcel was returned to the sender.\"}\n\n    Wait, looking closely at the input text:\n    `29. 10. 202610:05OdesílatelZásilka vrácena odesílateli`\n    The text is concatenated without spaces in the log line, but the event description is \"Zásilka vrácena odesílateli\".\n    I will use that phrase.\n\n    One more check on rules: \"RETURNING — the parcel is being returned, or was already returned, to the sender.\"\n    The event says \"Zásilka vrácena odesílateli\" (Parcel returned to sender). This fits perfectly.\n\n    Final check on JSON validity.\n    Escape quotes if necessary. None needed inside the values.\n\n    Ready.cw\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the current delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text mix).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" is NOT delivery.\n        *   Handover to anyone other than the recipient (neighbour, reception, etc.) is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord\n    *   Tracking Number: PN55100192\n    *   Events (chronological order based on dates):\n        1.  29. 10. 2026 10:05: Odesílatel - Zásilka vrácena odesílateli (Returned to sender)\n        2.  27. 10. 2026 08:30: Box Ostrava Centrum - Úložní doba uplynula, zásilka se vrací odesílateli (Storage time expired, parcel is being returned to sender)\n        3.  20. 10. 2026 12:44: Box Ostrava Centrum - Zásilka je připravena k vyzvednutí (Ready for pickup)\n        4.  19. 10. 2026 09:00: Odesílatel - Zásilka převzata od odesílatele (Taken from sender)\n    *   Latest Event: \"Zásilka vrácena odesílateli\" (Returned to sender) on 29. 10. 2026.\n\n3.  **Evaluate State:**\n    *   The latest event explicitly states \"Zásilka vrácena odesílateli\" (Parcel returned to sender).\n    *   This matches the definition of `RETURNING` (\"the parcel is being returned, or was already returned, to the sender\").\n    *   Quote: \"Zásilka vrácena odesílateli\"\n    *   Reason: Latest event indicates return to sender.\n\n4.  **Draft JSON:**\n    *   `state`: \"RETURNING\"\n    *   `quote`: \"Zásilka vrácena odesílateli\"\n    *   `reason`: \"Latest event states parcel returned to sender.\"\n\n5.  **Review Constraints:**\n    *   JSON format? Yes.\n    *   State valid? Yes (RETURNING).\n    *   Quote exact? Yes.\n    *   Reason max 20 words? Yes (\"Latest event states parcel returned to sender.\" is 6 words).\n\n6.  **Final Check:**\n    *   Does \"Zásilka vrácena odesílateli\" mean RETURNING? Yes.\n    *   Is there any ambiguity? No, it's explicit.\n    *   Is the date the latest? Yes (29. 10. 2026).\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event states parcel returned to sender.\"}\n    ```\n    Wait, I need to make sure I copy the exact text fragment.\n    Text: \"Zásilka vrácena odesílateli\"\n    Reason: \"Latest event states parcel returned to sender.\"\n\n    Let's refine the reason to be strictly under 20 words and accurate.\n    \"Latest event indicates the parcel was returned to the sender.\" (10 words).\n\n    Final JSON structure check.\n    {\"state\": \"RETURNING\", \"quote\": \"Zásilka vrácena odesílateli\", \"reason\": \"Latest event indicates the parcel was returned to the sender.\"}\n\n    Wait, looking closely at the input text:\n    `29. 10. 202610:05OdesílatelZásilka vrácena odesílateli`\n    The text is concatenated without spaces in the log line, but the event description is \"Zásilka vrácena odesílateli\".\n    I will use that phrase.\n\n    One more check on rules: \"RETURNING — the parcel is being returned, or was already returned, to the sender.\"\n    The event says \"Zásilka vrácena odesílateli\" (Parcel returned to sender). This fits perfectly.\n\n    Final check on JSON validity.\n    Escape quotes if necessary. None needed inside the values.\n\n    Ready.cw\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 896,
+      "completion_tokens": 1192,
+      "total_tokens": 2088,
+      "cost": 0.0002684,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0002684,
+        "upstream_inference_prompt_cost": 0.0000896,
+        "upstream_inference_completions_cost": 0.0001788
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 938,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

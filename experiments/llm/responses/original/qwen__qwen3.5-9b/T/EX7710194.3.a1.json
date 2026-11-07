@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "1e605510dcc220db03df2ce682124caa1bdc5a1e172bebb1d18c83e36e8062c8",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710194.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:44:47.936Z",
+  "latencyMs": 15933,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793997871-iV4if5mZg0LggUI4yjiW",
+    "object": "chat.completion",
+    "created": 1793997871,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka opustila třídicí centrum Ostrava.\", \"reason\": \"Parcel left sorting center, status indicates 'On the way'.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: A tracking page text (carrier: Expedo, number: EX7710194).\n    *   Language: Czech.\n    *   Output Format: JSON (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event/current step determines state.\n        *   Planned/expected delivery != DELIVERED.\n        *   Handover to non-recipient (reception, neighbor, etc.) = UNKNOWN.\n        *   \"Ready for pickup\" != DELIVERED.\n        *   If unsure, answer UNKNOWN.\n        *   Only consider the tracking block of THIS parcel (ignore cookie banners, ads, FAQs).\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo.\n    *   Tracking Number: EX7710194.\n    *   Text Content:\n        *   Cookie banner (ignore).\n        *   \"Kde je moje zásilka? Číslo zásilky: EX7710194\" (Matches tracking number).\n        *   \"Aktuální stav\" (Current status).\n        *   \"Na cestě\" (On the way).\n        *   \"Poslední aktualizace: 1. 11. 2026 22:40\" (Last update).\n        *   \"Zásilka opustila třídicí centrum Ostrava.\" (Parcel left sorting center Ostrava).\n        *   FAQ section about delivery times, Expedo Points, etc. (ignore).\n    *   Key Tracking Event: \"Zásilka opustila třídicí centrum Ostrava.\" (Parcel left sorting center Ostrava).\n    *   Status Label: \"Na cestě\" (On the way).\n\n3.  **Evaluate State:**\n    *   The latest event is \"Zásilka opustila třídicí centrum Ostrava\" (Parcel left sorting center).\n    *   The status label is \"Na cestě\" (On the way).\n    *   There is no indication of delivery (\"Doručeno\", \"Vyzvednuto\", \"Předáno\").\n    *   There is no indication of return (\"Vraceno\").\n    *   The parcel is moving towards the destination but hasn't been handed over.\n    *   According to rules: \"IN_TRANSIT — the parcel is with the carrier, or waits at a pickup point / box.\"\n    *   Leaving a sorting center fits \"with the carrier\".\n    *   It is not DELIVERED (recipient didn't take it).\n    *   It is not RETURNING.\n    *   It is not UNKNOWN (clearly in transit).\n\n4.  **Draft JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: \"Zásilka opustila třídicí centrum Ostrava.\" (or \"Na cestě\")\n    *   `reason`: \"Latest event shows parcel left sorting center, status is 'On the way'.\"\n\n5.  **Refine Quote and Reason:**\n    *   Quote: \"Zásilka opustila třídicí centrum Ostrava.\" (Specific event text).\n    *   Reason: \"Parcel left sorting center, status indicates 'On the way'.\" (Keep under 20 words).\n\n6.  **Final Check:**\n    *   Does it match the rules? Yes.\n    *   Is it JSON only? Yes.\n    *   Is the language correct? Yes.\n\n    *Self-Correction on Quote:* The prompt asks for \"exact text or attribute fragment copied from the page\". \"Zásilka opustila třídicí centrum Ostrava.\" is exact text.\n    *Self-Correction on Reason:* \"Latest event shows parcel left sorting center, status indicates 'On the way'.\" -> \"Latest event shows parcel left sorting center, status is 'On the way'.\" (14 words).\n\n    Wait, looking closer at the text provided:\n    \"Aktuální stav Na cestě\"\n    \"Zásilka opustila třídicí centrum Ostrava.\"\n    This confirms IN_TRANSIT.\n\n    One detail: The prompt says \"The page may be in Czech.\"\n    The output JSON keys are English.\n    The `quote` should be the Czech text.\n    The `reason` should be English (based on the instruction \"Answer ONLY with JSON\" and the example structure usually implies English keys/values for the meta-data, though the prompt instructions are in English). The `reason` field description says \"<max 20 words>\", usually implying English for consistency with the system prompt language, but since the input is Czech, I should probably write the reason in English to match the instruction language, or Czech if the user expects it. Looking at the previous turns in the few-shot examples (none provided here, but standard practice for these tasks): The system prompt is in English. The output format keys are English. The `reason` is usually English. I will write the reason in English.\n\n    Wait, checking the previous turns in the conversation history provided in the prompt context (User/Assistant turns):\n    Turn 1: Input Czech, Output JSON with English keys and English reason.\n    Turn 2: Input Czech, Output JSON with English keys and English reason.\n    So I must follow that pattern.\n\n    Plan:\n    state: IN_TRANSIT\n    quote: \"Zásilka opustila třídicí centrum Ostrava.\"\n    reason: \"Parcel left sorting center, status indicates 'On the way'.\"\n\n    Wait, checking the \"UNKNOWN\" rule again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    This text does not mention handover to reception. It says \"left sorting center\". So IN_TRANSIT is correct.\n\n    Final check on constraints:\n    - JSON only.\n    - Keys: state, quote, reason.\n    - Values: specific strings.\n\n    Let's assemble.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka opustila třídicí centrum Ostrava.\", \"reason\": \"Parcel left sorting center, status indicates 'On the way'.\"}\n    Word count for reason: 10 words. Good.\n    Quote is exact text. Good.\n    State is correct. Good.\n\n    One more check: The text says \"Aktuální stav Na cestě\". \"Na cestě\" translates to \"On the way\". This is explicitly IN_TRANSIT.\n    The event \"Zásilka opustila třídicí centrum Ostrava\" supports this.\n\n    Ready.\n\n    Wait, I need to make sure I don't include markdown code blocks like ```json ... ``` unless requested. The instruction says \"Answer ONLY with JSON\". Usually, this means raw JSON text. However, in the previous turns of this session (Turn 1 and Turn 2 in the prompt description), the model output raw JSON without markdown blocks. I will follow that.\n\n    Wait, looking at the conversation history provided in the prompt:\n    User: Tracking page...\n    Model: {\"state\":\"UNKNOWN\",...}\n    User: Tracking page...\n    Model: {\"state\":\"IN_TRANSIT\",...}\n    User: Tracking page... (Current)\n    Model: (My response)\n\n    I will output raw JSON.\n\n    Wait, one detail in the text: \"Poslední aktualizace: 1. 11. 2026 22:40\". This is future date (2026), but irrelevant for state classification.\n    The text \"Zásilka opustila třídicí centrum Ostrava.\" is the specific tracking event.\n\n    Final check on reason length: \"Parcel left sorting center, status indicates 'On the way'.\" (10 words).\n    Final check on quote: \"Zásilka opustila třídicí centrum Ostrava.\"\n\n    Let's go.cw\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: A tracking page text (carrier: Expedo, number: EX7710194).\n    *   Language: Czech.\n    *   Output Format: JSON (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Latest event/current step determines state.\n        *   Planned/expected delivery != DELIVERED.\n        *   Handover to non-recipient (reception, neighbor, etc.) = UNKNOWN.\n        *   \"Ready for pickup\" != DELIVERED.\n        *   If unsure, answer UNKNOWN.\n        *   Only consider the tracking block of THIS parcel (ignore cookie banners, ads, FAQs).\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Expedo.\n    *   Tracking Number: EX7710194.\n    *   Text Content:\n        *   Cookie banner (ignore).\n        *   \"Kde je moje zásilka? Číslo zásilky: EX7710194\" (Matches tracking number).\n        *   \"Aktuální stav\" (Current status).\n        *   \"Na cestě\" (On the way).\n        *   \"Poslední aktualizace: 1. 11. 2026 22:40\" (Last update).\n        *   \"Zásilka opustila třídicí centrum Ostrava.\" (Parcel left sorting center Ostrava).\n        *   FAQ section about delivery times, Expedo Points, etc. (ignore).\n    *   Key Tracking Event: \"Zásilka opustila třídicí centrum Ostrava.\" (Parcel left sorting center Ostrava).\n    *   Status Label: \"Na cestě\" (On the way).\n\n3.  **Evaluate State:**\n    *   The latest event is \"Zásilka opustila třídicí centrum Ostrava\" (Parcel left sorting center).\n    *   The status label is \"Na cestě\" (On the way).\n    *   There is no indication of delivery (\"Doručeno\", \"Vyzvednuto\", \"Předáno\").\n    *   There is no indication of return (\"Vraceno\").\n    *   The parcel is moving towards the destination but hasn't been handed over.\n    *   According to rules: \"IN_TRANSIT — the parcel is with the carrier, or waits at a pickup point / box.\"\n    *   Leaving a sorting center fits \"with the carrier\".\n    *   It is not DELIVERED (recipient didn't take it).\n    *   It is not RETURNING.\n    *   It is not UNKNOWN (clearly in transit).\n\n4.  **Draft JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: \"Zásilka opustila třídicí centrum Ostrava.\" (or \"Na cestě\")\n    *   `reason`: \"Latest event shows parcel left sorting center, status is 'On the way'.\"\n\n5.  **Refine Quote and Reason:**\n    *   Quote: \"Zásilka opustila třídicí centrum Ostrava.\" (Specific event text).\n    *   Reason: \"Parcel left sorting center, status indicates 'On the way'.\" (Keep under 20 words).\n\n6.  **Final Check:**\n    *   Does it match the rules? Yes.\n    *   Is it JSON only? Yes.\n    *   Is the language correct? Yes.\n\n    *Self-Correction on Quote:* The prompt asks for \"exact text or attribute fragment copied from the page\". \"Zásilka opustila třídicí centrum Ostrava.\" is exact text.\n    *Self-Correction on Reason:* \"Latest event shows parcel left sorting center, status indicates 'On the way'.\" -> \"Latest event shows parcel left sorting center, status is 'On the way'.\" (14 words).\n\n    Wait, looking closer at the text provided:\n    \"Aktuální stav Na cestě\"\n    \"Zásilka opustila třídicí centrum Ostrava.\"\n    This confirms IN_TRANSIT.\n\n    One detail: The prompt says \"The page may be in Czech.\"\n    The output JSON keys are English.\n    The `quote` should be the Czech text.\n    The `reason` should be English (based on the instruction \"Answer ONLY with JSON\" and the example structure usually implies English keys/values for the meta-data, though the prompt instructions are in English). The `reason` field description says \"<max 20 words>\", usually implying English for consistency with the system prompt language, but since the input is Czech, I should probably write the reason in English to match the instruction language, or Czech if the user expects it. Looking at the previous turns in the few-shot examples (none provided here, but standard practice for these tasks): The system prompt is in English. The output format keys are English. The `reason` is usually English. I will write the reason in English.\n\n    Wait, checking the previous turns in the conversation history provided in the prompt context (User/Assistant turns):\n    Turn 1: Input Czech, Output JSON with English keys and English reason.\n    Turn 2: Input Czech, Output JSON with English keys and English reason.\n    So I must follow that pattern.\n\n    Plan:\n    state: IN_TRANSIT\n    quote: \"Zásilka opustila třídicí centrum Ostrava.\"\n    reason: \"Parcel left sorting center, status indicates 'On the way'.\"\n\n    Wait, checking the \"UNKNOWN\" rule again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    This text does not mention handover to reception. It says \"left sorting center\". So IN_TRANSIT is correct.\n\n    Final check on constraints:\n    - JSON only.\n    - Keys: state, quote, reason.\n    - Values: specific strings.\n\n    Let's assemble.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"Zásilka opustila třídicí centrum Ostrava.\", \"reason\": \"Parcel left sorting center, status indicates 'On the way'.\"}\n    Word count for reason: 10 words. Good.\n    Quote is exact text. Good.\n    State is correct. Good.\n\n    One more check: The text says \"Aktuální stav Na cestě\". \"Na cestě\" translates to \"On the way\". This is explicitly IN_TRANSIT.\n    The event \"Zásilka opustila třídicí centrum Ostrava\" supports this.\n\n    Ready.\n\n    Wait, I need to make sure I don't include markdown code blocks like ```json ... ``` unless requested. The instruction says \"Answer ONLY with JSON\". Usually, this means raw JSON text. However, in the previous turns of this session (Turn 1 and Turn 2 in the prompt description), the model output raw JSON without markdown blocks. I will follow that.\n\n    Wait, looking at the conversation history provided in the prompt:\n    User: Tracking page...\n    Model: {\"state\":\"UNKNOWN\",...}\n    User: Tracking page...\n    Model: {\"state\":\"IN_TRANSIT\",...}\n    User: Tracking page... (Current)\n    Model: (My response)\n\n    I will output raw JSON.\n\n    Wait, one detail in the text: \"Poslední aktualizace: 1. 11. 2026 22:40\". This is future date (2026), but irrelevant for state classification.\n    The text \"Zásilka opustila třídicí centrum Ostrava.\" is the specific tracking event.\n\n    Final check on reason length: \"Parcel left sorting center, status indicates 'On the way'.\" (10 words).\n    Final check on quote: \"Zásilka opustila třídicí centrum Ostrava.\"\n\n    Let's go.cw\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 934,
+      "completion_tokens": 1861,
+      "total_tokens": 2795,
+      "cost": 0.00037255,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00037255,
+        "upstream_inference_prompt_cost": 0.0000934,
+        "upstream_inference_completions_cost": 0.00027915
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1687,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

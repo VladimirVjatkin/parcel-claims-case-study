@@ -6,7 +6,7 @@ import { evaluatePages, errorImpact } from "../../src/eval/evaluatePages.js";
 import type { EvaluationResult } from "../../src/eval/evaluatePages.js";
 import { readLabels } from "../../src/eval/labels.js";
 import { addTable } from "../../src/report/markdown.js";
-import { checkAnswer, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
+import { checkAnswer, isExhausted, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
 import type { CheckedAnswer, Model, SavedSlot } from "./llm.js";
 import { PROMPT_VERSION } from "./prompt.js";
 
@@ -18,7 +18,11 @@ export interface Metrics {
 export function observe(item: SavedSlot): Observation {
   if (item.invalid.length > 0 || item.attempts.length === 0) return { ...item, answer: null };
   const success = item.attempts.find((attempt) => attempt.status === "ok");
-  if (success === undefined) return { ...item, answer: checkAnswer(null, null, item.slot.input) };
+  if (success === undefined) {
+    // Provider-only rate limits are missing data, not a model refusal.
+    const modelAttempt = item.attempts.some((attempt) => attempt.httpStatus !== 429);
+    return { ...item, answer: isExhausted(item.attempts) && modelAttempt ? checkAnswer(null, null, item.slot.input) : null };
+  }
   const choices = object(success.response).choices;
   const choice = object(Array.isArray(choices) ? choices[0] : null);
   return { ...item, answer: checkAnswer(object(choice.message).content, choice.finish_reason, item.slot.input) };
@@ -64,6 +68,7 @@ export function thresholdStatus(metrics: Metrics): string {
 
 function cost(items: Observation[]): string {
   let known = 0; let unknown = 0;
+  if (items.every((item) => item.attempts.length === 0 && item.invalid.length === 0)) return "—";
   for (const item of items) unknown += item.invalid.length;
   for (const item of items) for (const attempt of item.attempts) {
     const value = object(object(attempt.response).usage).cost;
@@ -130,6 +135,22 @@ export function formatLlmReport(saved: SavedSlot[], original: EvaluationResult, 
   }
   addTable(lines, ["Model / vstup", "Správně původní", "Správně změněné", "Falešná D (surová / po kontrole)",
     "NO_ANSWER", "INVALID_JSON", "INVALID_STATE", "QUOTE_NOT_FOUND", "Neúspěšné pokusy", "Cena USD", "Medián ms", "Skutečný poskytovatel"], rows);
+  lines.push("", "Pokusy s HTTP 429 se do limitu 3 nezapočítávají (upřesněno během sběru, před vyhodnocením).", "");
+  const rateLimits: string[][] = [];
+  for (const model of models) {
+    const count = observations.filter((item) => item.slot.model.id === model.id)
+      .reduce((sum, item) => sum + item.attempts.filter((attempt) => attempt.httpStatus === 429).length, 0);
+    rateLimits.push([model.label, String(count)]);
+  }
+  addTable(lines, ["Model", "Pokusy HTTP 429"], rateLimits);
+  for (const model of models) {
+    const missing = observations.filter((item) => item.slot.model.id === model.id && item.invalid.length === 0 &&
+      isExhausted(item.attempts) && item.attempts.every((attempt) => attempt.httpStatus === 429));
+    if (missing.length > 0) {
+      const noun = missing.length === 1 ? "slot" : missing.length <= 4 ? "sloty" : "slotů";
+      lines.push("", `${model.label}: ${missing.length} ${noun} bez odpovědi, všech 10 pokusů skončilo omezením poskytovatele (HTTP 429); jde o chybu sběru, ne modelu, práh proto nelze vyhodnotit.`);
+    }
+  }
   if (!any) lines.push("", "Odpovědi modelů zatím nejsou uložené.");
   else {
     lines.push("", "## Změněné stránky", "");

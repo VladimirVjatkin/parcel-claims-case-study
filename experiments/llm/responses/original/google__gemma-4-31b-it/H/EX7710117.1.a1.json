@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "25117d4369d94f5cfd3711df03bf09669b3f5335117955276cb04e1385483c50",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "EX7710117.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T12:12:39.158Z",
+  "latencyMs": 11667,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794053547-u4XC84DbqEBqiRzTS5jf",
+    "object": "chat.completion",
+    "created": 1794053547,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Zásilka byla předána příjemci.\",\"reason\":\"The parcel was handed over to the recipient.\",\"state\":\"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Expedo\n    *   Tracking Number: EX7710117\n    *   Page Content:\n        *   Cookie banner (ignore)\n        *   Header/Nav (ignore)\n        *   Hero ad (ignore)\n        *   Main section:\n            *   Tracking number: EX7710117\n            *   Status card:\n                *   Label: \"Aktuální stav\" (Current status)\n                *   Value: \"Doručeno\" (Delivered)\n                *   Update time: 21. 10. 2026 16:03\n                *   Text: \"Zásilka byla předána příjemci.\" (The parcel was handed over to the recipient.)\n        *   FAQ (ignore)\n        *   Ads (ignore)\n        *   Footer (ignore)\n\n    *   The current status is \"Doručeno\" (Delivered).\n    *   The specific detail is \"Zásilka byla předána příjemci\" (The parcel was handed over to the recipient).\n    *   According to the rules: \"DELIVERED — the RECIPIENT took over the parcel\".\n\n    *   State: `DELIVERED`\n    *   Quote: \"Zásilka byla předána příjemci.\" (or \"Doručeno\")\n    *   Reason: The parcel was handed over to the recipient.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Expedo\n    *   Tracking Number: EX7710117\n    *   Page Content:\n        *   Cookie banner (ignore)\n        *   Header/Nav (ignore)\n        *   Hero ad (ignore)\n        *   Main section:\n            *   Tracking number: EX7710117\n            *   Status card:\n                *   Label: \"Aktuální stav\" (Current status)\n                *   Value: \"Doručeno\" (Delivered)\n                *   Update time: 21. 10. 2026 16:03\n                *   Text: \"Zásilka byla předána příjemci.\" (The parcel was handed over to the recipient.)\n        *   FAQ (ignore)\n        *   Ads (ignore)\n        *   Footer (ignore)\n\n    *   The current status is \"Doručeno\" (Delivered).\n    *   The specific detail is \"Zásilka byla předána příjemci\" (The parcel was handed over to the recipient).\n    *   According to the rules: \"DELIVERED — the RECIPIENT took over the parcel\".\n\n    *   State: `DELIVERED`\n    *   Quote: \"Zásilka byla předána příjemci.\" (or \"Doručeno\")\n    *   Reason: The parcel was handed over to the recipient.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1262,
+      "completion_tokens": 350,
+      "total_tokens": 1612,
+      "cost": 0.00031668,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00031668,
+        "upstream_inference_prompt_cost": 0.00017668,
+        "upstream_inference_completions_cost": 0.00014
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 315,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

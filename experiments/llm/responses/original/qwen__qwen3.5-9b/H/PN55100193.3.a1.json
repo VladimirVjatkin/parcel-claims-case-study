@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "c3d7fce1a8f9f2c0e5e7641f6e3a329feeb46a7df44abdfe310ec82369cea232",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100193.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T20:38:29.035Z",
+  "latencyMs": 12995,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793997495-JPYK4atfiOOUmAEbkC1E",
+    "object": "chat.completion",
+    "created": 1793997495,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"DELIVERED\", \"quote\": \"Doručeno příjemci, podepsal: J. Dvořák\", \"reason\": \"Latest event confirms delivery to recipient with signature.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML content of a tracking page (carrier: ParcelNord, number: PN55100193).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event.\n        *   \"DELIVERED\" = Recipient took over (pickup point collection counts).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party (neighbor, reception).\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient = UNKNOWN.\n        *   Current step may be marked visually (class, color).\n        *   If unsure, answer UNKNOWN.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100193.\n    *   HTML Content:\n        *   Header/Nav (irrelevant).\n        *   Main content:\n            *   Table `class=\"events\"`:\n                *   Row 1: `26. 10. 2026 11:18 Plzeň Doručeno příjemci, podepsal: J. Dvořák` (Delivered to recipient, signed by: J. Dvořák).\n                *   Row 2: `26. 10. 2026 07:55 Depo Plzeň Zásilka předána kurýrovi k doručení` (Parcel handed to courier for delivery).\n                *   Row 3: `25. 10. 2026 01:30 Třídicí centrum Praha Zásilka zpracována` (Processed).\n                *   Row 4: `24. 10. 2026 13:10 Odesílatel Zásilka převzata od odesílatele` (Picked up from sender).\n    *   No cookie banners or ads interfering with the tracking block.\n    *   The latest event is \"Doručeno příjemci, podepsal: J. Dvořák\".\n\n3.  **Evaluate State:**\n    *   Latest event: \"Doručeno příjemci, podepsal: J. Dvořák\".\n    *   Translation: \"Delivered to recipient, signed by: J. Dvořák\".\n    *   Does this match `DELIVERED`? Yes. The recipient took over the parcel (signed for).\n    *   Does it match `IN_TRANSIT`? No, it's past the delivery step.\n    *   Does it match `RETURNING`? No.\n    *   Does it match `UNKNOWN`? No, it's clear.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Doručeno příjemci, podepsal: J. Dvořák\" (Exact text from the table row).\n    *   `reason`: \"Latest event confirms delivery to recipient with signature.\" (Max 20 words).\n\n5.  **Refine Reason:**\n    *   \"Latest event confirms delivery to recipient with signature.\" -> 8 words. Good.\n    *   Or: \"Zásilka doručena příjemci a podepsána.\" -> 6 words.\n    *   Let's stick to English for the reason as per typical instruction style, though the input is Czech. The prompt instructions are in English. I will write the reason in English.\n    *   Reason: \"Latest event states delivered to recipient and signed.\"\n\n6.  **Final Check:**\n    *   JSON format valid? Yes.\n    *   State correct? Yes (DELIVERED).\n    *   Quote exact? Yes.\n    *   Reason concise? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Doručeno příjemci, podepsal: J. Dvořák\", \"reason\": \"Latest event confirms delivery to recipient with signature.\"}\n    ```\n\n    Wait, checking the quote requirement: `<exact text or attribute fragment copied from the page that supports the state>`.\n    Text: `Doručeno příjemci, podepsal: J. Dvořák` is inside `<td>Událost</td>`.\n    I will use that text.\n\n    One more check on rules: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    Here it says \"příjemci\" (recipient) and \"podepsal\" (signed). This is explicit delivery.\n\n    Final JSON construction.cw\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML content of a tracking page (carrier: ParcelNord, number: PN55100193).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: `DELIVERED`, `IN_TRANSIT`, `RETURNING`, `UNKNOWN`.\n    *   Rules:\n        *   Decide by the LATEST event.\n        *   \"DELIVERED\" = Recipient took over (pickup point collection counts).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party (neighbor, reception).\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient = UNKNOWN.\n        *   Current step may be marked visually (class, color).\n        *   If unsure, answer UNKNOWN.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: ParcelNord.\n    *   Tracking Number: PN55100193.\n    *   HTML Content:\n        *   Header/Nav (irrelevant).\n        *   Main content:\n            *   Table `class=\"events\"`:\n                *   Row 1: `26. 10. 2026 11:18 Plzeň Doručeno příjemci, podepsal: J. Dvořák` (Delivered to recipient, signed by: J. Dvořák).\n                *   Row 2: `26. 10. 2026 07:55 Depo Plzeň Zásilka předána kurýrovi k doručení` (Parcel handed to courier for delivery).\n                *   Row 3: `25. 10. 2026 01:30 Třídicí centrum Praha Zásilka zpracována` (Processed).\n                *   Row 4: `24. 10. 2026 13:10 Odesílatel Zásilka převzata od odesílatele` (Picked up from sender).\n    *   No cookie banners or ads interfering with the tracking block.\n    *   The latest event is \"Doručeno příjemci, podepsal: J. Dvořák\".\n\n3.  **Evaluate State:**\n    *   Latest event: \"Doručeno příjemci, podepsal: J. Dvořák\".\n    *   Translation: \"Delivered to recipient, signed by: J. Dvořák\".\n    *   Does this match `DELIVERED`? Yes. The recipient took over the parcel (signed for).\n    *   Does it match `IN_TRANSIT`? No, it's past the delivery step.\n    *   Does it match `RETURNING`? No.\n    *   Does it match `UNKNOWN`? No, it's clear.\n\n4.  **Draft the JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Doručeno příjemci, podepsal: J. Dvořák\" (Exact text from the table row).\n    *   `reason`: \"Latest event confirms delivery to recipient with signature.\" (Max 20 words).\n\n5.  **Refine Reason:**\n    *   \"Latest event confirms delivery to recipient with signature.\" -> 8 words. Good.\n    *   Or: \"Zásilka doručena příjemci a podepsána.\" -> 6 words.\n    *   Let's stick to English for the reason as per typical instruction style, though the input is Czech. The prompt instructions are in English. I will write the reason in English.\n    *   Reason: \"Latest event states delivered to recipient and signed.\"\n\n6.  **Final Check:**\n    *   JSON format valid? Yes.\n    *   State correct? Yes (DELIVERED).\n    *   Quote exact? Yes.\n    *   Reason concise? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Doručeno příjemci, podepsal: J. Dvořák\", \"reason\": \"Latest event confirms delivery to recipient with signature.\"}\n    ```\n\n    Wait, checking the quote requirement: `<exact text or attribute fragment copied from the page that supports the state>`.\n    Text: `Doručeno příjemci, podepsal: J. Dvořák` is inside `<td>Událost</td>`.\n    I will use that text.\n\n    One more check on rules: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\".\n    Here it says \"příjemci\" (recipient) and \"podepsal\" (signed). This is explicit delivery.\n\n    Final JSON construction.cw\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1185,
+      "completion_tokens": 1212,
+      "total_tokens": 2397,
+      "cost": 0.0003003,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0003003,
+        "upstream_inference_prompt_cost": 0.0001185,
+        "upstream_inference_completions_cost": 0.0001818
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 971,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

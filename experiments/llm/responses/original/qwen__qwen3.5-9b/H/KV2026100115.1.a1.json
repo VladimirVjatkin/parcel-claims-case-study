@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "d2e6c83e16aa875cea54c698ef924b3d34979b03ce9fdc1f5c842a597aa36dc5",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100115.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T19:47:32.625Z",
+  "latencyMs": 21960,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793994430-ZI4GZQDLJLjHsQs33t1O",
+    "object": "chat.completion",
+    "created": 1793994430,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Parcel picked up by neighbor, not recipient\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: HTML snippet of a tracking page (Carrier: Kurýr Vltava, Number: KV2026100115).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" is NOT delivery.\n        *   Handover to anyone *other than the recipient* (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100115.\n    *   Progress Steps:\n        1.  Objednávka (Order)\n        2.  Zásilka v přepravě (Shipment in transit)\n        3.  Na cestě k vám (On the way to you)\n        4.  Doručeno příjemci (Delivered to recipient)\n    *   Visual Indicator: `<div class=\"progress__bar\"><div class=\"progress__fill\" style=\"width:100%\"></div></div>` (100% filled, suggesting completion).\n    *   Message: `<p>Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.</p>`\n    *   Translation of Message: \"Parcel was delivered on 28. 10. 2026 at 10:41. Collected by: neighbor (Novák), Lipová 12.\"\n\n3.  **Evaluate State:**\n    *   The message explicitly states \"Převzal: soused\" (Collected by: neighbor).\n    *   Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Although the step says \"Doručeno příjemci\" (Delivered to recipient), the specific text says it was picked up by a *neighbor*.\n    *   According to the strict rules provided in the prompt: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Therefore, the state must be UNKNOWN.\n\n4.  **Draft the JSON:**\n    *   `state`: \"UNKNOWN\"\n    *   `quote`: \"Převzal: soused (Novák)\" (or the full sentence)\n    *   `reason`: \"Handover to neighbor, not recipient\" (Need to keep it under 20 words).\n\n5.  **Refine Reason:**\n    *   \"Handover to neighbor, not recipient\" (4 words).\n    *   \"Parcel picked up by neighbor, not recipient\" (6 words).\n    *   \"Collected by neighbor, not recipient\" (5 words).\n    *   Let's use: \"Parcel picked up by neighbor, not recipient\"\n\n6.  **Final Check:**\n    *   Does it match the rules? Yes. The rule explicitly says neighbor = UNKNOWN.\n    *   Is the quote exact? Yes.\n    *   Is the reason under 20 words? Yes.\n    *   Is it JSON only? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Parcel picked up by neighbor, not recipient\"}\n    ```\n    Wait, checking the quote. The full sentence is \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    The specific part indicating the issue is \"Převzal: soused (Novák)\".\n    Let's use the specific fragment.\n\n    Reason: \"Parcel picked up by neighbor, not recipient\"\n\n    Wait, I need to make sure I don't violate the \"DELIVERED\" definition. The definition says \"the RECIPIENT took over the parcel\". The text says \"neighbor\". So it's not DELIVERED. It's not IN_TRANSIT (it says delivered). It's not RETURNING. So UNKNOWN is correct based on the specific rule about neighbors.\n\n    Final check on constraints:\n    - JSON only.\n    - State: UNKNOWN.\n    - Quote: Exact text.\n    - Reason: Max 20 words.\n\n    Let's assemble.\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Parcel picked up by neighbor, not recipient\"}\n\n    Wait, looking at the previous turn examples.\n    Example 1: \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN. Reason: \"handed to reception, not the recipient\".\n    Example 2: \"Ve výdejně\" -> IN_TRANSIT. Reason: \"current step is pickup point, not collected\".\n\n    So for this one:\n    Quote: \"Převzal: soused (Novák)\"\n    Reason: \"Parcel picked up by neighbor, not recipient\"\n\n    Looks good.\n\n    Wait, one more check on the rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    The text says \"Převzal: soused\". \"Soused\" means neighbor.\n    So UNKNOWN is definitely the correct classification based on the provided rules.\n\n    Final JSON construction.\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Parcel picked up by neighbor, not recipient\"}\n    Word count for reason: 6 words.\n    Quote is exact.\n    State is correct.\n\n    One detail: The prompt says \"Answer ONLY with JSON\".\n    I will output just the JSON block.\n\n    Wait, I should check if there is any ambiguity about \"Doručeno příjemci\" (Delivered to recipient) step label vs the text content. The text content overrides the label in terms of specific handover details according to the rule \"Handover to anyone other than the recipient... is UNKNOWN\". The text explicitly says \"neighbor\". So UNKNOWN.\n\n    Ready.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: HTML snippet of a tracking page (Carrier: Kurýr Vltava, Number: KV2026100115).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" is NOT delivery.\n        *   Handover to anyone *other than the recipient* (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\n        *   If unsure, answer UNKNOWN.\n        *   Output format: JSON only (`{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`).\n    *   Constraint: Max 20 words for reason.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100115.\n    *   Progress Steps:\n        1.  Objednávka (Order)\n        2.  Zásilka v přepravě (Shipment in transit)\n        3.  Na cestě k vám (On the way to you)\n        4.  Doručeno příjemci (Delivered to recipient)\n    *   Visual Indicator: `<div class=\"progress__bar\"><div class=\"progress__fill\" style=\"width:100%\"></div></div>` (100% filled, suggesting completion).\n    *   Message: `<p>Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.</p>`\n    *   Translation of Message: \"Parcel was delivered on 28. 10. 2026 at 10:41. Collected by: neighbor (Novák), Lipová 12.\"\n\n3.  **Evaluate State:**\n    *   The message explicitly states \"Převzal: soused\" (Collected by: neighbor).\n    *   Rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Although the step says \"Doručeno příjemci\" (Delivered to recipient), the specific text says it was picked up by a *neighbor*.\n    *   According to the strict rules provided in the prompt: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    *   Therefore, the state must be UNKNOWN.\n\n4.  **Draft the JSON:**\n    *   `state`: \"UNKNOWN\"\n    *   `quote`: \"Převzal: soused (Novák)\" (or the full sentence)\n    *   `reason`: \"Handover to neighbor, not recipient\" (Need to keep it under 20 words).\n\n5.  **Refine Reason:**\n    *   \"Handover to neighbor, not recipient\" (4 words).\n    *   \"Parcel picked up by neighbor, not recipient\" (6 words).\n    *   \"Collected by neighbor, not recipient\" (5 words).\n    *   Let's use: \"Parcel picked up by neighbor, not recipient\"\n\n6.  **Final Check:**\n    *   Does it match the rules? Yes. The rule explicitly says neighbor = UNKNOWN.\n    *   Is the quote exact? Yes.\n    *   Is the reason under 20 words? Yes.\n    *   Is it JSON only? Yes.\n\n7.  **Construct Output:**\n    ```json\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Parcel picked up by neighbor, not recipient\"}\n    ```\n    Wait, checking the quote. The full sentence is \"Zásilka byla doručena 28. 10. 2026 v 10:41. Převzal: soused (Novák), Lipová 12.\"\n    The specific part indicating the issue is \"Převzal: soused (Novák)\".\n    Let's use the specific fragment.\n\n    Reason: \"Parcel picked up by neighbor, not recipient\"\n\n    Wait, I need to make sure I don't violate the \"DELIVERED\" definition. The definition says \"the RECIPIENT took over the parcel\". The text says \"neighbor\". So it's not DELIVERED. It's not IN_TRANSIT (it says delivered). It's not RETURNING. So UNKNOWN is correct based on the specific rule about neighbors.\n\n    Final check on constraints:\n    - JSON only.\n    - State: UNKNOWN.\n    - Quote: Exact text.\n    - Reason: Max 20 words.\n\n    Let's assemble.\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Parcel picked up by neighbor, not recipient\"}\n\n    Wait, looking at the previous turn examples.\n    Example 1: \"Zásilka byla předána na recepci budovy.\" -> UNKNOWN. Reason: \"handed to reception, not the recipient\".\n    Example 2: \"Ve výdejně\" -> IN_TRANSIT. Reason: \"current step is pickup point, not collected\".\n\n    So for this one:\n    Quote: \"Převzal: soused (Novák)\"\n    Reason: \"Parcel picked up by neighbor, not recipient\"\n\n    Looks good.\n\n    Wait, one more check on the rule: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN, not DELIVERED.\"\n    The text says \"Převzal: soused\". \"Soused\" means neighbor.\n    So UNKNOWN is definitely the correct classification based on the provided rules.\n\n    Final JSON construction.\n    {\"state\": \"UNKNOWN\", \"quote\": \"Převzal: soused (Novák)\", \"reason\": \"Parcel picked up by neighbor, not recipient\"}\n    Word count for reason: 6 words.\n    Quote is exact.\n    State is correct.\n\n    One detail: The prompt says \"Answer ONLY with JSON\".\n    I will output just the JSON block.\n\n    Wait, I should check if there is any ambiguity about \"Doručeno příjemci\" (Delivered to recipient) step label vs the text content. The text content overrides the label in terms of specific handover details according to the rule \"Handover to anyone other than the recipient... is UNKNOWN\". The text explicitly says \"neighbor\". So UNKNOWN.\n\n    Ready.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1358,
+      "completion_tokens": 1565,
+      "total_tokens": 2923,
+      "cost": 0.00037055,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00037055,
+        "upstream_inference_prompt_cost": 0.0001358,
+        "upstream_inference_completions_cost": 0.00023475
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1335,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

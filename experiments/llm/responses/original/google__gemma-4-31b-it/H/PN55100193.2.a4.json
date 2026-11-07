@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "c3d7fce1a8f9f2c0e5e7641f6e3a329feeb46a7df44abdfe310ec82369cea232",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100193.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:47:41.753Z",
+  "latencyMs": 7392,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059254-fJkjVnqk1Kxx9UjEemJI",
+    "object": "chat.completion",
+    "created": 1794059254,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Doručeno příjemci, podepsal: J. Dvořák\",\"reason\":\"Latest event confirms the parcel was delivered to the recipient.\",\"state\":\"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100193\n    *   Latest event: \"26. 10. 2026 11:18 Plzeň Doručeno příjemci, podepsal: J. Dvořák\"\n    *   Translation: \"Delivered to recipient, signed: J. Dvořák\"\n    *   State definitions:\n        *   DELIVERED: Recipient took over the parcel.\n        *   IN_TRANSIT: With carrier or at pickup point.\n        *   RETURNING: Returning to sender.\n        *   UNKNOWN: Not confirmed recipient took it (e.g., third person).\n    *   Analysis: The text explicitly says \"Doručeno příjemci\" (Delivered to recipient).\n\n    *   State: DELIVERED\n    *   Quote: \"Doručeno příjemci, podepsal: J. Dvořák\"\n    *   Reason: Latest event confirms delivery to the recipient.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100193\n    *   Latest event: \"26. 10. 2026 11:18 Plzeň Doručeno příjemci, podepsal: J. Dvořák\"\n    *   Translation: \"Delivered to recipient, signed: J. Dvořák\"\n    *   State definitions:\n        *   DELIVERED: Recipient took over the parcel.\n        *   IN_TRANSIT: With carrier or at pickup point.\n        *   RETURNING: Returning to sender.\n        *   UNKNOWN: Not confirmed recipient took it (e.g., third person).\n    *   Analysis: The text explicitly says \"Doručeno příjemci\" (Delivered to recipient).\n\n    *   State: DELIVERED\n    *   Quote: \"Doručeno příjemci, podepsal: J. Dvořák\"\n    *   Reason: Latest event confirms delivery to the recipient.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1208,
+      "completion_tokens": 268,
+      "total_tokens": 1476,
+      "cost": 0.00027632,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00027632,
+        "upstream_inference_prompt_cost": 0.00016912,
+        "upstream_inference_completions_cost": 0.0001072
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 226,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

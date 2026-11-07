@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "91513cdda1f780fb0ac4892c8723fa6f39f9bb0afae53617ce0c9e9a5da0d620",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "DT9100904.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:28:00.471Z",
+  "latencyMs": 3088,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000477-dvcvCu7YGkfsLjzRKE8s",
+    "object": "chat.completion",
+    "created": 1794000477,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"UNKNOWN\",\"quote\":\"DoručenoVráceno\",\"reason\":\"no clear current status indicated\"}",
+          "refusal": null,
+          "reasoning": "We have status list: Podáno, V přepravě, U kurýra, Doručeno, Vráceno. No indication which is current. Likely latest is Vráceno? But order? Probably the highlighted? Not given. Assume unknown.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We have status list: Podáno, V přepravě, U kurýra, Doručeno, Vráceno. No indication which is current. Likely latest is Vráceno? But order? Probably the highlighted? Not given. Assume unknown.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 707,
+      "completion_tokens": 86,
+      "total_tokens": 793,
+      "cost": 0.000040779,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000040779,
+        "upstream_inference_prompt_cost": 0.000026159,
+        "upstream_inference_completions_cost": 0.00001462
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 50,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

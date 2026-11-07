@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "3b93c6617bd80c839a356ad54f4a81ad04db459dc9837d576a360d78b0575bd6",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "PN55100905.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 7,
+  "collectedAt": "2026-11-07T19:42:59.467Z",
+  "latencyMs": 15926,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794080565-8zhW83RDRzzdGyFHR8zR",
+    "object": "chat.completion",
+    "created": 1794080565,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"Úložní doba uplynula, zásilka se vrací odesílateli.\",\"reason\":\"Latest event states the parcel is returning to the sender.\",\"state\":\"RETURNING\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100905\n    *   Events:\n        1.  20. 10. 2026 10:10: Odesílatel — Zásilka převzata od odesílatele (Picked up from sender)\n        2.  21. 10. 2026 02:30: Třídicí centrum Brno — Zásilka zpracována (Processed at sorting center)\n        3.  22. 10. 2026 13:05: Box Brno Lesná — Zásilka je připravena k vyzvednutí (Ready for pickup)\n        4.  30. 10. 2026 06:00: Box Brno Lesná — Úložní doba uplynula, zásilka se vrací odesílateli (Storage period expired, parcel is returning to sender)\n\n    *   The latest event is \"30. 10. 2026 06:00 Box Brno Lesná — Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   This explicitly states the parcel is returning to the sender.\n\n    *   DELIVERED: No.\n    *   IN_TRANSIT: No (it's no longer moving towards the recipient).\n    *   RETURNING: Yes (\"zásilka se vrací odesílateli\").\n    *   UNKNOWN: No.\n\n    *   State: RETURNING\n    *   Quote: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   Reason: Latest event states the storage period expired and the parcel is returning to the sender.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: ParcelNord\n    *   Tracking Number: PN55100905\n    *   Events:\n        1.  20. 10. 2026 10:10: Odesílatel — Zásilka převzata od odesílatele (Picked up from sender)\n        2.  21. 10. 2026 02:30: Třídicí centrum Brno — Zásilka zpracována (Processed at sorting center)\n        3.  22. 10. 2026 13:05: Box Brno Lesná — Zásilka je připravena k vyzvednutí (Ready for pickup)\n        4.  30. 10. 2026 06:00: Box Brno Lesná — Úložní doba uplynula, zásilka se vrací odesílateli (Storage period expired, parcel is returning to sender)\n\n    *   The latest event is \"30. 10. 2026 06:00 Box Brno Lesná — Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   This explicitly states the parcel is returning to the sender.\n\n    *   DELIVERED: No.\n    *   IN_TRANSIT: No (it's no longer moving towards the recipient).\n    *   RETURNING: Yes (\"zásilka se vrací odesílateli\").\n    *   UNKNOWN: No.\n\n    *   State: RETURNING\n    *   Quote: \"Úložní doba uplynula, zásilka se vrací odesílateli.\"\n    *   Reason: Latest event states the storage period expired and the parcel is returning to the sender.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 838,
+      "completion_tokens": 461,
+      "total_tokens": 1299,
+      "cost": 0.00030172,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00030172,
+        "upstream_inference_prompt_cost": 0.00011732,
+        "upstream_inference_completions_cost": 0.0001844
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 414,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

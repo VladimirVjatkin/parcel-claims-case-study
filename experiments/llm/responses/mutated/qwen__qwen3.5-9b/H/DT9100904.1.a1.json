@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "275cffd549c5b534a73b493d06e0ec86a7c3090d878da2b1524548b4e74ebcad",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "DT9100904.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:37:22.983Z",
+  "latencyMs": 27257,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001015-ZarfKW2XnrNu8gjJVjMS",
+    "object": "chat.completion",
+    "created": 1794001015,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"IN_TRANSIT\", \"quote\": \"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\", \"reason\": \"Current step is 'U kurýra', parcel is with the carrier.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: HTML snippet of a tracking page (carrier: Doručto, number: DT9100904).\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" is NOT delivery.\n        *   Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Doručto.\n    *   Tracking Number: DT9100904.\n    *   HTML Content:\n        *   `<ol class=\"steps\">`\n        *   `<li class=\"steps__item steps__item--done\">Podáno</li>` (Submitted)\n        *   `<li class=\"steps__item steps__item--done\">V přepravě</li>` (In transit)\n        *   `<li class=\"steps__item steps__item--current\">U kurýra</li>` (With courier)\n        *   `<li class=\"steps__item\">Doručeno</li>` (Delivered - future step)\n        *   `<li class=\"steps__item\">Vráceno</li>` (Returned - future step)\n    *   Current Status Highlight: `steps__item--current` is on \"U kurýra\".\n\n3.  **Evaluate the State:**\n    *   The current step is \"U kurýra\" (With courier).\n    *   The step \"Doručeno\" (Delivered) is not marked as done or current.\n    *   The parcel is actively being transported by the courier.\n    *   This fits the definition of `IN_TRANSIT` (\"the parcel is with the carrier\").\n    *   It is not `DELIVERED` because the recipient hasn't taken over yet.\n    *   It is not `RETURNING`.\n    *   It is not `UNKNOWN` because the status is clear.\n\n4.  **Draft the JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: Need exact text or attribute fragment. `<li class=\"steps__item steps__item--current\">U kurýra</li>` is good. Or just \"U kurýra\". The instruction says \"exact text or attribute fragment copied from the page\". I'll use the full li tag or the text inside. Let's use the text inside the current step for clarity, or the tag. The previous examples used the text or tag. Example 1 used text. Example 2 used tag. I will use the tag fragment to be precise about the \"current\" status.\n    *   `reason`: Max 20 words. \"Current step is 'U kurýra', indicating the parcel is with the carrier.\"\n\n5.  **Refine the Quote:**\n    *   Input: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    *   Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n\n6.  **Refine the Reason:**\n    *   \"Current step marked as 'U kurýra' means parcel is with the carrier.\" (13 words)\n\n7.  **Final Check:**\n    *   State: IN_TRANSIT (Correct, \"U kurýra\" = with courier).\n    *   Quote: Accurate copy.\n    *   Reason: Concise and accurate.\n    *   JSON format: Valid.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\", \"reason\": \"Current step marked as 'U kurýra' means parcel is with the carrier.\"}\n    ```\n    Wait, checking the rules again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\". \"U kurýra\" means with the courier, not handed over yet. So IN_TRANSIT is correct.\n\n    Let's double check the quote escaping. In JSON, double quotes inside strings need escaping.\n    Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    JSON String: `\"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\"`\n\n    Reason: \"Current step marked as 'U kurýra' means parcel is with the carrier.\"\n\n    Looks good.\n\n    Wait, I should check if there's any ambiguity. \"U kurýra\" is clearly transit. \"Doručeno\" is a future step. So definitely IN_TRANSIT.\n\n    One more check on the quote. The instruction says \"exact text or attribute fragment copied from the page\".\n    I will use the text content \"U kurýra\" or the li tag. The li tag is more robust for \"current\" status.\n    Let's use the text \"U kurýra\" as it's cleaner, but the class indicates \"current\".\n    Example 2 used `<li class=\"step current\">Ve výdejně</li>`.\n    I will follow that style.\n\n    Revised Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    Reason: Current step is 'U kurýra', parcel is with the carrier.\n\n    Word count check: \"Current step is 'U kurýra', parcel is with the carrier.\" (10 words). Good.\n\n    Final JSON construction.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\", \"reason\": \"Current step is 'U kurýra', parcel is with the carrier.\"}\n\n    Wait, I need to make sure I don't violate the \"Answer ONLY with JSON\" rule.\n    Okay.\n\n    One detail: The prompt says \"The page may be in Czech.\"\n    The state names are English (DELIVERED, IN_TRANSIT, etc.).\n    My output state must be one of the defined states.\n    My quote must be from the page (Czech).\n    My reason must be English (implied by the prompt instructions being in English, though the examples show English reasons).\n    Example 1 reason: \"handed to reception, not the recipient\" (English).\n    Example 2 reason: \"current step is pickup point, not collected\" (English).\n    So reason should be English.\n\n    Ready.\n\n    Wait, looking closely at the HTML provided in the prompt:\n    `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    I need to escape quotes for JSON.\n\n    Final check on constraints:\n    - JSON only.\n    - Keys: state, quote, reason.\n    - State values: DELIVERED|IN_TRANSIT|RETURNING|UNKNOWN.\n    - Quote: exact text/fragment.\n    - Reason: max 20 words.\n\n    Plan confirmed.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: HTML snippet of a tracking page (carrier: Doručto, number: DT9100904).\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   Planned/expected delivery, failed attempt, \"ready for pickup\" is NOT delivery.\n        *   Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Doručto.\n    *   Tracking Number: DT9100904.\n    *   HTML Content:\n        *   `<ol class=\"steps\">`\n        *   `<li class=\"steps__item steps__item--done\">Podáno</li>` (Submitted)\n        *   `<li class=\"steps__item steps__item--done\">V přepravě</li>` (In transit)\n        *   `<li class=\"steps__item steps__item--current\">U kurýra</li>` (With courier)\n        *   `<li class=\"steps__item\">Doručeno</li>` (Delivered - future step)\n        *   `<li class=\"steps__item\">Vráceno</li>` (Returned - future step)\n    *   Current Status Highlight: `steps__item--current` is on \"U kurýra\".\n\n3.  **Evaluate the State:**\n    *   The current step is \"U kurýra\" (With courier).\n    *   The step \"Doručeno\" (Delivered) is not marked as done or current.\n    *   The parcel is actively being transported by the courier.\n    *   This fits the definition of `IN_TRANSIT` (\"the parcel is with the carrier\").\n    *   It is not `DELIVERED` because the recipient hasn't taken over yet.\n    *   It is not `RETURNING`.\n    *   It is not `UNKNOWN` because the status is clear.\n\n4.  **Draft the JSON:**\n    *   `state`: \"IN_TRANSIT\"\n    *   `quote`: Need exact text or attribute fragment. `<li class=\"steps__item steps__item--current\">U kurýra</li>` is good. Or just \"U kurýra\". The instruction says \"exact text or attribute fragment copied from the page\". I'll use the full li tag or the text inside. Let's use the text inside the current step for clarity, or the tag. The previous examples used the text or tag. Example 1 used text. Example 2 used tag. I will use the tag fragment to be precise about the \"current\" status.\n    *   `reason`: Max 20 words. \"Current step is 'U kurýra', indicating the parcel is with the carrier.\"\n\n5.  **Refine the Quote:**\n    *   Input: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    *   Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n\n6.  **Refine the Reason:**\n    *   \"Current step marked as 'U kurýra' means parcel is with the carrier.\" (13 words)\n\n7.  **Final Check:**\n    *   State: IN_TRANSIT (Correct, \"U kurýra\" = with courier).\n    *   Quote: Accurate copy.\n    *   Reason: Concise and accurate.\n    *   JSON format: Valid.\n\n8.  **Construct Output:**\n    ```json\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\", \"reason\": \"Current step marked as 'U kurýra' means parcel is with the carrier.\"}\n    ```\n    Wait, checking the rules again: \"Handover to anyone other than the recipient (neighbour, reception, another person) is UNKNOWN\". \"U kurýra\" means with the courier, not handed over yet. So IN_TRANSIT is correct.\n\n    Let's double check the quote escaping. In JSON, double quotes inside strings need escaping.\n    Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    JSON String: `\"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\"`\n\n    Reason: \"Current step marked as 'U kurýra' means parcel is with the carrier.\"\n\n    Looks good.\n\n    Wait, I should check if there's any ambiguity. \"U kurýra\" is clearly transit. \"Doručeno\" is a future step. So definitely IN_TRANSIT.\n\n    One more check on the quote. The instruction says \"exact text or attribute fragment copied from the page\".\n    I will use the text content \"U kurýra\" or the li tag. The li tag is more robust for \"current\" status.\n    Let's use the text \"U kurýra\" as it's cleaner, but the class indicates \"current\".\n    Example 2 used `<li class=\"step current\">Ve výdejně</li>`.\n    I will follow that style.\n\n    Revised Quote: `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    Reason: Current step is 'U kurýra', parcel is with the carrier.\n\n    Word count check: \"Current step is 'U kurýra', parcel is with the carrier.\" (10 words). Good.\n\n    Final JSON construction.\n    {\"state\": \"IN_TRANSIT\", \"quote\": \"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\", \"reason\": \"Current step is 'U kurýra', parcel is with the carrier.\"}\n\n    Wait, I need to make sure I don't violate the \"Answer ONLY with JSON\" rule.\n    Okay.\n\n    One detail: The prompt says \"The page may be in Czech.\"\n    The state names are English (DELIVERED, IN_TRANSIT, etc.).\n    My output state must be one of the defined states.\n    My quote must be from the page (Czech).\n    My reason must be English (implied by the prompt instructions being in English, though the examples show English reasons).\n    Example 1 reason: \"handed to reception, not the recipient\" (English).\n    Example 2 reason: \"current step is pickup point, not collected\" (English).\n    So reason should be English.\n\n    Ready.\n\n    Wait, looking closely at the HTML provided in the prompt:\n    `<li class=\"steps__item steps__item--current\">U kurýra</li>`\n    I need to escape quotes for JSON.\n\n    Final check on constraints:\n    - JSON only.\n    - Keys: state, quote, reason.\n    - State values: DELIVERED|IN_TRANSIT|RETURNING|UNKNOWN.\n    - Quote: exact text/fragment.\n    - Reason: max 20 words.\n\n    Plan confirmed.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 907,
+      "completion_tokens": 1728,
+      "total_tokens": 2635,
+      "cost": 0.0003499,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0003499,
+        "upstream_inference_prompt_cost": 0.0000907,
+        "upstream_inference_completions_cost": 0.0002592
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1496,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

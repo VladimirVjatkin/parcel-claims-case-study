@@ -28,6 +28,10 @@ export interface Attempt {
   collectedAt: string; latencyMs: number; httpStatus: number | null; error: string | null; response: unknown;
 }
 export interface SavedSlot { slot: Slot; attempts: Attempt[]; invalid: string[] }
+export function isExhausted(attempts: Attempt[]): boolean {
+  if (attempts.some((attempt) => attempt.status === "ok")) return false;
+  return attempts.length >= 10 || attempts.filter((attempt) => attempt.httpStatus !== 429).length >= 3;
+}
 export const RESPONSE_SCHEMA = {
   type: "object", properties: {
     state: { type: "string", enum: ["DELIVERED", "IN_TRANSIT", "RETURNING", "UNKNOWN"] },
@@ -123,7 +127,7 @@ export function loadSlots(root = "."): Slot[] {
 export function readSavedSlots(slots: Slot[], root = "."): SavedSlot[] {
   const saved = slots.map((slot): SavedSlot => ({ slot, attempts: [], invalid: [] }));
   const expected = new Map<string, { saved: SavedSlot; number: number }>();
-  for (const item of saved) for (let number = 1; number <= 3; number += 1) {
+  for (const item of saved) for (let number = 1; number <= 10; number += 1) {
     expected.set(attemptPath(item.slot.set, item.slot.model.id, item.slot.variant, item.slot.label.file, item.slot.run, number), { saved: item, number });
   }
   const dir = join(root, "experiments/llm/responses");

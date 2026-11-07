@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "e02b67737957fc101b6b7d3e6a1d68be767c93cea981eb78a3ee831976ab7ab8",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100105.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T19:45:30.701Z",
+  "latencyMs": 20409,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1793994310-v1Z2qONI4BpY0gxEZgUT",
+    "object": "chat.completion",
+    "created": 1793994310,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"DELIVERED\",\"quote\":\"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\",\"reason\":\"Explicit message states parcel was delivered to recipient.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML tracking page (carrier: Kurýr Vltava, number: KV2026100105).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (pickup point = collected).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party.\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100105.\n    *   HTML Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Header: \"Sledování zásilky\" (Tracking).\n        *   Tracking Number: KV2026100105.\n        *   Progress Steps (ol class=\"progress\"):\n            1.  Objednávka (Order)\n            2.  Zásilka v přepravě (Shipment in transit)\n            3.  Na cestě k vám (On the way to you)\n            4.  Doručeno příjemci (Delivered to recipient)\n        *   Progress Bar: `width:100%` (indicates completion).\n        *   Shipment Message: `<p>Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.</p>` (Parcel was delivered to the recipient on 30. 10. 2026 at 13:12).\n\n3.  **Evaluate State:**\n    *   The progress bar is full (100%).\n    *   The last step in the list is \"Doručeno příjemci\" (Delivered to recipient).\n    *   The explicit message says \"Zásilka byla doručena příjemci\" (Parcel was delivered to the recipient).\n    *   This matches the definition of \"DELIVERED\" (the RECIPIENT took over the parcel).\n    *   There is no indication of handover to a third party (reception, neighbor) in this specific text. It explicitly says \"příjemci\" (recipient).\n    *   There is no indication of return.\n\n4.  **Select Quote:**\n    *   Best quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" or \"Doručeno příjemci\".\n    *   The message text is very clear. Let's use the message text.\n\n5.  **Draft Reason:**\n    *   Max 20 words.\n    *   \"Explicit message states parcel was delivered to recipient on 30. 10. 2026.\"\n\n6.  **Construct JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   `reason`: \"Explicit message states parcel was delivered to recipient.\"\n\n7.  **Final Review:**\n    *   Does it match rules? Yes.\n    *   Is it JSON only? Yes.\n    *   Is the state correct? Yes, \"Doručeno příjemci\" + 100% progress bar confirms delivery.\n\n8.  **Output Generation.**\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a provided tracking page snippet.\n    *   Input: HTML tracking page (carrier: Kurýr Vltava, number: KV2026100105).\n    *   Language: Czech.\n    *   Output Format: JSON `{\"state\": \"...\", \"quote\": \"...\", \"reason\": \"...\"}`.\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (pickup point = collected).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned.\n        *   \"UNKNOWN\" = Not sure, contradictory, missing info, handed to third party.\n        *   Planned/Expected/Failed = NOT DELIVERED.\n        *   Handover to anyone other than recipient (neighbour, reception) = UNKNOWN.\n        *   If unsure, answer UNKNOWN.\n        *   A wrong DELIVERED is the most costly mistake.\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100105.\n    *   HTML Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Header: \"Sledování zásilky\" (Tracking).\n        *   Tracking Number: KV2026100105.\n        *   Progress Steps (ol class=\"progress\"):\n            1.  Objednávka (Order)\n            2.  Zásilka v přepravě (Shipment in transit)\n            3.  Na cestě k vám (On the way to you)\n            4.  Doručeno příjemci (Delivered to recipient)\n        *   Progress Bar: `width:100%` (indicates completion).\n        *   Shipment Message: `<p>Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.</p>` (Parcel was delivered to the recipient on 30. 10. 2026 at 13:12).\n\n3.  **Evaluate State:**\n    *   The progress bar is full (100%).\n    *   The last step in the list is \"Doručeno příjemci\" (Delivered to recipient).\n    *   The explicit message says \"Zásilka byla doručena příjemci\" (Parcel was delivered to the recipient).\n    *   This matches the definition of \"DELIVERED\" (the RECIPIENT took over the parcel).\n    *   There is no indication of handover to a third party (reception, neighbor) in this specific text. It explicitly says \"příjemci\" (recipient).\n    *   There is no indication of return.\n\n4.  **Select Quote:**\n    *   Best quote: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\" or \"Doručeno příjemci\".\n    *   The message text is very clear. Let's use the message text.\n\n5.  **Draft Reason:**\n    *   Max 20 words.\n    *   \"Explicit message states parcel was delivered to recipient on 30. 10. 2026.\"\n\n6.  **Construct JSON:**\n    *   `state`: \"DELIVERED\"\n    *   `quote`: \"Zásilka byla doručena příjemci 30. 10. 2026 v 13:12.\"\n    *   `reason`: \"Explicit message states parcel was delivered to recipient.\"\n\n7.  **Final Review:**\n    *   Does it match rules? Yes.\n    *   Is it JSON only? Yes.\n    *   Is the state correct? Yes, \"Doručeno příjemci\" + 100% progress bar confirms delivery.\n\n8.  **Output Generation.**\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1344,
+      "completion_tokens": 1018,
+      "total_tokens": 2362,
+      "cost": 0.0002871,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0002871,
+        "upstream_inference_prompt_cost": 0.0001344,
+        "upstream_inference_completions_cost": 0.0001527
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 779,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

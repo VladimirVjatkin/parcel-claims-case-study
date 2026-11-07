@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "275cffd549c5b534a73b493d06e0ec86a7c3090d878da2b1524548b4e74ebcad",
+  "config": {
+    "model": "mistralai/ministral-8b-2512",
+    "provider": "mistral/zdr",
+    "quantization": "unknown",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "DT9100904.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:47:58.376Z",
+  "latencyMs": 758,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001677-YVYSOId9nJF6f7xZ61s7",
+    "object": "chat.completion",
+    "created": 1794001677,
+    "model": "mistralai/ministral-8b-2512",
+    "provider": "Mistral",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"<li class=\\\"steps__item steps__item--current\\\">U kurýra</li>\",\"reason\":\"current step is with courier, not delivered\"}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 881,
+      "completion_tokens": 44,
+      "total_tokens": 925,
+      "cost": 0.00006531,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 544,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00006531,
+        "upstream_inference_prompt_cost": 0.00005871,
+        "upstream_inference_completions_cost": 0.0000066
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

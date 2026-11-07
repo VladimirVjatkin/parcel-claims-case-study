@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "3b93c6617bd80c839a356ad54f4a81ad04db459dc9837d576a360d78b0575bd6",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "PN55100905.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:28:14.621Z",
+  "latencyMs": 2726,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000491-RLgIGWJlvHySBhdGFsHN",
+    "object": "chat.completion",
+    "created": 1794000491,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"RETURNING\",\"quote\":\"Úložní doba uplynula, zásilka se vrací odesílateli\",\"reason\":\"parcel is being returned to sender\"}",
+          "refusal": null,
+          "reasoning": "We have latest event: \"Úložní doba uplynula, zásilka se vrací odesílateli.\" That's returning. So state RETURNING. Quote that line.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We have latest event: \"Úložní doba uplynula, zásilka se vrací odesílateli.\" That's returning. So state RETURNING. Quote that line.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 809,
+      "completion_tokens": 85,
+      "total_tokens": 894,
+      "cost": 0.000044383,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000044383,
+        "upstream_inference_prompt_cost": 0.000029933,
+        "upstream_inference_completions_cost": 0.00001445
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 34,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

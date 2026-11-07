@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "309f5404ed70931e3b4817d581eef60bfb8c3aa42149fdb7a7968171cee1e813",
+  "config": {
+    "model": "qwen/qwen3.5-9b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "KV2026100906.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:41:45.029Z",
+  "latencyMs": 16436,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794001288-4GPgrlewiHgl20iLH2UR",
+    "object": "chat.completion",
+    "created": 1794001288,
+    "model": "qwen/qwen3.5-9b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\": \"DELIVERED\", \"quote\": \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\", \"reason\": \"Recipient explicitly took over the parcel.\"}",
+          "refusal": null,
+          "reasoning": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (or collected at pickup point).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned/returned.\n        *   \"UNKNOWN\" = Not sure, not found, handed to third party, contradictory.\n        *   Planned/expected/failed = NOT DELIVERED.\n        *   Handover to anyone *other* than recipient (neighbour, reception, etc.) = UNKNOWN (unless specified as pickup point collection by recipient).\n        *   Answer ONLY in JSON format.\n    *   Specific Input:\n        ```\n        Tracking page (carrier: Kurýr Vltava, number: KV2026100906):\n        Kurýr Vltava Odeslat balíkSledování zásilkyKontakt Sledování zásilky Číslo zásilky: KV2026100906 DoručenoZásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20. Potřebujete změnit doručení?Změnu adresy nebo termínu doručení můžete zadat online. © 2026 Kurýr Vltava s.r.o. (fiktivní dopravce pro účely úlohy)\n        ```\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100906.\n    *   Status Text: \"Doručeno\" (Delivered).\n    *   Detail Text: \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\" (Parcel was taken over by recipient Jana Nováková on 31. 10. 2026 at 11:20.)\n    *   Footer: \"© 2026 Kurýr Vltava s.r.o. (fiktivní dopravce pro účely úlohy)\" (Fictional carrier for task purposes).\n\n3.  **Evaluate against Rules:**\n    *   \"Doručeno\" explicitly means delivered.\n    *   \"Zásilku převzala příjemkyně\" means the recipient took over the parcel.\n    *   This matches the definition of **DELIVERED**: \"the RECIPIENT took over the parcel\".\n    *   It is not a pickup point handover to a third party (like reception), it explicitly says \"příjemkyně\" (recipient).\n    *   It is not a planned delivery, it's a past event (\"dne 31. 10. 2026\").\n\n4.  **Formulate Output:**\n    *   State: DELIVERED.\n    *   Quote: \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\" or \"Doručeno\". Let's use the specific confirmation text.\n    *   Reason: Recipient explicitly took over the parcel.\n\n5.  **Draft JSON:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\", \"reason\": \"Recipient explicitly took over the parcel\"}\n    ```\n\n6.  **Review Constraints:**\n    *   JSON only.\n    *   Max 20 words for reason.\n    *   Exact text for quote.\n\n7.  **Final Check:**\n    *   Does \"příjemkyně\" mean recipient? Yes.\n    *   Is it DELIVERED? Yes.\n    *   Is the quote accurate? Yes.\n    *   Is the reason concise? Yes.\n\n    Wait, I need to check the previous turn's logic regarding \"reception\". In the first example, \"předána na recepci budovy\" was UNKNOWN because it wasn't the recipient. Here, it says \"příjemkyně\" (recipient). So it is DELIVERED.\n\n    Let's refine the quote to be the most definitive part. \"Doručeno\" is the status header, but the sentence confirms the recipient. I'll use the sentence.\n\n    Reason: \"Recipient explicitly took over the parcel.\" (5 words).\n\n    Ready.\n\n8.  **Final JSON Construction:**\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\", \"reason\": \"Recipient explicitly took over the parcel.\"}\n\n    Wait, checking the instruction: \"Answer ONLY with JSON\".\n    Checking the state definitions again: \"DELIVERED — the RECIPIENT took over the parcel\".\n    The text says \"Zásilku převzala příjemkyně\". This is a perfect match.\n\n    One small detail: The input text is a bit messy (no spaces between some words like \"Sledování zásilkyKontakt\"), but the relevant part is clear.\n\n    Let's finalize.\n    State: DELIVERED\n    Quote: \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\"\n    Reason: Recipient explicitly took over the parcel.\n\n    Wait, I should check if there are any contradictions. No.\n    Is it a pickup point? It says \"Kurýr Vltava\", usually implies courier delivery, and \"příjemkyně\" implies direct handover. Even if it was a pickup point, if the recipient collected it, it's DELIVERED. The text says \"příjemkyně\" (recipient), not \"vyzvedla z výdeje\" (collected from pickup point) specifically, but \"převzala\" (took over). Given \"Doručeno\" header, it's delivered.\n\n    Okay, proceeding.\n",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Task: Classify the delivery state of a parcel based on a tracking page snippet.\n    *   Language: The page may be in Czech.\n    *   Input: A tracking page snippet (HTML/text).\n    *   States: DELIVERED, IN_TRANSIT, RETURNING, UNKNOWN.\n    *   Rules:\n        *   Decide by the LATEST event / currently highlighted step.\n        *   \"DELIVERED\" = Recipient took over (or collected at pickup point).\n        *   \"IN_TRANSIT\" = With carrier, waiting at pickup point/box.\n        *   \"RETURNING\" = Being returned/returned.\n        *   \"UNKNOWN\" = Not sure, not found, handed to third party, contradictory.\n        *   Planned/expected/failed = NOT DELIVERED.\n        *   Handover to anyone *other* than recipient (neighbour, reception, etc.) = UNKNOWN (unless specified as pickup point collection by recipient).\n        *   Answer ONLY in JSON format.\n    *   Specific Input:\n        ```\n        Tracking page (carrier: Kurýr Vltava, number: KV2026100906):\n        Kurýr Vltava Odeslat balíkSledování zásilkyKontakt Sledování zásilky Číslo zásilky: KV2026100906 DoručenoZásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20. Potřebujete změnit doručení?Změnu adresy nebo termínu doručení můžete zadat online. © 2026 Kurýr Vltava s.r.o. (fiktivní dopravce pro účely úlohy)\n        ```\n\n2.  **Analyze the Input Data:**\n    *   Carrier: Kurýr Vltava.\n    *   Tracking Number: KV2026100906.\n    *   Status Text: \"Doručeno\" (Delivered).\n    *   Detail Text: \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\" (Parcel was taken over by recipient Jana Nováková on 31. 10. 2026 at 11:20.)\n    *   Footer: \"© 2026 Kurýr Vltava s.r.o. (fiktivní dopravce pro účely úlohy)\" (Fictional carrier for task purposes).\n\n3.  **Evaluate against Rules:**\n    *   \"Doručeno\" explicitly means delivered.\n    *   \"Zásilku převzala příjemkyně\" means the recipient took over the parcel.\n    *   This matches the definition of **DELIVERED**: \"the RECIPIENT took over the parcel\".\n    *   It is not a pickup point handover to a third party (like reception), it explicitly says \"příjemkyně\" (recipient).\n    *   It is not a planned delivery, it's a past event (\"dne 31. 10. 2026\").\n\n4.  **Formulate Output:**\n    *   State: DELIVERED.\n    *   Quote: \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\" or \"Doručeno\". Let's use the specific confirmation text.\n    *   Reason: Recipient explicitly took over the parcel.\n\n5.  **Draft JSON:**\n    ```json\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\", \"reason\": \"Recipient explicitly took over the parcel\"}\n    ```\n\n6.  **Review Constraints:**\n    *   JSON only.\n    *   Max 20 words for reason.\n    *   Exact text for quote.\n\n7.  **Final Check:**\n    *   Does \"příjemkyně\" mean recipient? Yes.\n    *   Is it DELIVERED? Yes.\n    *   Is the quote accurate? Yes.\n    *   Is the reason concise? Yes.\n\n    Wait, I need to check the previous turn's logic regarding \"reception\". In the first example, \"předána na recepci budovy\" was UNKNOWN because it wasn't the recipient. Here, it says \"příjemkyně\" (recipient). So it is DELIVERED.\n\n    Let's refine the quote to be the most definitive part. \"Doručeno\" is the status header, but the sentence confirms the recipient. I'll use the sentence.\n\n    Reason: \"Recipient explicitly took over the parcel.\" (5 words).\n\n    Ready.\n\n8.  **Final JSON Construction:**\n    {\"state\": \"DELIVERED\", \"quote\": \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\", \"reason\": \"Recipient explicitly took over the parcel.\"}\n\n    Wait, checking the instruction: \"Answer ONLY with JSON\".\n    Checking the state definitions again: \"DELIVERED — the RECIPIENT took over the parcel\".\n    The text says \"Zásilku převzala příjemkyně\". This is a perfect match.\n\n    One small detail: The input text is a bit messy (no spaces between some words like \"Sledování zásilkyKontakt\"), but the relevant part is clear.\n\n    Let's finalize.\n    State: DELIVERED\n    Quote: \"Zásilku převzala příjemkyně Jana Nováková dne 31. 10. 2026 v 11:20.\"\n    Reason: Recipient explicitly took over the parcel.\n\n    Wait, I should check if there are any contradictions. No.\n    Is it a pickup point? It says \"Kurýr Vltava\", usually implies courier delivery, and \"příjemkyně\" implies direct handover. Even if it was a pickup point, if the recipient collected it, it's DELIVERED. The text says \"příjemkyně\" (recipient), not \"vyzvedla z výdeje\" (collected from pickup point) specifically, but \"převzala\" (took over). Given \"Doručeno\" header, it's delivered.\n\n    Okay, proceeding.\n",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 747,
+      "completion_tokens": 1551,
+      "total_tokens": 2298,
+      "cost": 0.00030735,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00030735,
+        "upstream_inference_prompt_cost": 0.0000747,
+        "upstream_inference_completions_cost": 0.00023265
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1218,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

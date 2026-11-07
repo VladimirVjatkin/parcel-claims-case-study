@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "02b61d3b210a7368ef1dc80e02e08340c3032f820a4cd4ac46c16bb2716c4bf4",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100124.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T12:14:23.801Z",
+  "latencyMs": 38155,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794053625-4eDHbTuXvT5MORXUFt5m",
+    "object": "chat.completion",
+    "created": 1794053625,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\":\"<circle cx=\\\"400\\\" cy=\\\"30\\\" r=\\\"14\\\" fill=\\\"#00a86b\\\"/><text x=\\\"400\\\" y=\\\"70\\\" text-anchor=\\\"middle\\\">Doručeno</text>\",\"reason\":\"The 'Doručeno' (Delivered) step is highlighted in green.\",\"state\":\"DELIVERED\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Doručto\n    *   Parcel Number: DT9100124\n    *   Content: A timeline represented by an SVG.\n    *   Steps in SVG:\n        1.  Podáno (Submitted) - fill=\"#d0d4d9\" (grey)\n        2.  V přepravě (In transit) - fill=\"#d0d4d9\" (grey)\n        3.  U kurýra (With courier) - fill=\"#d0d4d9\" (grey)\n        4.  Doručeno (Delivered) - fill=\"#00a86b\" (green)\n        5.  Vráceno (Returned) - fill=\"#d0d4d9\" (grey)\n    *   The \"Doručeno\" step is highlighted in green (#00a86b), while others are grey.\n\n    *   DELIVERED: Recipient took over. \"Doručeno\" means delivered.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The latest/highlighted step is \"Doručeno\".\n    *   \"Doručeno\" in Czech means \"Delivered\".\n    *   The color green usually indicates the current/completed state in these types of timelines.\n\n    *   State: DELIVERED\n    *   Quote: `<circle cx=\"400\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"400\" y=\"70\" text-anchor=\"middle\">Doručeno</text>` (or just the text part).\n    *   Reason: The \"Doručeno\" step is highlighted in green.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Doručto\n    *   Parcel Number: DT9100124\n    *   Content: A timeline represented by an SVG.\n    *   Steps in SVG:\n        1.  Podáno (Submitted) - fill=\"#d0d4d9\" (grey)\n        2.  V přepravě (In transit) - fill=\"#d0d4d9\" (grey)\n        3.  U kurýra (With courier) - fill=\"#d0d4d9\" (grey)\n        4.  Doručeno (Delivered) - fill=\"#00a86b\" (green)\n        5.  Vráceno (Returned) - fill=\"#d0d4d9\" (grey)\n    *   The \"Doručeno\" step is highlighted in green (#00a86b), while others are grey.\n\n    *   DELIVERED: Recipient took over. \"Doručeno\" means delivered.\n    *   IN_TRANSIT: With carrier or at pickup point.\n    *   RETURNING: Returning to sender.\n    *   UNKNOWN: Not confirmable.\n\n    *   The latest/highlighted step is \"Doručeno\".\n    *   \"Doručeno\" in Czech means \"Delivered\".\n    *   The color green usually indicates the current/completed state in these types of timelines.\n\n    *   State: DELIVERED\n    *   Quote: `<circle cx=\"400\" cy=\"30\" r=\"14\" fill=\"#00a86b\"/><text x=\"400\" y=\"70\" text-anchor=\"middle\">Doručeno</text>` (or just the text part).\n    *   Reason: The \"Doručeno\" step is highlighted in green.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1151,
+      "completion_tokens": 483,
+      "total_tokens": 1634,
+      "cost": 0.00035434,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00035434,
+        "upstream_inference_prompt_cost": 0.00016114,
+        "upstream_inference_completions_cost": 0.0001932
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 398,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "725fc4fed17ecbe99fdc215ed484a765eb3e1c3a41f5c14516a34083ba5201aa",
+  "config": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "novita/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100118.html",
+  "variant": "T",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:54:00.942Z",
+  "latencyMs": 22427,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794002018-mpvKnFjB1Od3mqAKRmc3",
+    "object": "chat.completion",
+    "created": 1794002018,
+    "model": "google/gemma-4-31b-it",
+    "provider": "Novita",
+    "system_fingerprint": "vllm-0.28.0-tp4-33990759",
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"quote\": \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih\", \"reason\": \"Failed delivery attempt, parcel is currently held at the depot.\", \"state\": \"IN_TRANSIT\"}",
+          "refusal": null,
+          "reasoning": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100118\n    *   Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Tracking status: \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n        *   Specific event text: \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" (Recipient was not found. Parcel is stored at the Praha-Jih depot, delivery will be repeated the next business day.)\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: Parcel is with carrier or waits at pickup point/box. (The parcel is at the depot waiting for redelivery).\n    *   RETURNING: Being returned to sender. (Not mentioned).\n    *   UNKNOWN: Not confirmable.\n\n    *   The text \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih\" indicates a failed delivery attempt and that the parcel is currently held by the carrier at the depot.\n    *   According to the rules: \"a failed attempt... is NOT delivery.\"\n    *   Since it's with the carrier (at the depot), it is `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih\"\n    *   Reason: Failed delivery attempt, parcel is currently at the depot.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "*   Carrier: Kurýr Vltava\n    *   Tracking Number: KV2026100118\n    *   Content:\n        *   Cookie banner (ignore).\n        *   Navigation (ignore).\n        *   Tracking status: \"Objednávka\", \"Zásilka v přepravě\", \"Na cestě k vám\", \"Doručeno příjemci\".\n        *   Specific event text: \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih, doručení zopakujeme další pracovní den.\" (Recipient was not found. Parcel is stored at the Praha-Jih depot, delivery will be repeated the next business day.)\n\n    *   DELIVERED: Recipient took over. (Not the case here).\n    *   IN_TRANSIT: Parcel is with carrier or waits at pickup point/box. (The parcel is at the depot waiting for redelivery).\n    *   RETURNING: Being returned to sender. (Not mentioned).\n    *   UNKNOWN: Not confirmable.\n\n    *   The text \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih\" indicates a failed delivery attempt and that the parcel is currently held by the carrier at the depot.\n    *   According to the rules: \"a failed attempt... is NOT delivery.\"\n    *   Since it's with the carrier (at the depot), it is `IN_TRANSIT`.\n\n    *   State: `IN_TRANSIT`\n    *   Quote: \"Příjemce nebyl zastižen. Zásilka je uložena na depu Praha-Jih\"\n    *   Reason: Failed delivery attempt, parcel is currently at the depot.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 887,
+      "completion_tokens": 453,
+      "total_tokens": 1340,
+      "cost": 0.00030538,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00030538,
+        "upstream_inference_prompt_cost": 0.00012418,
+        "upstream_inference_completions_cost": 0.0001812
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 395,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

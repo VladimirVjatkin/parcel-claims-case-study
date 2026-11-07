@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "b492b99416cd7a524067299c1ee8946481b431e72524658b393760de89ccdbaa",
+  "config": {
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "parasail/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100116.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-06T21:20:55.367Z",
+  "latencyMs": 1457,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794000053-pl9R1RZRnXp0pEpsI8d2",
+    "object": "chat.completion",
+    "created": 1794000053,
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "Parasail",
+    "system_fingerprint": null,
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"Zásilka je připravena k vyzvednutí.\",\"reason\":\"ready for pickup, not collected\"}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1184,
+      "completion_tokens": 34,
+      "total_tokens": 1218,
+      "cost": 0.00007004,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1168,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00007004,
+        "upstream_inference_prompt_cost": 0.00005984,
+        "upstream_inference_completions_cost": 0.0000102
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

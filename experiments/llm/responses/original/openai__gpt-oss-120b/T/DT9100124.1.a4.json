@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v1",
+  "inputSha256": "067cffd797799336f4ade0564d9088abe71f10fa63199e23dc83999ff503d532",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100124.html",
+  "variant": "T",
+  "run": 1,
+  "attempt": 4,
+  "collectedAt": "2026-11-07T13:45:48.234Z",
+  "latencyMs": 4482,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794059143-zB0unjl5pNOgRWTjLn0D",
+    "object": "chat.completion",
+    "created": 1794059143,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"DELIVERED\",\"quote\":\"Doručeno\",\"reason\":\"latest status indicates delivery to recipient\"}",
+          "refusal": null,
+          "reasoning": "We need determine state. Text shows steps: Podáno, V přepravě, U kurýra, Doručeno, Vráceno. No indication which is current. Likely latest is Doručeno? But not sure. Probably delivered? However \"Doručeno\" means delivered to recipient? Could be handover. Assume DELIVERED. Quote \"Doručeno\".",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need determine state. Text shows steps: Podáno, V přepravě, U kurýra, Doručeno, Vráceno. No indication which is current. Likely latest is Doručeno? But not sure. Probably delivered? However \"Doručeno\" means delivered to recipient? Could be handover. Assume DELIVERED. Quote \"Doručeno\".",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 707,
+      "completion_tokens": 111,
+      "total_tokens": 818,
+      "cost": 0.000045029,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000045029,
+        "upstream_inference_prompt_cost": 0.000026159,
+        "upstream_inference_completions_cost": 0.00001887
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 75,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}
