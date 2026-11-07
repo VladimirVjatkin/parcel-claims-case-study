@@ -1,7 +1,5 @@
 # Case study Mailstep — automatické zakládání reklamací
 
-> Rozpracováno. Struktura dokumentu se doplňuje průběžně.
-
 ## Spuštění
 
 ```bash
@@ -13,6 +11,7 @@ Jednotlivě: `npm test`, `npm run decide`, `npm run eval`.
 Požadavky: Node.js `^20.19.0 || >=22.12.0`. Bez sítě, bez databáze.
 
 `npm run decide` vypíše rozhodnutí pro všechny objednávky a nesoulady s Mailshipem na stdout a uloží je do `reports/rozhodnuti.md`.
+Výsledek: 5 CREATE / 12 NEEDS_REVIEW / 15 DO_NOT_CREATE z 32 objednávek.
 Bez parametru `--now` používá pevný okamžik 2. 11. 2026 07:30 (Praha); `npm run decide -- --now now` použije aktuální čas a výsledek pak závisí na dni spuštění.
 Vlastní okamžik lze zadat například `npm run decide -- --now 2026-11-03T07:30:00+01:00`.
 Přímé spuštění `npx tsx src/cli/decide.ts` píše pouze na stdout; soubor vzniká jen při `--out <cesta>`, vstupní adresář lze změnit pomocí `--data <cesta>` (výchozí `data`, relativně ke kořeni projektu).
@@ -25,7 +24,7 @@ Přímé spuštění `npx tsx src/cli/evaluate.ts` píše jen na stdout; `--data
 
 `npm run llm:eval` vyhodnotí uložené odpovědi bez sítě a bez `.env`; je součástí `npm run all`.
 Sběr přes `npm run llm:collect` vyžaduje klíč v `.env` podle `.env.example` a používá placené API; existující odpovědi se nepřepisují.
-Čísla jsou v [reports/llm-experiment.md](reports/llm-experiment.md); výklad výsledků bude v [EXPERIMENT_LLM.md](EXPERIMENT_LLM.md).
+Čísla jsou v [reports/llm-experiment.md](reports/llm-experiment.md); výklad výsledků je v [EXPERIMENT_LLM.md](EXPERIMENT_LLM.md).
 
 Prompt v2 (`--prompt v2`) přidává pouze okamžik kontroly 3. 11. 2026 07:30 (Europe/Prague); sada je pevná: gpt-oss 120B a Llama 3.3 70B, vstup H, 26 stránek, 3 běhy. Odpovědi jsou oddělené v `experiments/llm/responses-v2/`; v1 se nemění. Okamžik stažení experimentální sady se liší od okamžiku rozhodování 2. 11. 2026 07:30.
 Sekundární analýza v1 bez PN55100901 zachovává počet dovolených chyb (0 falešných DELIVERED, ≥ 72/75 validních, ≥ 54/60 správně původních, ≥ 3/5 užitečných, ≥ 23/25 stabilních). Obě doplnění vznikla po prvním vyhodnocení a nejsou nezávislým ověřením.
@@ -35,10 +34,13 @@ Sekundární analýza v1 bez PN55100901 zachovává počet dovolených chyb (0 f
 | Soubor / složka | Obsah |
 |---|---|
 | `DESIGN.md` | Návrh (část 1) |
+| `EXPERIMENT_LLM.md` | Experiment s jazykovými modely: výsledek a závěr |
+| `DALSI_KROKY.md` | Směr dalšího vývoje — nápady nad rámec zadání |
 | `src/` | Rozhodovací logika a čtení tracking stránek |
 | `test/` | Testy |
 | `data/` | Podklady od Mailstepu (beze změn) |
 | `reports/` | Opakovatelné výstupní reporty rozhodnutí a měření |
+| `experiments/llm/` | Kód experimentu, upravené stránky a uložené odpovědi modelů |
 | `EVALUATION.md` | Výsledek měření nad tracking stránkami |
 | `QUESTIONS.md` | Otázky pro reklamační oddělení a vývoj Mailshipu |
 | `NOTES.md` | Co jsem nestihl nebo vědomě vynechal |
@@ -46,7 +48,6 @@ Sekundární analýza v1 bez PN55100901 zachovává počet dovolených chyb (0 f
 ## Výklad nejasností
 
 - Datum události nebo poslední aktualizace na stránce pozdější než okamžik stažení stránky (v řezu = okamžik běhu) → `UNKNOWN` (stránka není spolehlivá); lhůty (úložní doba, vyzvednutí do) se nekontrolují, stránka bez data se posuzuje jako dosud.
-
 - Dny ve stavu se počítají od `packedAt` (A) / `shippedAt` (B) jako kalendářní dny v Europe/Prague; `updatedAt` se pro výpočet nepoužívá, protože se mění při jakékoli úpravě objednávky.
 - Okamžik běhu je pevně 2. 11. 2026 07:30 (Praha), aby byl výsledek opakovatelný.
 - Existující reklamace v jakémkoli stavu (i `closed`) a s jakýmkoli důvodem brání založení další.
