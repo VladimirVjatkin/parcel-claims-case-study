@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { attemptPath, buildRequestBody, currentConfig, isExhausted, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
 import type { Attempt, Model, SavedSlot } from "./llm.js";
-import { buildMessages, PROMPT_VERSION } from "./prompt.js";
+import { V1_EXPERIMENT, V2_EXPERIMENT } from "./prompt.js";
+import type { Experiment } from "./prompt.js";
 
 export type Fetcher = (url: string, init?: RequestInit) => Promise<Response>;
 export interface CollectionCounts { ok: number; failed: number; skipped: number; exhausted: number }
@@ -59,8 +60,11 @@ export function retryDelayMs(reply: Response, body: unknown, nowMs = Date.now())
 
 export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fetcher, root = ".",
   wait: (ms: number) => Promise<void> = (ms) => new Promise((done) => setTimeout(done, ms)),
-  notify: (message: string) => void = console.warn): Promise<CollectionCounts> {
+  notify: (message: string) => void = console.warn, experiment: Experiment = V1_EXPERIMENT): Promise<CollectionCounts> {
   validateSaved(saved);
+  if (saved.some(({ slot, attempts }) => !experiment.variants.includes(slot.variant) ||
+    (experiment.models !== null && !experiment.models.includes(slot.model.id)) ||
+    attempts.some((attempt) => attempt.promptVersion !== experiment.version))) throw new Error("Nekompatibilní sada experimentu.");
   if (key === "") throw new Error("Chybí OPENROUTER_API_KEY.");
   const counts: CollectionCounts = { ok: 0, failed: 0, skipped: 0, exhausted: 0 };
   const blockedModels = new Set<string>();
@@ -82,7 +86,7 @@ export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fet
     try {
       const reply = await fetcher("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-        body: JSON.stringify(buildRequestBody(slot.model, buildMessages(slot.label.carrier, slot.label.trackingNumber, slot.input))),
+        body: JSON.stringify(buildRequestBody(slot.model, experiment.buildMessages(slot.label.carrier, slot.label.trackingNumber, slot.input))),
         signal: AbortSignal.timeout(120_000),
       });
       httpStatus = reply.status;
@@ -96,11 +100,11 @@ export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fet
       error = "Chyba sítě, časový limit nebo nečitelná odpověď API.";
     }
     const attempt: Attempt = {
-      status, promptVersion: PROMPT_VERSION, inputSha256: slot.inputSha256, config: currentConfig(slot.model),
+      status, promptVersion: experiment.version, inputSha256: slot.inputSha256, config: currentConfig(slot.model),
       set: slot.set, file: slot.label.file, variant: slot.variant, run: slot.run, attempt: number,
       collectedAt: new Date().toISOString(), latencyMs: Math.round(performance.now() - started), httpStatus, error, response,
     };
-    const path = join(root, attemptPath(slot.set, slot.model.id, slot.variant, slot.label.file, slot.run, number));
+    const path = join(root, attemptPath(slot.set, slot.model.id, slot.variant, slot.label.file, slot.run, number, experiment));
     mkdirSync(dirname(path), { recursive: true });
     // Exclusive creation also protects against a second collector running concurrently.
     writeFileSync(path, JSON.stringify(redact(attempt, key), null, 2) + "\n", { encoding: "utf8", flag: "wx" });
@@ -131,17 +135,23 @@ export function collectionPlan(saved: SavedSlot[]): { total: number; closed: num
 
 async function main(): Promise<void> {
   const { values } = parseArgs({ options: {
+    prompt: { type: "string", default: "v1" },
     check: { type: "boolean" }, "dry-run": { type: "boolean" }, model: { type: "string" },
     set: { type: "string", default: "all" }, variant: { type: "string", default: "all" }, runs: { type: "string", default: "3" },
   }, strict: true, allowPositionals: false });
+  if (values.prompt !== "v1" && values.prompt !== "v2") throw new Error("Neplatný --prompt: v1|v2.");
+  const experiment = values.prompt === "v2" ? V2_EXPERIMENT : V1_EXPERIMENT;
+  if (experiment.version === "v2" && (values.set !== "all" || values.variant !== "all" || values.runs !== "3")) {
+    throw new Error("Sada v2 je pevná: všechny stránky, vstup H, 3 běhy; použijte pouze --model, --check nebo --dry-run.");
+  }
   const runs = Number(values.runs);
   if (!Number.isInteger(runs) || runs < 1 || runs > 3 || !["all", "original", "mutated"].includes(values.set ?? "") ||
       !["all", "T", "H"].includes(values.variant ?? "") || (values.check && values["dry-run"])) {
     throw new Error("Neplatné volby: --runs 1 až 3, --set original|mutated|all, --variant T|H|all; --check a --dry-run nelze kombinovat.");
   }
-  const models = loadModels();
+  const models = loadModels().filter((model) => experiment.models === null || experiment.models.includes(model.id));
   if (values.model !== undefined && !models.some((model) => model.id === values.model)) throw new Error("Neznámý --model.");
-  const all = readSavedSlots(loadSlots());
+  const all = readSavedSlots(loadSlots(".", experiment), ".", experiment);
   validateSaved(all);
   const selected = all.filter(({ slot }) => (values.model === undefined || slot.model.id === values.model) &&
     (values.set === "all" || slot.set === values.set) && (values.variant === "all" || slot.variant === values.variant) && slot.run <= runs);
@@ -166,7 +176,7 @@ async function main(): Promise<void> {
   if (existsSync(".env")) process.loadEnvFile(".env");
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) throw new Error("Chybí OPENROUTER_API_KEY v .env nebo prostředí.");
-  const counts = await collectSlots(selected, key, fetch);
+  const counts = await collectSlots(selected, key, fetch, ".", undefined, undefined, experiment);
   console.log(`Sběr: ok ${counts.ok} / failed ${counts.failed} / přeskočeno ${counts.skipped} / vyčerpáno ${counts.exhausted}`);
 }
 

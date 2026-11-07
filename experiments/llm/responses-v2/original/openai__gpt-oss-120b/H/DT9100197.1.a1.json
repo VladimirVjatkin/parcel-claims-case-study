@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "dfcd72a2598a84513e61bd48752d879f3a023b6b39d83120f5b90f4b5196ba55",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100197.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:37:09.744Z",
+  "latencyMs": 5296,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083825-ojkj2XfwKGGa9vscC95a",
+    "object": "chat.completion",
+    "created": 1794083825,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"<text x=\\\"160\\\" y=\\\"70\\\" text-anchor=\\\"middle\\\">V přepravě</text>\",\"reason\":\"active step shows parcel in transport\"}",
+          "refusal": null,
+          "reasoning": "We need latest event before 3.11.2026 07:30. Updated 1.11.2026 19:05 is before that. Timeline shows which step is active? Fill colors: first step fill #d0d4d9 (inactive), second #00a86b (active) = \"V přepravě\". Others inactive. So current is \"V přepravě\" => IN_TRANSIT. Not delivered. Return not active. So state IN_TRANSIT. Quote: maybe the circle fill attribute or text \"V přepravě\". Use snippet.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need latest event before 3.11.2026 07:30. Updated 1.11.2026 19:05 is before that. Timeline shows which step is active? Fill colors: first step fill #d0d4d9 (inactive), second #00a86b (active) = \"V přepravě\". Others inactive. So current is \"V přepravě\" => IN_TRANSIT. Not delivered. Return not active. So state IN_TRANSIT. Quote: maybe the circle fill attribute or text \"V přepravě\". Use snippet.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1121,
+      "completion_tokens": 171,
+      "total_tokens": 1292,
+      "cost": 0.000070547,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000070547,
+        "upstream_inference_prompt_cost": 0.000041477,
+        "upstream_inference_completions_cost": 0.00002907
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 101,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

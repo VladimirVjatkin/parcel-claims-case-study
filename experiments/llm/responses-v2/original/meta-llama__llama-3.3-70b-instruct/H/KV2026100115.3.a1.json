@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "d2e6c83e16aa875cea54c698ef924b3d34979b03ce9fdc1f5c842a597aa36dc5",
+  "config": {
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "coreweave/fp16",
+    "quantization": "fp16",
+    "temperature": 0,
+    "max_tokens": 400,
+    "reasoning": null,
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100115.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:33:05.085Z",
+  "latencyMs": 635,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083585-UFSnxAOwQiFldS6J6zqi",
+    "object": "chat.completion",
+    "created": 1794083585,
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "CoreWeave",
+    "system_fingerprint": null,
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"UNKNOWN\",\"quote\":\"Převzal: soused (Novák)\",\"reason\":\"handed to neighbour, not recipient\"}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1328,
+      "completion_tokens": 29,
+      "total_tokens": 1357,
+      "cost": 0.00096347,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1312,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00096347,
+        "upstream_inference_prompt_cost": 0.00094288,
+        "upstream_inference_completions_cost": 0.00002059
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

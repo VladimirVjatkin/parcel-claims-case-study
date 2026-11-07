@@ -36,3 +36,35 @@ export function buildMessages(carrier: string, trackingNumber: string, input: st
   return [{ role: "system", content: SYSTEM_PROMPT }, ...SYNTHETIC_EXAMPLES,
     { role: "user", content: `Tracking page (carrier: ${carrier}, number: ${trackingNumber}):\n${input}` }];
 }
+
+// Pages of the experiment set were captured up to 3 Nov 06:00; this is their fetch moment, not the run moment of decide.
+export const EXPERIMENT_FETCH_MOMENT = "2026-11-03T07:30:00+01:00";
+const momentParts = new Intl.DateTimeFormat("cs-CZ", {
+  timeZone: "Europe/Prague", day: "numeric", month: "numeric", year: "numeric",
+  hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+}).formatToParts(new Date(EXPERIMENT_FETCH_MOMENT));
+const part = (type: Intl.DateTimeFormatPartTypes): string => momentParts.find((item) => item.type === type)?.value ?? "";
+export const CHECK_MOMENT_LINE = `Check moment: ${part("day")}. ${part("month")}. ${part("year")} ${part("hour")}:${part("minute")} (Europe/Prague). An event or update dated after this moment does not confirm the parcel state.`;
+
+export function buildMessagesV2(carrier: string, trackingNumber: string, input: string): Message[] {
+  const messages = buildMessages(carrier, trackingNumber, input);
+  return messages.map((message, index) => index === messages.length - 1
+    ? { ...message, content: `${CHECK_MOMENT_LINE}\n${message.content}` } : message);
+}
+
+export interface Experiment {
+  version: "v1" | "v2";
+  responseDir: string;
+  models: readonly string[] | null;
+  variants: readonly ("T" | "H")[];
+  buildMessages: typeof buildMessages;
+}
+export const V1_EXPERIMENT: Experiment = {
+  version: PROMPT_VERSION, responseDir: "experiments/llm/responses", models: null,
+  variants: ["T", "H"], buildMessages,
+};
+export const V2_EXPERIMENT: Experiment = {
+  version: "v2", responseDir: "experiments/llm/responses-v2",
+  models: ["openai/gpt-oss-120b", "meta-llama/llama-3.3-70b-instruct"],
+  variants: ["H"], buildMessages: buildMessagesV2,
+};

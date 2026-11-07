@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "fd11860d4f0eb5594f0ecf1d2c91a87aa7042fa8d9b17404b5358b20b745f224",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "EX7710903.html",
+  "variant": "H",
+  "run": 2,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:38:24.421Z",
+  "latencyMs": 3184,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083902-UoAQwef9C5FOH9TdPYpF",
+    "object": "chat.completion",
+    "created": 1794083902,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"DELIVERED\",\"quote\":\"<strong class=\\\"value\\\">Delivered</strong>\",\"reason\":\"status indicates parcel handed to recipient\"}",
+          "refusal": null,
+          "reasoning": "We need state. Last update is 2 Nov 2026, which is after given moment 3 Nov 2026? Actually moment is 3 Nov 2026 07:30. The update is 2 Nov 2026, which is before. So it's valid. Status says Delivered and \"handed over to the recipient.\" So DELIVERED.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need state. Last update is 2 Nov 2026, which is after given moment 3 Nov 2026? Actually moment is 3 Nov 2026 07:30. The update is 2 Nov 2026, which is before. So it's valid. Status says Delivered and \"handed over to the recipient.\" So DELIVERED.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 961,
+      "completion_tokens": 114,
+      "total_tokens": 1075,
+      "cost": 0.000054937,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000054937,
+        "upstream_inference_prompt_cost": 0.000035557,
+        "upstream_inference_completions_cost": 0.00001938
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 62,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

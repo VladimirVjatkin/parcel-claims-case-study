@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "987f8b3906c9b19d74f5a9420fb9f7a1c62d7106e803b9bb5b06a0dfaa428d68",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "DT9100112.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:36:41.425Z",
+  "latencyMs": 4701,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083798-RAZzXu8UDQtDfyRACFRq",
+    "object": "chat.completion",
+    "created": 1794083798,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"<text x=\\\"280\\\" y=\\\"70\\\" text-anchor=\\\"middle\\\">U kurýra</text>\",\"reason\":\"current step shows with courier, not delivered\"}",
+          "refusal": null,
+          "reasoning": "We need state before 3.11.2026 07:30. Latest update is 20.10.2026 08:12, which is before. Timeline shows current step? The filled circle is at \"U kurýra\" (green). Others are grey. So current is \"U kurýra\" meaning with courier, not delivered. So IN_TRANSIT. Quote: the filled circle element or text \"U kurýra\". Reason.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need state before 3.11.2026 07:30. Latest update is 20.10.2026 08:12, which is before. Timeline shows current step? The filled circle is at \"U kurýra\" (green). Others are grey. So current is \"U kurýra\" meaning with courier, not delivered. So IN_TRANSIT. Quote: the filled circle element or text \"U kurýra\". Reason.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1121,
+      "completion_tokens": 148,
+      "total_tokens": 1269,
+      "cost": 0.000066637,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000066637,
+        "upstream_inference_prompt_cost": 0.000041477,
+        "upstream_inference_completions_cost": 0.00002516
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 81,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

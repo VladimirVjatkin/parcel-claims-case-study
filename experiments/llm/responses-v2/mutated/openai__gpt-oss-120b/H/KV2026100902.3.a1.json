@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "f721cf438867ab565a254d7e4e04cd24b9e06444f2234b372f8950128fdf9ef3",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "KV2026100902.html",
+  "variant": "H",
+  "run": 3,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:38:17.997Z",
+  "latencyMs": 4659,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083894-jmYsQFruqkpLNJWEFnwU",
+    "object": "chat.completion",
+    "created": 1794083894,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"Zásilka je uložena v Z-BOXu Praha 7, Dukelských hrdinů 12. Vyzvedněte ji do 8. 11. 2026.\",\"reason\":\"parcel stored for pickup, not yet collected\"}",
+          "refusal": null,
+          "reasoning": "We need state. It's stored in Z-BOX, pickup until 8 Nov 2026. Current date is 3 Nov 2026, so still in transit. Not delivered. So IN_TRANSIT. Quote from shipment-message.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need state. It's stored in Z-BOX, pickup until 8 Nov 2026. Current date is 3 Nov 2026, so still in transit. Not delivered. So IN_TRANSIT. Quote from shipment-message.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1015,
+      "completion_tokens": 121,
+      "total_tokens": 1136,
+      "cost": 0.000058125,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000058125,
+        "upstream_inference_prompt_cost": 0.000037555,
+        "upstream_inference_completions_cost": 0.00002057
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 43,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

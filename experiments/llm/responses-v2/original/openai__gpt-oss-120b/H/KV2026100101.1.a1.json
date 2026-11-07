@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "5546a2cb7d7876f2ef01e5398b2bd8a9ecd9710a6721f41d8f895fa43244c6f7",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "KV2026100101.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:32:46.786Z",
+  "latencyMs": 4100,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083564-b5oMEuN2mCxiqii3Sw9a",
+    "object": "chat.completion",
+    "created": 1794083564,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"<span class=\\\"progress__label\\\">Na cestě k vám</span>\",\"reason\":\"current step indicates on the way, not delivered\"}",
+          "refusal": null,
+          "reasoning": "We need latest event before given moment. Current progress fill 66% corresponds to step 3? Steps: order, in transport, on the way to you, delivered to recipient. 66% likely at step 3 (on the way). No delivered yet. So IN_TRANSIT. Quote: progress__fill style width:66% or label \"Na cestě k vám\". Use that.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need latest event before given moment. Current progress fill 66% corresponds to step 3? Steps: order, in transport, on the way to you, delivered to recipient. 66% likely at step 3 (on the way). No delivered yet. So IN_TRANSIT. Quote: progress__fill style width:66% or label \"Na cestě k vám\". Use that.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1335,
+      "completion_tokens": 129,
+      "total_tokens": 1464,
+      "cost": 0.000071325,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000071325,
+        "upstream_inference_prompt_cost": 0.000049395,
+        "upstream_inference_completions_cost": 0.00002193
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 77,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

@@ -143,3 +143,68 @@ Gemma 4 31B: 4 sloty bez odpovědi, všech 10 pokusů skončilo omezením poskyt
 | Očekáváno | Nalezeno | Chybí | Neplatné sloty |
 |---|---|---|---|
 | 936 | 936 | 0 | 0 |
+
+## Sekundární analýza v1 bez PN55100901 (doplněno po vyhodnocení)
+
+Doplněno po vyhodnocení; nenahrazuje hlavní výsledek.
+Vstup H; stejné počty dovolených chyb jako ve v1: falešná DELIVERED 0; validní ≥ 72/75 (nejvýše 3 chyby); přesnost ≥ 54/60; užitečná ≥ 3/5 (nejvýše 2 chyby); stabilní ≥ 23/25 (nejvýše 2 chyby). Chybějící údaje znamenají nedostatek dat.
+
+| Model | Falešná DELIVERED | Validní | Přesnost | Užitečná | Stabilní | Práh |
+|---|---|---|---|---|---|---|
+| Qwen3.5 9B | 0 | 57/75 | 43/60 | 5/5 | 19/25 | nesplněno |
+| Ministral 3 8B | 0 | 53/75 | 37/60 | 3/5 | 22/25 | nesplněno |
+| Gemma 4 31B | 0 | 72/75 | 60/60 | 5/5 | 22/25 | nedostatek dat |
+| Mistral Small 3.2 24B | 0 | 75/75 | 54/60 | 5/5 | 25/25 | splněno |
+| gpt-oss 120B | 0 | 75/75 | 60/60 | 5/5 | 25/25 | splněno |
+| Llama 3.3 70B | 0 | 72/75 | 57/60 | 5/5 | 25/25 | splněno |
+
+## Prompt v2: okamžik kontroly
+
+Prompt v2 vznikl po prvním vyhodnocení; mění jedinou proměnnou (okamžik kontroly). Nejde o nezávislé ověření.
+Změněné stránky jsou datovány po okamžiku běhu (2. 11. 2026 07:30; např. „Stav k 3. 11. 2026 06:00“). Jako okamžik stažení sady experimentu se proto pro model i parser používá 3. 11. 2026 07:30; rozhodování a měření parserů zůstávají na 2. 11. 2026 07:30.
+Jediný přidaný řádek v user zprávě: Check moment: 3. 11. 2026 07:30 (Europe/Prague). An event or update dated after this moment does not confirm the parcel state.
+System prompt, příklady, konfigurace, kontrola citace pouze proti stránce a práh jsou stejné jako ve v1. Vstup H, 26 stránek, 3 běhy, 156 slotů v2.
+
+### Práh (vstup H)
+
+| Model | Falešná DELIVERED | Validní | Přesnost | Užitečná | Stabilní | Práh |
+|---|---|---|---|---|---|---|
+| gpt-oss 120B v1 | 3 | 78/78 | 60/60 | 5/6 | 26/26 | nesplněno |
+| gpt-oss 120B v2 | 0 | 75/78 | 57/60 | 5/6 | 26/26 | splněno |
+| Llama 3.3 70B v1 | 3 | 75/78 | 57/60 | 5/6 | 26/26 | nesplněno |
+| Llama 3.3 70B v2 | 3 | 78/78 | 57/60 | 5/6 | 26/26 | nesplněno |
+
+### Souhrn
+
+| Model / vstup H | Správně původní | Správně změněné | Falešná D (surová / po kontrole) | NO_ANSWER | INVALID_JSON | INVALID_STATE | QUOTE_NOT_FOUND | Neúspěšné pokusy | Cena USD | Medián ms | Skutečný poskytovatel |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| gpt-oss 120B v1 | 60/60 | 15/18 | 3 / 3 | 0 | 0 | 0 | 0 | 36 | ≥ 0.004350 USD, 36 pokusů s neznámou cenou | 2386.5 | DeepInfra |
+| gpt-oss 120B v2 | 57/60 | 15/18 | 0 / 0 | 0 | 0 | 0 | 3 | 0 | 0.004976 USD | 4366.5 | DeepInfra |
+| Llama 3.3 70B v1 | 57/60 | 15/18 | 3 / 3 | 0 | 0 | 0 | 3 | 0 | 0.063966 USD | 580 | CoreWeave |
+| Llama 3.3 70B v2 | 57/60 | 15/18 | 3 / 3 | 0 | 0 | 0 | 0 | 0 | 0.066107 USD | 628.5 | CoreWeave |
+
+### PN55100901
+
+| Model | Běh | v1 → v2 |
+|---|---|---|
+| gpt-oss 120B | 1 | DELIVERED → IN_TRANSIT |
+| gpt-oss 120B | 2 | DELIVERED → IN_TRANSIT |
+| gpt-oss 120B | 3 | DELIVERED → IN_TRANSIT |
+| Llama 3.3 70B | 1 | DELIVERED → DELIVERED |
+| Llama 3.3 70B | 2 | DELIVERED → DELIVERED |
+| Llama 3.3 70B | 3 | DELIVERED → DELIVERED |
+
+### Změny na ostatních 25 stránkách
+
+| Soubor | Model | Běh | v1 → v2 |
+|---|---|---|---|
+| original/EX7710117.html | gpt-oss 120B | 1 | DELIVERED → QUOTE_NOT_FOUND |
+| original/EX7710117.html | gpt-oss 120B | 2 | DELIVERED → QUOTE_NOT_FOUND |
+| original/EX7710117.html | gpt-oss 120B | 3 | DELIVERED → QUOTE_NOT_FOUND |
+| original/DT9100198.html | Llama 3.3 70B | 1 | QUOTE_NOT_FOUND → UNKNOWN |
+| original/DT9100198.html | Llama 3.3 70B | 2 | QUOTE_NOT_FOUND → UNKNOWN |
+| original/DT9100198.html | Llama 3.3 70B | 3 | QUOTE_NOT_FOUND → UNKNOWN |
+
+Úplnost v2: 156/156 slotů s pokusem, 156/156 vyhodnocených.
+Cena v2 (všechny pokusy): 0.071082 USD.
+Pokusy HTTP 429 ve v2: 0.

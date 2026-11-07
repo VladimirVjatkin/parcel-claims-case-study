@@ -8,7 +8,7 @@ import { readLabels } from "../../src/eval/labels.js";
 import { addTable } from "../../src/report/markdown.js";
 import { checkAnswer, isExhausted, loadModels, loadSlots, object, readSavedSlots } from "./llm.js";
 import type { CheckedAnswer, Model, SavedSlot } from "./llm.js";
-import { PROMPT_VERSION } from "./prompt.js";
+import { CHECK_MOMENT_LINE, PROMPT_VERSION, V2_EXPERIMENT } from "./prompt.js";
 
 export interface Observation extends SavedSlot { answer: CheckedAnswer | null }
 export interface Metrics {
@@ -28,8 +28,8 @@ export function observe(item: SavedSlot): Observation {
   return { ...item, answer: checkAnswer(object(choice.message).content, choice.finish_reason, item.slot.input) };
 }
 
-export function calculateMetrics(items: Observation[]): Metrics {
-  const result: Metrics = { complete: items.length === 78, valid: 0, correctOriginal: 0, correctMutated: 0,
+export function calculateMetrics(items: Observation[], expectedPages = 26): Metrics {
+  const result: Metrics = { complete: items.length === expectedPages * 3, valid: 0, correctOriginal: 0, correctMutated: 0,
     falseDelivered: 0, rawFalseDelivered: 0, useful: 0, stable: 0 };
   const pages = new Map<string, Observation[]>();
   let original = 0;
@@ -50,7 +50,7 @@ export function calculateMetrics(items: Observation[]): Metrics {
     group.push(item);
     pages.set(key, group);
   }
-  if (original !== 60 || pages.size !== 26) result.complete = false;
+  if (original !== 60 || pages.size !== expectedPages) result.complete = false;
   for (const group of pages.values()) {
     if (group.length !== 3 || new Set(group.map((item) => item.slot.run)).size !== 3) result.complete = false;
     const signatures = group.map((item) => item.answer === null ? "MISSING" : `${item.answer.outcome}:${item.answer.state ?? ""}`);
@@ -61,9 +61,12 @@ export function calculateMetrics(items: Observation[]): Metrics {
   }
   return result;
 }
-export function thresholdStatus(metrics: Metrics): string {
+export const PRIMARY_THRESHOLDS = { valid: 75, correctOriginal: 54, useful: 4, stable: 24 };
+// Preserve the number of allowed errors when one page is removed after evaluation.
+export const SECONDARY_THRESHOLDS = { valid: 72, correctOriginal: 54, useful: 3, stable: 23 };
+export function thresholdStatus(metrics: Metrics, thresholds = PRIMARY_THRESHOLDS): string {
   if (!metrics.complete) return "nedostatek dat";
-  return metrics.falseDelivered === 0 && metrics.valid >= 75 && metrics.correctOriginal >= 54 && metrics.useful >= 4 && metrics.stable >= 24 ? "splněno" : "nesplněno";
+  return metrics.falseDelivered === 0 && metrics.valid >= thresholds.valid && metrics.correctOriginal >= thresholds.correctOriginal && metrics.useful >= thresholds.useful && metrics.stable >= thresholds.stable ? "splněno" : "nesplněno";
 }
 
 function cost(items: Observation[]): string {
@@ -189,10 +192,79 @@ export function formatLlmReport(saved: SavedSlot[], original: EvaluationResult, 
   return lines.join("\n") + "\n";
 }
 
+export function formatAdditionalAnalysis(v1: SavedSlot[], v2: SavedSlot[], models: Model[]): string {
+  const first = v1.map(observe);
+  const second = v2.map(observe);
+  const lines = ["", "## Sekundární analýza v1 bez PN55100901 (doplněno po vyhodnocení)", "",
+    "Doplněno po vyhodnocení; nenahrazuje hlavní výsledek.",
+    "Vstup H; stejné počty dovolených chyb jako ve v1: falešná DELIVERED 0; validní ≥ 72/75 (nejvýše 3 chyby); přesnost ≥ 54/60; užitečná ≥ 3/5 (nejvýše 2 chyby); stabilní ≥ 23/25 (nejvýše 2 chyby). Chybějící údaje znamenají nedostatek dat.", ""];
+  const secondary = models.map((model) => {
+    const items = first.filter((item) => item.slot.model.id === model.id && item.slot.variant === "H" &&
+      !(item.slot.set === "mutated" && item.slot.label.file === "PN55100901.html"));
+    const metrics = calculateMetrics(items, 25);
+    return [model.label, String(metrics.falseDelivered), `${metrics.valid}/75`, `${metrics.correctOriginal}/60`,
+      `${metrics.useful}/5`, `${metrics.stable}/25`, thresholdStatus(metrics, SECONDARY_THRESHOLDS)];
+  });
+  const gateHeaders = ["Model", "Falešná DELIVERED", "Validní", "Přesnost", "Užitečná", "Stabilní", "Práh"];
+  addTable(lines, gateHeaders, secondary);
+  lines.push("", "## Prompt v2: okamžik kontroly", "",
+    "Prompt v2 vznikl po prvním vyhodnocení; mění jedinou proměnnou (okamžik kontroly). Nejde o nezávislé ověření.",
+    "Změněné stránky jsou datovány po okamžiku běhu (2. 11. 2026 07:30; např. „Stav k 3. 11. 2026 06:00“). Jako okamžik stažení sady experimentu se proto pro model i parser používá 3. 11. 2026 07:30; rozhodování a měření parserů zůstávají na 2. 11. 2026 07:30.",
+    `Jediný přidaný řádek v user zprávě: ${CHECK_MOMENT_LINE}`,
+    "System prompt, příklady, konfigurace, kontrola citace pouze proti stránce a práh jsou stejné jako ve v1. Vstup H, 26 stránek, 3 běhy, 156 slotů v2.", "");
+  const pairs: { name: string; items: Observation[] }[] = [];
+  for (const model of models.filter((model) => V2_EXPERIMENT.models?.includes(model.id))) {
+    pairs.push({ name: `${model.label} v1`, items: first.filter((item) => item.slot.model.id === model.id && item.slot.variant === "H") });
+    pairs.push({ name: `${model.label} v2`, items: second.filter((item) => item.slot.model.id === model.id && item.slot.variant === "H") });
+  }
+  lines.push("### Práh (vstup H)", "");
+  addTable(lines, gateHeaders, pairs.map(({ name, items }) => {
+    const metrics = calculateMetrics(items);
+    return [name, String(metrics.falseDelivered), `${metrics.valid}/78`, `${metrics.correctOriginal}/60`,
+      `${metrics.useful}/6`, `${metrics.stable}/26`, thresholdStatus(metrics)];
+  }));
+  lines.push("", "### Souhrn", "");
+  addTable(lines, ["Model / vstup H", "Správně původní", "Správně změněné", "Falešná D (surová / po kontrole)",
+    "NO_ANSWER", "INVALID_JSON", "INVALID_STATE", "QUOTE_NOT_FOUND", "Neúspěšné pokusy", "Cena USD", "Medián ms", "Skutečný poskytovatel"], pairs.map(({ name, items }) => {
+    const metrics = calculateMetrics(items);
+    const failures = ["NO_ANSWER", "INVALID_JSON", "INVALID_STATE", "QUOTE_NOT_FOUND"].map((outcome) => String(items.filter((item) => item.answer?.outcome === outcome).length));
+    return [name, `${metrics.correctOriginal}/60`, `${metrics.correctMutated}/18`, `${metrics.rawFalseDelivered} / ${metrics.falseDelivered}`, ...failures,
+      String(items.reduce((sum, item) => sum + item.attempts.filter((attempt) => attempt.status === "failed").length, 0)), cost(items), median(items), providers(items)];
+  }));
+  const result = (item: Observation | undefined): string => item?.answer?.state ?? item?.answer?.outcome ?? "chybí";
+  const selected = models.filter((model) => V2_EXPERIMENT.models?.includes(model.id));
+  lines.push("", "### PN55100901", "");
+  addTable(lines, ["Model", "Běh", "v1 → v2"], selected.flatMap((model) => [1, 2, 3].map((run) => {
+    const match = (item: Observation): boolean => item.slot.model.id === model.id && item.slot.variant === "H" &&
+      item.slot.set === "mutated" && item.slot.label.file === "PN55100901.html" && item.slot.run === run;
+    return [model.label, String(run), `${result(first.find(match))} → ${result(second.find(match))}`];
+  })));
+  lines.push("", "### Změny na ostatních 25 stránkách", "");
+  const changes: string[][] = [];
+  for (const item of second) {
+    if (item.slot.label.file === "PN55100901.html" || item.answer === null) continue;
+    const previous = first.find(({ slot }) => slot.model.id === item.slot.model.id && slot.variant === "H" &&
+      slot.set === item.slot.set && slot.label.file === item.slot.label.file && slot.run === item.slot.run);
+    if (result(previous) !== result(item)) changes.push([`${item.slot.set}/${item.slot.label.file}`, item.slot.model.label,
+      String(item.slot.run), `${result(previous)} → ${result(item)}`]);
+  }
+  if (changes.length > 0) addTable(lines, ["Soubor", "Model", "Běh", "v1 → v2"], changes);
+  else lines.push(second.every((item) => item.answer !== null) ? "Žádné změny výsledků." : "Porovnání je neúplné; u dostupných odpovědí nebyly nalezeny změny výsledků.");
+  const found = second.filter((item) => item.attempts.length > 0).length;
+  const evaluated = second.filter((item) => item.answer !== null).length;
+  lines.push("", `Úplnost v2: ${found}/${second.length} slotů s pokusem, ${evaluated}/${second.length} vyhodnocených.`,
+    `Cena v2 (všechny pokusy): ${cost(second)}.`,
+    `Pokusy HTTP 429 ve v2: ${second.reduce((sum, item) => sum + item.attempts.filter((attempt) => attempt.httpStatus === 429).length, 0)}.`);
+  return lines.join("\n") + "\n";
+}
+
 function main(): void {
   const { values } = parseArgs({ options: { out: { type: "string" } }, strict: true, allowPositionals: false });
   const baseline = (dir: string): EvaluationResult => evaluatePages(readLabels(join(dir, "labels.csv")), (file) => readFileSync(join(dir, file), "utf8"));
-  const report = formatLlmReport(readSavedSlots(loadSlots()), baseline("data/tracking"), baseline("experiments/llm/mutated"), loadModels());
+  const v1 = readSavedSlots(loadSlots());
+  const v2 = readSavedSlots(loadSlots(".", V2_EXPERIMENT), ".", V2_EXPERIMENT);
+  const models = loadModels();
+  const report = formatLlmReport(v1, baseline("data/tracking"), baseline("experiments/llm/mutated"), models) + formatAdditionalAnalysis(v1, v2, models);
   if (values.out !== undefined) { mkdirSync(dirname(values.out), { recursive: true }); writeFileSync(values.out, report, "utf8"); }
   process.stdout.write(report);
 }

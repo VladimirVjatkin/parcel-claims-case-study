@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "484cea5d57b1384536ac9fd0de4a0c1c0986678f43a213bdc5b3a4784dd413d0",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "mutated",
+  "file": "PN55100901.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:37:45.829Z",
+  "latencyMs": 9135,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083858-rKGcTc0CaEqxy18FZXo2",
+    "object": "chat.completion",
+    "created": 1794083858,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"IN_TRANSIT\",\"quote\":\"<td>2. 11. 2026</td><td>07:15</td><td>Třídicí centrum Praha</td><td>Zásilka zpracována</td>\",\"reason\":\"latest event before moment shows processing, not delivered\"}",
+          "refusal": null,
+          "reasoning": "We need latest event before given moment 3.11.2026 07:30. Table shows events: 9.11.2026 (future), 2.11.2026, 1.11.2026. Latest before moment is 2.11.2026 07:15 \"Zásilka zpracována\" which is IN_TRANSIT. So state IN_TRANSIT. Quote that row.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need latest event before given moment 3.11.2026 07:30. Table shows events: 9.11.2026 (future), 2.11.2026, 1.11.2026. Latest before moment is 2.11.2026 07:15 \"Zásilka zpracována\" which is IN_TRANSIT. So state IN_TRANSIT. Quote that row.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1133,
+      "completion_tokens": 164,
+      "total_tokens": 1297,
+      "cost": 0.000069801,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000069801,
+        "upstream_inference_prompt_cost": 0.000041921,
+        "upstream_inference_completions_cost": 0.00002788
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 60,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

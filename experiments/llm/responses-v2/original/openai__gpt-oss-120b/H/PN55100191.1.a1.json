@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "promptVersion": "v2",
+  "inputSha256": "42e3b375af3c3c8e953618aa606c8659ca64bd122277001d80d5486f3efff274",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "provider": "deepinfra/bf16",
+    "quantization": "bf16",
+    "temperature": 0,
+    "max_tokens": 4000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "responseSchemaSha256": "ed89b87abb9b0aa05111e5ef0bae30e6c92c6b906b97e35458becbaf6a11590f"
+  },
+  "set": "original",
+  "file": "PN55100191.html",
+  "variant": "H",
+  "run": 1,
+  "attempt": 1,
+  "collectedAt": "2026-11-07T20:34:57.441Z",
+  "latencyMs": 4028,
+  "httpStatus": 200,
+  "error": null,
+  "response": {
+    "id": "gen-1794083694-0XqcbJh2TAAtPwqhK8DZ",
+    "object": "chat.completion",
+    "created": 1794083694,
+    "model": "openai/gpt-oss-120b",
+    "provider": "DeepInfra",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\"state\":\"DELIVERED\",\"quote\":\"Zásilka vyzvednuta příjemcem\",\"reason\":\"recipient collected before cutoff\"}",
+          "refusal": null,
+          "reasoning": "We need latest event before 3.11.2026 07:30. Latest in table is 24.10.2026 17:40 \"Zásilka vyzvednuta příjemcem\" which is delivery. It's before the cutoff date. So state DELIVERED. Quote exact text.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "We need latest event before 3.11.2026 07:30. Latest in table is 24.10.2026 17:40 \"Zásilka vyzvednuta příjemcem\" which is delivery. It's before the cutoff date. So state DELIVERED. Quote exact text.",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1188,
+      "completion_tokens": 103,
+      "total_tokens": 1291,
+      "cost": 0.000061466,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000061466,
+        "upstream_inference_prompt_cost": 0.000043956,
+        "upstream_inference_completions_cost": 0.00001751
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 51,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+}

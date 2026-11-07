@@ -27,6 +27,9 @@ Přímé spuštění `npx tsx src/cli/evaluate.ts` píše jen na stdout; `--data
 Sběr přes `npm run llm:collect` vyžaduje klíč v `.env` podle `.env.example` a používá placené API; existující odpovědi se nepřepisují.
 Čísla jsou v [reports/llm-experiment.md](reports/llm-experiment.md); výklad výsledků bude v [EXPERIMENT_LLM.md](EXPERIMENT_LLM.md).
 
+Prompt v2 (`--prompt v2`) přidává pouze okamžik kontroly 3. 11. 2026 07:30 (Europe/Prague); sada je pevná: gpt-oss 120B a Llama 3.3 70B, vstup H, 26 stránek, 3 běhy. Odpovědi jsou oddělené v `experiments/llm/responses-v2/`; v1 se nemění. Okamžik stažení experimentální sady se liší od okamžiku rozhodování 2. 11. 2026 07:30.
+Sekundární analýza v1 bez PN55100901 zachovává počet dovolených chyb (0 falešných DELIVERED, ≥ 72/75 validních, ≥ 54/60 správně původních, ≥ 3/5 užitečných, ≥ 23/25 stabilních). Obě doplnění vznikla po prvním vyhodnocení a nejsou nezávislým ověřením.
+
 ## Co je v repozitáři
 
 | Soubor / složka | Obsah |
