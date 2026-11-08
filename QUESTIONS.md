@@ -13,6 +13,7 @@
 ## Vývoj Mailshipu
 
 - Proč Mailship ponechává stav `carrier_picked_up` poté, co dopravce potvrdil doručení příjemci?
+- Proč export obsahuje duplicitní řádky (MS-2026-120101) a prázdné `orderNumber`, `carrier` nebo `trackingNumber`? Je to chyba exportu, nebo běžný stav dat?
 - Máte nebo plánujete interní server pro jazykové modely, který by sloužil více úlohám? Pokud ano, jaký model na něm běží?
 - Smí obsah tracking stránek (jména, adresy příjemců) opustit infrastrukturu Mailstepu? Předpokládám, že ne, proto navrhuji lokální model.
 - Eviduje WMS předávací protokol (sken převzetí zásilky dopravcem)? Pokud ano, jak se k němu dostanu?
