@@ -1,3 +1,6 @@
+// Časová pravidla používají pražské kalendářní dny, nikoli uplynulé hodiny.
+// Tím se správně posoudí změna času 25. 10. i hranice UTC / Praha u objednávky 120125.
+// Stejné pásmo slouží ke kontrole budoucích událostí na stránkách dopravců (README).
 const pragueDateFormatter = new Intl.DateTimeFormat("en", {
   timeZone: "Europe/Prague",
   year: "numeric",
@@ -8,15 +11,18 @@ const pragueTimeFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/Prague", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
 });
 
+// Seřazený tvar RRRR-MM-DDTHH:MM dovoluje porovnat pražský místní čas jako řetězec.
+// Bez času se porovnají jen data; rovnost s okamžikem stažení stránky není budoucnost.
 export function isAfterReference(localDate: string, localTime: string | null, referenceMoment: Date): boolean {
   const referenceDate = pragueDateKey(referenceMoment);
-  // Minute precision on the page means second zero; equality is never future.
+  // Minutová přesnost na stránce znamená nultou sekundu; rovnost nikdy není budoucnost.
   if (localTime === null) return localDate > referenceDate;
   return `${localDate}T${localTime}` > `${referenceDate}T${pragueTimeFormatter.format(referenceMoment)}`;
 }
 
+// Přísné ISO datum vrací jednoznačný okamžik; nečitelné datum vede k ruční kontrole.
 export function parseIsoInstant(value: string | null): Date | null {
-  // An explicit offset prevents dependence on the machine's time zone.
+  // Sekundy i výslovný časový posun brání závislosti na časovém pásmu stroje.
   if (value === null || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) {
     return null;
   }
@@ -24,7 +30,7 @@ export function parseIsoInstant(value: string | null): Date | null {
   if (!Number.isFinite(timestamp)) {
     return null;
   }
-  // Date.parse can normalize an impossible date such as February 30.
+  // Date.parse může nemožné datum, například 30. 2., převést na jiné platné datum.
   const [datePart] = value.split("T");
   if (datePart === undefined) {
     return null;
@@ -41,6 +47,7 @@ export function parseIsoInstant(value: string | null): Date | null {
   return new Date(timestamp);
 }
 
+// Jednotný klíč pražského data se používá i pro úložní dobu, která platí včetně posledního dne.
 export function pragueDateKey(instant: Date): string {
   let year = "";
   let month = "";
@@ -61,7 +68,8 @@ function calendarDateAsUtc(instant: Date): number {
   return Date.UTC(year, month - 1, day);
 }
 
+// Rozdíl kalendářních dat zachová počet dní i při změně času; nepočítá celé úseky po 24 hodinách.
 export function calendarDaysInPrague(from: Date, now: Date): number {
-  // UTC midnights represent calendar dates, not elapsed hours across DST.
+  // Půlnoci v UTC zde zastupují kalendářní data, nikoli uplynulé hodiny přes změnu času.
   return (calendarDateAsUtc(now) - calendarDateAsUtc(from)) / 86_400_000;
 }

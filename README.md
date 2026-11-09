@@ -45,6 +45,14 @@ Sekundární analýza v1 bez PN55100901 zachovává počet dovolených chyb (0 f
 | `QUESTIONS.md` | Otázky pro reklamační oddělení a vývoj Mailshipu |
 | `NOTES.md` | Co jsem nestihl nebo vědomě vynechal |
 
+## Jak číst kód
+
+- [src/decision/decide.ts](src/decision/decide.ts) spojuje pravidla, tracking a výsledné rozhodnutí pro každou objednávku.
+- [src/layer1/rules.ts](src/layer1/rules.ts) vybírá kandidáty A/B, sbírá důvody a určuje, zda ověřit tracking.
+- [src/layer2/trackingCheck.ts](src/layer2/trackingCheck.ts) převádí dostupnost a stav dopravce na důvody pro A nebo B.
+- [src/tracking/parsers/](src/tracking/parsers/) obsahuje čtyři parsery se známými formulacemi a kontrolou dat událostí.
+- [src/domain/types.ts](src/domain/types.ts) definuje společné typy, kódy důvodů a prioritu výsledků.
+
 ## Výklad nejasností
 
 - Datum události nebo poslední aktualizace na stránce pozdější než okamžik stažení stránky (v řezu = okamžik běhu) → `UNKNOWN` (stránka není spolehlivá); lhůty (úložní doba, vyzvednutí do) se nekontrolují, stránka bez data se posuzuje jako dosud.

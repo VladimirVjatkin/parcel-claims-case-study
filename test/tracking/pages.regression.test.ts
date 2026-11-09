@@ -1,5 +1,5 @@
 import { DEFAULT_RUN_MOMENT as PARSER_REFERENCE_MOMENT } from "../../src/config.js";
-// Regression only — pages were inspected while writing the parsers, so this is not an independent measurement.
+// Pouze regrese: stránky byly viděny při psaní parserů, nejde tedy o nezávislé měření.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";

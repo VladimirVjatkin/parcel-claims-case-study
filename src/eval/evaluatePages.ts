@@ -1,9 +1,14 @@
+// Měření porovnává pravidlové parsery s labels.csv; referenceMoment je okamžik stažení stránky.
+// Štítky se používají pouze pro měření, nikdy pro rozhodování o reklamaci.
+// Na dodaných stránkách jde o regresi, protože byly viděny při vývoji (EVALUATION).
 import { parserForCarrier } from "../tracking/parseTrackingPage.js";
 import type { TrackingState } from "../tracking/types.js";
 import type { LabelRow } from "./labels.js";
 
 export type ErrorImpact = "HIDDEN_PROBLEM" | "WRONG_COMPLAINT" | "EXTRA_REVIEW" | "NO_DECISION_IMPACT";
 
+// Dopad chyby odpovídá definici B: falešné doručení skryje problém, ruční kontrola je levnější.
+// Záměna RETURNING a UNKNOWN nic nemění, protože oba stavy vyžadují člověka.
 export function errorImpact(expected: TrackingState, predicted: TrackingState): ErrorImpact | null {
   if (expected === predicted) return null;
   if (predicted === "DELIVERED") return "HIDDEN_PROBLEM";
@@ -26,6 +31,7 @@ export interface EvaluationResult {
   pages: PageEvaluation[];
 }
 
+// Pro každou stránku zachová výsledek, citaci i dopad chyby; nedostupnost se neztratí z počtu.
 export function evaluatePages(labels: LabelRow[], readPage: (file: string) => string | null, referenceMoment: Date): EvaluationResult {
   const pages: PageEvaluation[] = [];
   for (const label of labels) {

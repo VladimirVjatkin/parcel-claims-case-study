@@ -1,3 +1,5 @@
+// Převádí hotová rozhodnutí do tří skupin reportu a samostatného seznamu nesouladů s Mailshipem.
+// Výpočty pravidel neopakuje; zachovává důvody, citace a pevný okamžik běhu pro kontrolu člověkem.
 import type { Decision } from "../decision/decide.js";
 import type { Reason } from "../domain/types.js";
 import { addTable } from "./markdown.js";
@@ -23,6 +25,8 @@ function addSection(lines: string[], title: string, headers: string[], rows: str
   else addTable(lines, headers, rows);
 }
 
+// Citace důvodů z trackingu se neopakuje, pokud už je ve sloupci Tracking.
+// V části DO_NOT_CREATE sloupec Tracking není, proto se citace v důvodech ponechá.
 function formatReasons(reasons: Reason[], trackingQuote: string | null): string {
   const values: string[] = [];
   for (const reason of reasons) {
@@ -40,8 +44,9 @@ function formatTracking(decision: Decision): string {
   return quote === "" ? state : `${state} — ${quote}`;
 }
 
+// Ze stejného vstupu vzniká stejný report; formátování nemění rozhodnutí ani pořadí u volajícího.
 export function formatDecisionReport(decisions: Decision[], meta: DecisionReportMeta): string {
-  // Avoid locale-dependent collation and leave the caller's array untouched.
+  // Řazení nezávisí na locale a ponechává pole volajícího beze změny.
   const sorted = [...decisions].sort((a, b) => a.orderLabel < b.orderLabel ? -1 : a.orderLabel > b.orderLabel ? 1 : 0);
   const createRows: string[][] = [];
   const reviewRows: string[][] = [];
@@ -64,6 +69,7 @@ export function formatDecisionReport(decisions: Decision[], meta: DecisionReport
       discrepancyRows.push([decision.orderLabel, decision.mailshipStatus, decision.tracking?.quote ?? "—"]);
     }
   }
+  // Počet řádků exportu a objednávek se liší po sloučení přesných duplicit podle orderId.
   const lines = [
     "# Rozhodnutí o reklamacích", "",
     `Okamžik běhu: ${formatRunMoment(meta.now)} (Europe/Prague) · Režim: stínový — nic se nezakládá, jde o návrh.`,

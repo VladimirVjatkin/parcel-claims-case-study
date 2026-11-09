@@ -1,3 +1,5 @@
+// Společný protokol experimentu: sestaví vstupy a požadavky, formálně ověří odpověď a načte uložené pokusy.
+// Verze promptu, hash stránky a konfigurace chrání srovnatelnost běhů; odmítnutí není stav UNKNOWN.
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";

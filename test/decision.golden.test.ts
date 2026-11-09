@@ -1,4 +1,4 @@
-// Regression against decisions in the design, not a proof of correctness.
+// Regrese proti rozhodnutím v návrhu, nikoli nezávislý důkaz správnosti celého rozhodování.
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { decideAll } from "../src/decision/decide.js";

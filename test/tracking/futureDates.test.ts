@@ -1,3 +1,5 @@
+// Hlídá datum události vůči okamžiku stažení: budoucnost, rovnost, pražské pásmo i datum bez času.
+// Ověřuje čtyři dopravce, doslovné citace a to, že lhůty ani nečitelné datum samy stav nemění.
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import * as cheerio from "cheerio";

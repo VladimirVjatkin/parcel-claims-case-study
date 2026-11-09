@@ -1,3 +1,5 @@
+// Z výsledků měření sestavuje report s přesností, maticí záměn a cenou jednotlivých typů chyby.
+// Pořadí stavů i význam dopadů jsou pevné; na známých stránkách jde pouze o regresi (EVALUATION).
 import type { ErrorImpact, EvaluationResult } from "../eval/evaluatePages.js";
 import type { TrackingState } from "../tracking/types.js";
 import { addTable } from "./markdown.js";
@@ -15,6 +17,7 @@ function zeroCounts(): Record<TrackingState, number> {
   return { DELIVERED: 0, IN_TRANSIT: 0, RETURNING: 0, UNKNOWN: 0 };
 }
 
+// Počítá shody i dopady zvlášť: stejné procento správných stavů může skrývat různě závažné chyby.
 export function formatEvaluation(result: EvaluationResult): string {
   const pages = [...result.pages].sort((a, b) => a.file < b.file ? -1 : a.file > b.file ? 1 : 0);
   const carriers = new Map<string, { total: number; correct: number }>();
@@ -49,6 +52,7 @@ export function formatEvaluation(result: EvaluationResult): string {
   }
   addTable(lines, ["Dopravce", "Stránek", "Správně"], carrierRows);
   lines.push("", "## Matice záměn (řádky = skutečnost z labels.csv, sloupce = parser)", "");
+  // Matice má řádky podle referenčního stavu a sloupce podle parseru, aby byl vidět směr chyby.
   const matrixRows: string[][] = [];
   for (const expected of STATES) {
     matrixRows.push([expected, ...STATES.map((predicted) => String(matrix[expected][predicted]))]);

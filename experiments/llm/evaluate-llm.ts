@@ -1,3 +1,5 @@
+// Offline vyhodnocení uložených odpovědí: formální kontrola, předem daný práh a podrobný report.
+// Dodatečné analýzy a v2 se připojují za v1; modely se zde nevolají a odmítnutí se neslučují s UNKNOWN.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,7 +21,7 @@ export function observe(item: SavedSlot): Observation {
   if (item.invalid.length > 0 || item.attempts.length === 0) return { ...item, answer: null };
   const success = item.attempts.find((attempt) => attempt.status === "ok");
   if (success === undefined) {
-    // Provider-only rate limits are missing data, not a model refusal.
+    // Samotné omezení počtu požadavků poskytovatelem znamená chybějící data, ne odmítnutí modelu.
     const modelAttempt = item.attempts.some((attempt) => attempt.httpStatus !== 429);
     return { ...item, answer: isExhausted(item.attempts) && modelAttempt ? checkAnswer(null, null, item.slot.input) : null };
   }
@@ -62,7 +64,7 @@ export function calculateMetrics(items: Observation[], expectedPages = 26): Metr
   return result;
 }
 export const PRIMARY_THRESHOLDS = { valid: 75, correctOriginal: 54, useful: 4, stable: 24 };
-// Preserve the number of allowed errors when one page is removed after evaluation.
+// Při dodatečném vyřazení jedné stránky se zachovává počet dovolených chyb.
 export const SECONDARY_THRESHOLDS = { valid: 72, correctOriginal: 54, useful: 3, stable: 23 };
 export function thresholdStatus(metrics: Metrics, thresholds = PRIMARY_THRESHOLDS): string {
   if (!metrics.complete) return "nedostatek dat";

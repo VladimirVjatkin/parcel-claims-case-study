@@ -1,4 +1,4 @@
-// Regression against decisions in the design (004), not a proof of correctness.
+// Regrese proti rozhodnutím v návrhu (004), nikoli důkaz správnosti pravidel.
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import type { ReasonCode } from "../src/domain/types.js";

@@ -1,3 +1,6 @@
+// Vrstva 1: pravidla A/B nad objednávkou, reklamacemi a vratkami, bez ověření u dopravce.
+// Ze sloučené objednávky vrací všechny zjištěné důvody, reportéra a pokyn pro tracking.
+// Dny, vyloučené způsoby a blokující záznamy vycházejí z rules.yaml a výkladu v README.
 import type {
   Complaint, Definition, Reason, ReporterMatrixRow, Rules, WmsReturn,
 } from "../domain/types.js";
@@ -24,16 +27,20 @@ export interface Layer1Result {
   runTracking: boolean;
 }
 
+// Kandidátem je pouze přesný stav z definice A nebo B, ostatní stavy se dále neřeší.
 export function definitionForStatus(status: string, rules: Rules): Definition | null {
   if (status === rules.A.status) return "A";
   if (status === rules.B.status) return "B";
   return null;
 }
 
+// Konflikt záznamů a stav mimo A/B vyhodnocení ukončí; ostatní důvody se sbírají všechny,
+// aby referent viděl úplný obraz a neztratil se ani důvod s vyšší prioritou.
 export function evaluateRules(group: OrderGroup, ctx: RulesContext, now: Date): Layer1Result {
   const order = group.order;
   const orderNumber = order.orderNumber?.trim() ?? "";
   const trackingNumber = order.trackingNumber?.trim() ?? "";
+  // Označení pro report: číslo objednávky, jinak zásilky (PN55100121), jinak orderId.
   const result: Layer1Result = {
     orderId: group.orderId,
     orderLabel: orderNumber || trackingNumber || order.orderId,
@@ -55,6 +62,7 @@ export function evaluateRules(group: OrderGroup, ctx: RulesContext, now: Date): 
   result.definition = definition;
   const rule = ctx.rules[definition];
   result.complaintReason = rule.complaintReason;
+  // packedAt (A) a shippedAt (B) označují přechod do stavu; updatedAt mění i jiné úpravy.
   const start = parseIsoInstant(definition === "A" ? order.packedAt : order.shippedAt);
   if (start === null) {
     result.reasons.push({ code: "MISSING_STATUS_DATE" });
@@ -67,13 +75,14 @@ export function evaluateRules(group: OrderGroup, ctx: RulesContext, now: Date): 
     }
   }
   const shippingMethod = order.shippingMethod?.trim();
+  // Bez shippingMethod nelze ověřit vyloučení, proto jde o ruční kontrolu, ne o souhlas.
   if (shippingMethod === undefined || shippingMethod === "") {
     result.reasons.push({ code: "MISSING_SHIPPING_METHOD" });
   } else if (rule.excludedShippingMethods.includes(shippingMethod)) {
     result.reasons.push({ code: "EXCLUDED_SHIPPING_METHOD", detail: shippingMethod });
   }
   if (orderNumber === "") {
-    // Missing identifiers must never join unrelated complaints or returns.
+    // Reklamace i vratky jsou vázané na číslo objednávky; chybějící čísla se nesmějí spojit.
     result.reasons.push({ code: "MISSING_ORDER_NUMBER" });
   } else {
     for (const complaint of ctx.complaints) {
@@ -89,6 +98,7 @@ export function evaluateRules(group: OrderGroup, ctx: RulesContext, now: Date): 
   }
   result.reporter = findReporter(order.client, ctx.reporterMatrix, ctx.complaints);
   if (result.reporter === null) result.reasons.push({ code: "NO_REPORTER" });
+  // DO_NOT_CREATE už nemůže tracking změnit; u NEEDS_REVIEW se ověřuje pro doplnění důkazů.
   result.runTracking = true;
   for (const reason of result.reasons) {
     if (REASON_OUTCOME[reason.code] === "DO_NOT_CREATE") result.runTracking = false;

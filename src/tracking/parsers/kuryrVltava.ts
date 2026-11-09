@@ -1,15 +1,19 @@
+// Kurýr Vltava: jediným zdrojem stavu je .shipment-message, nikoli plný ukazatel průběhu.
+// Zpráva o doručení příjemci musí celá odpovídat bílému seznamu; pochybnost znamená UNKNOWN.
 import * as cheerio from "cheerio";
 import type { TrackingResult } from "../types.js";
 import { containsPhrase, normalizeText, parseCzechDateTime } from "../text.js";
 import { isAfterReference } from "../../time/pragueDays.js";
 
 const RETURNING_PHRASES = ["vracíme odesílateli", "vrácena odesílateli"];
-// False DELIVERED hides a lost parcel; anything else goes to manual review.
+// Falešné DELIVERED skryje ztracenou zásilku; jiná formulace jde k ruční kontrole.
 const DELIVERED_PATTERN = /^zásilka byla doručena příjemci(?: (?<date>\d{1,2}\.\s*\d{1,2}\.\s*\d{4}))?(?: v (?<time>(?:[01]\d|2[0-3]):[0-5]\d))?\.$/u;
-// Delivery participles include negations, but not planned "doručení".
+// Tvary doručení zahrnují i zápory, ale ne plánované „doručení“.
 const DELIVERY_WORD_PATTERN = /\p{L}*(?:doručen[ao]?|vyzvednut[ao]?)(?!\p{L})/u;
 const IN_TRANSIT_PHRASES = ["na cestě k vám", "uložena na depu", "nakládáme k doručení", "nebyl zastižen"];
 
+// Pořadí je podstatné: známé doručení → jiné doručení → návrat → přeprava.
+// Zápor ani zmínka o sousedovi tak nemohou propadnout do potvrzení přepravy či návratu.
 export function parseKuryrVltava(html: string, referenceMoment: Date): TrackingResult {
   const $ = cheerio.load(html);
   const messages = $(".shipment-message");
@@ -18,6 +22,8 @@ export function parseKuryrVltava(html: string, referenceMoment: Date): TrackingR
   const text = quote.toLowerCase();
   const delivered = DELIVERED_PATTERN.exec(text);
   if (delivered !== null) {
+    // Kontroluje se jen datum ve vzoru doručení, nikoli lhůty v jiném textu zprávy.
+    // Datum bez času se porovná po pražských dnech; bez čitelného data zůstává původní výklad.
     const dateText = delivered.groups?.date;
     const timeText = delivered.groups?.time;
     const timestamp = dateText === undefined ? null : parseCzechDateTime(`${dateText}${timeText === undefined ? "" : ` ${timeText}`}`);

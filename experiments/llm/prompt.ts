@@ -1,3 +1,5 @@
+// Prompty odděleného experimentu: v1 zůstává pevný, v2 přidává pouze okamžik kontroly do user zprávy.
+// Definice sad drží povolené modely, vstupy a adresáře odpovědí, aby se běhy nemíchaly.
 export const PROMPT_VERSION = "v1";
 export const SYSTEM_PROMPT = `You classify the CURRENT delivery state of one parcel from a saved carrier tracking page.
 The page may be in Czech. It may contain cookie banners, ads, FAQ and navigation —
@@ -37,7 +39,7 @@ export function buildMessages(carrier: string, trackingNumber: string, input: st
     { role: "user", content: `Tracking page (carrier: ${carrier}, number: ${trackingNumber}):\n${input}` }];
 }
 
-// Pages of the experiment set were captured up to 3 Nov 06:00; this is their fetch moment, not the run moment of decide.
+// Stránky experimentu byly zachyceny do 3. 11. 06:00; jde o okamžik jejich stažení, ne o okamžik běhu decide.
 export const EXPERIMENT_FETCH_MOMENT = "2026-11-03T07:30:00+01:00";
 const momentParts = new Intl.DateTimeFormat("cs-CZ", {
   timeZone: "Europe/Prague", day: "numeric", month: "numeric", year: "numeric",

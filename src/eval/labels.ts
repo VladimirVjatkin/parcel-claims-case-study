@@ -1,3 +1,6 @@
+// Načítá referenční štítky pro měření a regresní testy; rozhodovací vrstvy je nečtou.
+// Krátký vlastní CSV parser stačí na tento soubor bez další knihovny (NOTES).
+// Podporuje uvozovky, zdvojené uvozovky, čárky i konce řádků v poli, CRLF a vstupní BOM.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { TrackingState } from "../tracking/types.js";
@@ -21,6 +24,8 @@ function csvError(line: number): Error {
   return new Error(`labels.csv, řádek ${line}: neplatný formát CSV.`);
 }
 
+// Stav uvozovek odděluje skutečný konec řádku od zalomení uvnitř citovaného pole.
+// U každého záznamu se uchová číslo počátečního řádku pro srozumitelnou chybu vstupu.
 function parseCsv(text: string): CsvRow[] {
   const rows: CsvRow[] = [];
   let cells: string[] = [];
@@ -56,6 +61,7 @@ function parseCsv(text: string): CsvRow[] {
       if (cell !== "" || closedQuote) throw csvError(line);
       quoted = true;
     } else {
+      // Po uzavřené uvozovce smí následovat jen oddělovač nebo konec řádku, jinak je CSV neplatné.
       if (closedQuote) throw csvError(line);
       cell += char;
     }
@@ -75,6 +81,7 @@ function readState(value: string, line: number): TrackingState {
   }
 }
 
+// Hlavička i všech pět sloupců jsou povinné; neznámý stav se nesmí vydávat za UNKNOWN.
 export function readLabels(path: string): LabelRow[] {
   const rows = parseCsv(readFileSync(path, "utf8").replace(/^\uFEFF/, ""));
   const header = rows.shift();

@@ -1,3 +1,5 @@
+// Před pravidly A/B slučuje řádky se stejným orderId a uchovává zjištěné rozpory.
+// Přesná kopie, např. 120101, znamená jednu objednávku; u konfliktu se platný řádek nehádá.
 import type { Order } from "../domain/types.js";
 
 const ORDER_FIELDS: (keyof Order)[] = [
@@ -14,6 +16,7 @@ export interface OrderGroup {
   differingFields: string[];
 }
 
+// Porovnání po polích umožní referentovi vypsat, v čem si export odporuje.
 export function dedupeOrders(rows: Order[]): OrderGroup[] {
   const groups = new Map<string, OrderGroup>();
   for (const row of rows) {
@@ -28,6 +31,7 @@ export function dedupeOrders(rows: Order[]): OrderGroup[] {
     existing.rowCount += 1;
     const differingFields: string[] = [];
     for (const field of ORDER_FIELDS) {
+      // Rozdíly se sčítají i přes třetí a další řádek; dřívější konflikt nesmí zmizet.
       if (existing.differingFields.includes(field) || existing.order[field] !== row[field]) {
         differingFields.push(field);
       }

@@ -1,3 +1,5 @@
+// Spojuje vrstvy do rozhodnutí pro report: pravidla → případný tracking → priorita důvodů.
+// Jde pouze o návrh reklamace; žádný zápis do Mailshipu ani volání modelu zde neprobíhá (DESIGN).
 import type { Definition, Outcome, Reason } from "../domain/types.js";
 import { outcomeFromReasons } from "../domain/types.js";
 import type { InputData } from "../input/loadInput.js";
@@ -23,12 +25,14 @@ export interface Decision {
   mailshipDiscrepancy: boolean;
 }
 
+// Důvody pravidel se zachovají i po ověření u dopravce, aby report vysvětlil celý výsledek.
 export function decideOrder(group: OrderGroup, ctx: RulesContext, source: TrackingSource, now: Date): Decision {
   const layer1 = evaluateRules(group, ctx, now);
   const reasons: Reason[] = [...layer1.reasons];
   let tracking: TrackingResult | null = null;
   if (layer1.runTracking) {
     if (layer1.definition === null) throw new Error("Ověření trackingu vyžaduje definici A nebo B.");
+    // V provozu okamžik stažení stránky; v řezu okamžik běhu, protože stránky jsou uložené.
     const referenceMoment = now;
     const lookup = lookupTracking(group.order, source, referenceMoment);
     reasons.push(...checkTracking(layer1.definition, lookup, now));
@@ -45,10 +49,13 @@ export function decideOrder(group: OrderGroup, ctx: RulesContext, source: Tracki
     complaintReason: layer1.complaintReason,
     daysInStatus: layer1.daysInStatus,
     tracking,
+    // Potvrzené doručení při jiném stavu Mailshipu jde do vývoje, ne jako reklamace oddělení.
+    // V podkladech jde o objednávky 120105, 120117 a 120124.
     mailshipDiscrepancy: tracking?.state === "DELIVERED",
   };
 }
 
+// Slučuje duplicity před pravidly; každý unikátní orderId pak má právě jedno rozhodnutí.
 export function decideAll(input: InputData, source: TrackingSource, now: Date): Decision[] {
   const decisions: Decision[] = [];
   for (const group of dedupeOrders(input.orders)) {

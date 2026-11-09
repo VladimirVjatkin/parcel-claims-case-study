@@ -1,3 +1,5 @@
+// Hlídá kalendářní dny v Praze: rozdíl proti UTC, změnu času a přísné čtení ISO dat.
+// Hraniční případy chrání okna A/B před předčasným založením reklamace.
 import { afterEach, describe, expect, it } from "vitest";
 import { calendarDaysInPrague, parseIsoInstant, pragueDateKey } from "../src/time/pragueDays.js";
 import { NOW } from "./helpers/makeOrder.js";
@@ -13,7 +15,7 @@ describe("calendarDaysInPrague", () => {
     ["2026-10-31T14:10:00+01:00", 2],
     ["2026-11-01T09:00:00+01:00", 1],
     ["2026-10-31T23:40:00+01:00", 2],
-    // UTC would start on October 19 and incorrectly count 14 days.
+    // V UTC by počátek připadl na 19. 10. a chybně by vyšlo 14 dní.
     ["2026-10-20T00:30:00+02:00", 13],
     ["2026-10-19T22:30:00Z", 13],
     ["2026-10-25T01:30:00+02:00", 8],

@@ -1,3 +1,5 @@
+// CLI sběru odpovědí experimentu: plán a kontrola poskytovatele bez klíče, placený sběr jen na pokyn vlastníka.
+// Pokusy se nepřepisují; společné limity, pauzy HTTP 429 a oddělení v1/v2 chrání úplnost a srovnatelnost.
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -75,7 +77,7 @@ export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fet
     if (isExhausted(item.attempts)) { counts.exhausted += 1; continue; }
     const slot = item.slot;
     if (blockedModels.has(slot.model.id)) continue;
-    // Delay the next actual call, without retrying this slot automatically.
+    // Pozdrží další skutečné volání, aniž by se tento slot automaticky opakoval.
     if (pendingDelay > 0) { await wait(pendingDelay); pendingDelay = 0; }
     const number = item.attempts.length + 1;
     const started = performance.now();
@@ -96,7 +98,7 @@ export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fet
       if (reply.ok && object(response).error === undefined) status = "ok";
       else error = `Chyba API (HTTP ${httpStatus}).`;
     } catch {
-      // Do not log arbitrary network errors: they can contain request details.
+      // Libovolné síťové chyby se nelogují: mohou obsahovat podrobnosti požadavku.
       error = "Chyba sítě, časový limit nebo nečitelná odpověď API.";
     }
     const attempt: Attempt = {
@@ -106,7 +108,7 @@ export async function collectSlots(saved: SavedSlot[], key: string, fetcher: Fet
     };
     const path = join(root, attemptPath(slot.set, slot.model.id, slot.variant, slot.label.file, slot.run, number, experiment));
     mkdirSync(dirname(path), { recursive: true });
-    // Exclusive creation also protects against a second collector running concurrently.
+    // Výhradní vytvoření souboru chrání i před druhým souběžným sběrem.
     writeFileSync(path, JSON.stringify(redact(attempt, key), null, 2) + "\n", { encoding: "utf8", flag: "wx" });
     if (status === "ok") counts.ok += 1; else counts.failed += 1;
     if (httpStatus === 401 || httpStatus === 402 || httpStatus === 403) {

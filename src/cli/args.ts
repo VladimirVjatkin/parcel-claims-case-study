@@ -1,3 +1,5 @@
+// Společné argumenty obou CLI: okamžik běhu, adresář podkladů a volitelný výstupní soubor.
+// Bez --now zůstává pevný okamžik z config.ts, aby se výchozí report neměnil podle dne spuštění.
 import { parseArgs } from "node:util";
 import { DEFAULT_RUN_MOMENT } from "../config.js";
 import { parseIsoInstant } from "../time/pragueDays.js";
@@ -8,6 +10,8 @@ export interface RunArgs {
   outPath: string | null;
 }
 
+// --now now čerpá čas z předaného callbacku; ISO hodnota musí obsahovat sekundy a časový posun.
+// Callback dovoluje čas řídit i v testech, místo skrytého čtení systémových hodin.
 export function parseRunArgs(argv: string[], currentTime: () => Date): RunArgs {
   let values: { now?: string; data?: string; out?: string };
   try {

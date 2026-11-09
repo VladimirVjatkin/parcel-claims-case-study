@@ -1,3 +1,5 @@
+// Společné typy propojují vstupní export, pravidla A/B a výsledné rozhodnutí.
+// Výsledek se odvozuje z kódů důvodů; jednotlivé vrstvy ho neurčují samostatně (README).
 export type Definition = "A" | "B";
 export type Outcome = "CREATE" | "DO_NOT_CREATE" | "NEEDS_REVIEW";
 
@@ -9,6 +11,7 @@ export type ReasonCode =
   | "TRACKING_UNKNOWN" | "TRACKING_RETURNING" | "AT_PICKUP_POINT_STORAGE_ACTIVE"
   | "CARRIER_PICKUP_CONFIRMED";
 
+// Každý kód má právě jeden výsledek; jeho přiřazení se mění pouze v této tabulce.
 export const REASON_OUTCOME: Record<ReasonCode, Outcome> = {
   NOT_CANDIDATE_STATUS: "DO_NOT_CREATE",
   TOO_FEW_DAYS: "DO_NOT_CREATE",
@@ -33,6 +36,8 @@ export interface Reason {
   detail?: string;
 }
 
+// Platí priorita DO_NOT_CREATE > NEEDS_REVIEW > CREATE; prázdný seznam znamená CREATE.
+// Pevný důvod pro nezaložení má přednost: ruční kontrola by pravidlo oddělení nezměnila.
 export function outcomeFromReasons(reasons: Reason[]): Outcome {
   let outcome: Outcome = "CREATE";
   for (const reason of reasons) {
@@ -47,6 +52,8 @@ export function outcomeFromReasons(reasons: Reason[]): Outcome {
   return outcome;
 }
 
+// Neúplný export dovoluje null; povinné orderId a status ověřuje načítač.
+// updatedAt se uchovává, ale dny ve stavu se počítají od packedAt nebo shippedAt.
 export interface Order {
   orderId: string;
   orderNumber: string | null;
