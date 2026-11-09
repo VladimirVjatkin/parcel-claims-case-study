@@ -23,7 +23,7 @@ V řezu: `npm run decide` nad soubory, pevný okamžik běhu 2. 11. 2026 07:30 (
 
 Model v provozu: pojistka pro nepoznanou stránku, detektor rozbitého parseru, denní porovnání s parserem na vzorku. Nový dopravce = plánovaný parser s testy.
 
-Experiment s 6 otevřenými modely: předem stanovený práh nesplnil žádný model — model ani parser neznaly okamžik kontroly a uznaly doručení s budoucím datem. S okamžikem kontroly v promptu (dodatečný běh) budoucí datum gpt-oss 120B rozpoznal, Llama 3.3 70B ne; kontrola data proto patří do kódu (v parserech už je). Model by běžel lokálně u Mailstepu (stránky obsahují jména a adresy). **V rozhodování v řezu model nepoužívám, cena jednoho vyhodnocení je tedy 0.**
+Experiment s 6 otevřenými modely: střední a velké modely správně přečetly 5 z 6 změněných stránek, předem stanovený práh ale nesplnil žádný model — model ani parser neznaly okamžik kontroly a uznaly doručení s budoucím datem. S okamžikem kontroly v promptu (dodatečný běh) budoucí datum gpt-oss 120B rozpoznal, Llama 3.3 70B ne; kontrola data proto patří do kódu (v parserech už je). Model by běžel lokálně u Mailstepu (stránky obsahují jména a adresy). **V rozhodování v řezu model nepoužívám, cena jednoho vyhodnocení je tedy 0.**
 
 ## 2. Jak ověřím, že zásilka opravdu nebyla doručená, a odkud tu informaci vezmu?
 
